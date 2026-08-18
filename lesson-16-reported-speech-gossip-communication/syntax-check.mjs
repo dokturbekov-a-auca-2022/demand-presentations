@@ -1,0 +1,1 @@
+import fs from 'node:fs';import path from 'node:path';import{fileURLToPath}from'node:url';const here=path.dirname(fileURLToPath(import.meta.url)),html=fs.readFileSync(path.join(here,'index.html'),'utf8');for(const script of html.matchAll(/<script>([\s\S]*?)<\/script>/g))new Function(script[1]);console.log('PASS — JavaScript syntax');

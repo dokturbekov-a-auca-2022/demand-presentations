@@ -1,0 +1,12 @@
+import fs from "node:fs";
+const html=fs.readFileSync(new URL("./index.html",import.meta.url),"utf8");
+const script=html.match(/<script>([\s\S]*?)<\/script>/)?.[1];
+if(!script)throw new Error("Inline script missing");new Function(script);
+const scenes=(html.match(/<section class="scene/g)||[]).length;
+const refs=[...html.matchAll(/(?:src|href)="(assets\/[^"]+)"/g)].map(m=>m[1]);
+const ids=[...html.matchAll(/id="([^"]+)"/g)].map(m=>m[1]);
+const dup=ids.filter((id,i)=>ids.indexOf(id)!==i);
+if(scenes!==23)throw new Error(`Expected 23 scenes, found ${scenes}`);
+if(dup.length)throw new Error(`Duplicate IDs: ${[...new Set(dup)].join(", ")}`);
+for(const ref of refs)if(!fs.existsSync(new URL(ref,new URL("./index.html",import.meta.url))))throw new Error(`Missing asset: ${ref}`);
+console.log("JavaScript syntax: OK");console.log(`Scenes: ${scenes}`);console.log(`Unique IDs: ${ids.length}`);console.log(`Assets: ${refs.join(", ")}`);

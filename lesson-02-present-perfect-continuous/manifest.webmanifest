@@ -1,0 +1,12 @@
+{
+  "name": "The Guild of Unfinished Things",
+  "short_name": "Unfinished Things",
+  "description": "Interactive Present Perfect Continuous lesson",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["fullscreen", "standalone"],
+  "background_color": "#071827",
+  "theme_color": "#081c2c",
+  "orientation": "any"
+}

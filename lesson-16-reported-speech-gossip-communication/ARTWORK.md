@@ -1,0 +1,11 @@
+# Lesson 16 artwork
+
+Both illustrations were created with OpenAI's built-in image generation workflow on 15 August 2026.
+
+## `whisper-lab-hero.png`
+
+Prompt: “Use case: illustration-story. Asset type: wide hero illustration for an offline interactive English grammar lesson for teenagers about reported speech and communication. Primary request: an original imaginative 'Whisper Lab' scene without any words: diverse teenagers in a colourful after-school communication workshop, a glowing ribbon of sound travels from one person’s speech bubble through a paper tube, notebook, phone and pinboard, changing shape but keeping the idea. Include subtle visual cues for quotation marks becoming a message note, not readable text. Style/medium: premium editorial collage, layered translucent paper, risograph ink texture, hand-cut shapes, playful but sophisticated. Composition/framing: extra-wide 16:9; characters and message trail mostly on the right, generous rich purple negative space on the left for title text. Lighting/mood: curious, friendly, energetic. Palette: midnight purple, lavender, peach, acid yellow, teal and warm cream. Constraints: no readable words, no logos, no watermark, classroom-friendly, clear anatomy.”
+
+## `message-relay-story.png`
+
+Prompt: “Use case: illustration-story. Asset type: wide visual context image for an offline English lesson on reported speech. Primary request: a four-panel visual story with no readable text: a student says something about meeting at the library; a friend hears it; a third student repeats the message to another person using a message card; the group checks the original and smiles. Show the difference between direct spoken message and careful retelling using symbolic quotation marks, arrows and note shapes only, no letters. Style/medium: handcrafted paper collage with cut-out geometric speech bubbles, tactile ink and crayon details; coherent with a Whisper Lab classroom aesthetic. Composition/framing: wide 16:9, four clear chronological zones with space to crop. Lighting/mood: bright, supportive, thoughtful. Palette: deep violet, lavender, cream, peach, teal, lemon yellow. Constraints: no actual text, no logos, no watermark, teen-friendly, no distorted hands.”

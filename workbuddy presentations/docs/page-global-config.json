@@ -1,0 +1,16 @@
+{
+  "slideStyle": "Fun classroom",
+  "colorScheme": "Bright candy / playful",
+  "primaryColor": "#7C5CFC",
+  "accentColor1": "#FF6F91",
+  "accentColor2": "#FFC83D",
+  "accentColor3": "#2FD0A8",
+  "accentColor4": "#4CC9F0",
+  "neutralColor": "#2B2552",
+  "background": {
+    "type": "color",
+    "value": "#FFF7EC"
+  },
+  "fontTitle": "'Fredoka', 'Poppins', Arial, sans-serif",
+  "fontBody": "'Nunito', 'Inter', Arial, sans-serif"
+}

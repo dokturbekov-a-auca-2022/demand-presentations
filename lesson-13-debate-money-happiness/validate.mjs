@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const here=path.dirname(fileURLToPath(import.meta.url));
+const html=fs.readFileSync(path.join(here,'index.html'),'utf8');
+let failed=false;const check=(name,ok,detail='')=>{console.log(`${ok?'PASS':'FAIL'} — ${name}${detail?`: ${detail}`:''}`);failed||=!ok};
+const scenes=(html.match(/\bt:'/g)||[]).length;const notes=(html.match(/\bn:'/g)||[]).length;
+check('26 scenes',scenes===26,scenes);check('teacher note per scene',notes===26,notes);
+for(const asset of ['happiness-exchange-hero.png','two-saturdays.png'])check(asset,fs.existsSync(path.join(here,'assets',asset)));
+check('no external runtime URLs',!/https?:\/\//.test(html));
+check('navigation and accessibility controls',/id="next"/.test(html)&&/id="prev"/.test(html)&&/id="menu"/.test(html)&&/id="notesBtn"/.test(html));
+for(const hook of ['moodGrid','sortGrid','claimGame','timerStart','paintQuiz','exitStrip'])check(`activity: ${hook}`,html.includes(hook));
+check('reduced motion support',html.includes('prefers-reduced-motion'));
+check('meaningful image alt text',(html.match(/alt="[^"]{12,}"/g)||[]).length>=2);
+if(failed)process.exitCode=1;

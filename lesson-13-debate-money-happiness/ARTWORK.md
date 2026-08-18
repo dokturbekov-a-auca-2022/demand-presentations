@@ -1,0 +1,11 @@
+# Lesson 13 artwork
+
+Both images were created with OpenAI's built-in image generation workflow on 15 August 2026.
+
+## `happiness-exchange-hero.png`
+
+Prompt: “Use case: illustration-story. Asset type: wide hero illustration for an offline English debate-class presentation for teenagers. Primary request: an original editorial collage called 'Happiness Exchange' that contrasts money and wellbeing without using any words. Scene/backdrop: a warm, imaginative public square that looks like a mix of a street market and a community garden. Subject: diverse teenagers at a circular balance scale; on one side a wallet, coins, shopping bags and a phone; on the other side friendship, a guitar, a dog, a tree, family dinner, free time and a sunrise. Style/medium: sophisticated handmade paper-cut collage with ink, gouache texture, clear simple forms, modern teen magazine art. Composition/framing: extra wide 16:9, center-right weighted with generous quiet dark-teal negative space on the left for title text. Lighting/mood: golden late afternoon, curious and hopeful rather than moralising. Color palette: dark teal, cream, coral, saffron yellow, mint, cobalt. Constraints: no text, no logos, no watermarks, no distorted hands, classroom-friendly.”
+
+## `two-saturdays.png`
+
+Prompt: “Use case: illustration-story. Asset type: wide reading-and-debate evidence illustration for an offline English lesson. Primary request: a handmade collage infographic without text showing two parallel teenage Saturdays. Left scene: a teen earns money by doing a short job, then later buys headphones and looks happy. Right scene: another teen spends time cooking with family, playing football with friends, volunteering in a garden and resting under a tree. A small bridge joins the scenes to imply balance rather than choosing one side. Style/medium: modern paper-cut collage, subtle ink linework, warm premium editorial illustration, simple recognizable faces, no text. Composition/framing: wide 16:9 with space around each scene so it can be cropped. Lighting/mood: lively, thoughtful and humane. Color palette: cream paper, deep teal, coral, sunny yellow, mint, cobalt. Constraints: no written words, no logos, no watermark, respectful and classroom-friendly.”

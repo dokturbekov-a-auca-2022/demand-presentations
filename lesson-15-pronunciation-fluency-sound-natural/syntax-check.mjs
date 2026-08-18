@@ -1,0 +1,1 @@
+import fs from 'node:fs';import path from 'node:path';const h=path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Z]):/,'$1:')),s=fs.readFileSync(path.join(h,'index.html'),'utf8'),m=s.match(/<script>([\s\S]*?)<\/script>/);if(!m)throw Error('No script');new Function(m[1]);console.log('PASS — inline JavaScript parses');

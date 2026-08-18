@@ -1,0 +1,21 @@
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const here=path.dirname(fileURLToPath(import.meta.url));
+const html=fs.readFileSync(path.join(here,"index.html"),"utf8");
+const checks=[];
+const add=(name,pass,detail="")=>checks.push({name,pass,detail});
+const scenes=[...html.matchAll(/<section class="[^"]*\bscene\b[^"]*"/g)];
+add("26 scenes",scenes.length===26,String(scenes.length));
+const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
+const duplicates=[...new Set(ids.filter((id,i)=>ids.indexOf(id)!==i))];
+add("unique IDs",duplicates.length===0,duplicates.length?duplicates.join(", "):String(ids.length));
+const expected=["assets/memory-metro.webp","assets/life-objects.webp","assets/lina-life-line.webp","assets/six-travellers.webp","assets/milestone-panorama.webp","assets/earlier-later-platform.webp","assets/speaking-interview.webp","assets/turning-points-panorama.jpg","assets/grammar-turnstiles.jpg"];
+add("nine visual assets referenced",expected.every(asset=>html.includes(asset)),expected.join(", "));
+add("all assets exist",expected.every(asset=>fs.existsSync(path.join(here,asset))),"yes");
+const notes=[...html.matchAll(/<aside class="teacher">/g)].length;
+add("teacher notes on every scene",notes===26,String(notes));
+add("no external runtime URLs",!/(?:src|href)="https?:\/\//.test(html),"checked");
+for(const c of checks)console.log(`${c.pass?"PASS":"FAIL"} — ${c.name}: ${c.detail}`);
+if(checks.some(c=>!c.pass))process.exitCode=1;

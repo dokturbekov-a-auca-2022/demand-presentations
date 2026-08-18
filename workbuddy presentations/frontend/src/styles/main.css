@@ -1,0 +1,377 @@
+/* Font imports are dynamically added in index.html based on fontTitle/fontBody configuration */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body, 'Nunito', sans-serif);
+    overflow: hidden;
+    background: #fff;
+}
+
+/* ---------- Font helpers ---------- */
+.font-title { font-family: var(--font-title, 'Fredoka', sans-serif); }
+.font-body { font-family: var(--font-body, 'Nunito', sans-serif); }
+
+/* ---------- Bright palette utilities ---------- */
+.bg-cream { background-color: var(--cream); }
+.bg-paper { background-color: var(--paper); }
+.bg-violet { background-color: var(--violet); }
+.bg-pink { background-color: var(--pink); }
+.bg-yellow { background-color: var(--yellow); }
+.bg-mint { background-color: var(--mint); }
+.bg-sky { background-color: var(--sky); }
+
+.text-ink { color: var(--ink); }
+.text-violet { color: var(--violet); }
+.text-pink { color: var(--pink); }
+.text-yellow { color: var(--yellow); }
+.text-mint { color: var(--mint); }
+.text-sky { color: var(--sky); }
+
+.border-violet { border-color: var(--violet); }
+.border-pink { border-color: var(--pink); }
+.border-yellow { border-color: var(--yellow); }
+.border-mint { border-color: var(--mint); }
+.border-sky { border-color: var(--sky); }
+
+/* ---------- Slide base ---------- */
+.slide-bg {
+    background: var(--slide-background);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.lesson-slide {
+    color: var(--ink);
+    font-family: var(--font-body);
+}
+
+.lesson-slide h1,
+.lesson-slide h2,
+.lesson-slide h3 {
+    font-family: var(--font-title);
+    letter-spacing: 0;
+}
+
+/* ---------- Typography ---------- */
+.kicker {
+    display: inline-block;
+    font-family: var(--font-title);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 7px 18px;
+    border-radius: 999px;
+    background: rgba(124, 92, 252, 0.14);
+    color: var(--violet);
+}
+.kicker--violet { background: rgba(124,92,252,.15); color: var(--violet); }
+.kicker--pink   { background: rgba(255,111,145,.16); color: #E03E66; }
+.kicker--yellow { background: rgba(255,200,61,.22);  color: #B58400; }
+.kicker--mint   { background: rgba(47,208,168,.18);  color: #0E8C6E; }
+.kicker--sky    { background: rgba(76,201,240,.20);  color: #1B86AE; }
+
+.title {
+    font-family: var(--font-title);
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.04;
+}
+
+.lead {
+    color: #5b5478;
+    font-weight: 600;
+}
+
+/* ---------- Sticker cards ---------- */
+.card {
+    background: var(--paper);
+    border-radius: 26px;
+    padding: 28px;
+    border: 3px solid #efe7ff;
+    box-shadow: 0 14px 30px rgba(43, 37, 82, 0.10);
+}
+.card--violet { border-top: 9px solid var(--violet); box-shadow: 0 14px 30px rgba(124,92,252,.18); }
+.card--pink   { border-top: 9px solid var(--pink);   box-shadow: 0 14px 30px rgba(255,111,145,.18); }
+.card--yellow { border-top: 9px solid var(--yellow); box-shadow: 0 14px 30px rgba(255,200,61,.20); }
+.card--mint   { border-top: 9px solid var(--mint);   box-shadow: 0 14px 30px rgba(47,208,168,.18); }
+.card--sky    { border-top: 9px solid var(--sky);    box-shadow: 0 14px 30px rgba(76,201,240,.18); }
+
+.card--sticker {
+    border: 3px solid var(--ink);
+    box-shadow: 8px 8px 0 rgba(43,37,82,.85);
+}
+.card--sticker.violet { background: var(--violet); color: #fff; }
+.card--sticker.pink   { background: var(--pink);   color: #fff; }
+.card--sticker.yellow { background: var(--yellow); color: var(--ink); }
+.card--sticker.mint   { background: var(--mint);   color: #fff; }
+.card--sticker.sky    { background: var(--sky);    color: #fff; }
+
+/* ---------- Chat / speech bubbles ---------- */
+.bubble {
+    background: #fff;
+    border: 3px solid var(--violet);
+    border-radius: 22px 22px 22px 6px;
+    padding: 18px 22px;
+}
+.bubble--pink { border-color: var(--pink); }
+.bubble--mint { border-color: var(--mint); border-radius: 22px 22px 6px 22px; }
+.bubble--sky  { border-color: var(--sky); }
+
+/* ---------- "Your turn" activity callout ---------- */
+.do-now {
+    background: #E8FBF4;
+    border-left: 9px solid var(--mint);
+    border-radius: 18px;
+    padding: 22px 26px;
+}
+.do-now .label {
+    font-family: var(--font-title);
+    font-weight: 700;
+    color: #0E8C6E;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+
+/* ---------- Teacher sticky-note tip ---------- */
+.teacher-tip {
+    background: #FFF4CC;
+    border: 2px dashed #F2C94C;
+    border-radius: 16px;
+    padding: 18px 22px;
+    transform: rotate(-1deg);
+}
+.teacher-tip .label {
+    font-family: var(--font-title);
+    font-weight: 700;
+    color: #B58400;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 13px;
+}
+
+/* ---------- Pills / chips ---------- */
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 17px;
+}
+.chip--violet { background: rgba(124,92,252,.15); color: var(--violet); }
+.chip--pink   { background: rgba(255,111,145,.16); color: #E03E66; }
+.chip--yellow { background: rgba(255,200,61,.24); color: #B58400; }
+.chip--mint   { background: rgba(47,208,168,.20); color: #0E8C6E; }
+.chip--sky    { background: rgba(76,201,240,.22); color: #1B86AE; }
+.chip--paper  { background: #fff; color: var(--ink); border: 2px solid #efe7ff; }
+
+/* Sticker badge (slightly rotated) */
+.badge {
+    display: inline-block;
+    font-family: var(--font-title);
+    font-weight: 700;
+    padding: 10px 20px;
+    border-radius: 14px;
+    transform: rotate(-3deg);
+    box-shadow: 0 8px 16px rgba(43,37,82,.18);
+}
+
+/* Points / score chip */
+.points {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--yellow);
+    color: var(--ink);
+    font-family: var(--font-title);
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 16px;
+}
+
+/* ---------- Mascot chip ---------- */
+.mascot-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    padding: 8px 18px 8px 10px;
+    font-family: var(--font-title);
+    font-weight: 600;
+    font-size: 17px;
+    box-shadow: 4px 4px 0 rgba(43,37,82,.85);
+}
+.mascot-chip .face {
+    width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 999px;
+    background: var(--violet);
+    font-size: 22px;
+}
+
+/* ---------- Top lesson strip ---------- */
+.lesson-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* ---------- Decorative doodles ---------- */
+.deco-circle { border-radius: 999px; }
+.deco-ring { border-radius: 999px; border-style: solid; }
+.deco-blob {
+    border-radius: 64% 36% 55% 45% / 48% 52% 48% 52%;
+}
+.deco-star {
+    background: var(--yellow);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+.deco-dotgrid {
+    background-image: radial-gradient(var(--violet) 3px, transparent 3px);
+    background-size: 26px 26px;
+    opacity: .35;
+}
+
+/* ---------- PPT container (preview app) ---------- */
+.ppt-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1a1a1a;
+    overflow: hidden;
+    position: relative;
+}
+
+.ppt-viewport {
+    width: 1440px;
+    height: 810px;
+    position: relative;
+    background: #fff;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+    overflow: visible;
+    transform-origin: center center;
+    flex-shrink: 0;
+}
+
+.ppt-viewport > .slide {
+    visibility: hidden;
+}
+
+.slide {
+    width: 1440px;
+    height: 810px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease, visibility 0s 0.5s;
+}
+
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0s;
+}
+
+.nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #333;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.nav-btn:hover {
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.nav-btn:disabled:hover {
+    transform: translateY(-50%) scale(1);
+}
+
+.nav-btn-prev { left: 40px; }
+.nav-btn-next { right: 40px; }
+
+.progress-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    z-index: 1000;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: var(--primary-color, #3B82F6);
+    transition: width 0.3s ease;
+}
+
+.page-indicator {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    z-index: 1000;
+    display: block;
+}
+
+.keyboard-hint {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 12px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.keyboard-hint.show { opacity: 1; }
