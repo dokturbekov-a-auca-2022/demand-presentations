@@ -115,7 +115,6 @@
     const validLesson = /^lesson-(?:0[1-9]|[12][0-9]|30)-[a-z0-9-]+$/.test(lesson);
     const isiPhone = /iPhone|iPod/i.test(navigator.userAgent);
     const isMobile = isiPhone || /Android/i.test(navigator.userAgent) || matchMedia('(pointer: coarse)').matches;
-    const canvasWidth = 1920;
     const canvasHeight = 1080;
 
     function fitPresentation() {
@@ -134,6 +133,7 @@
         return;
       }
 
+      const canvasWidth = Math.round(canvasHeight * width / height);
       const scale = Math.min(width / canvasWidth, height / canvasHeight);
       frame.style.width = `${canvasWidth}px`;
       frame.style.height = `${canvasHeight}px`;

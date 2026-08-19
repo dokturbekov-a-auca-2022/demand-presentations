@@ -194,7 +194,14 @@ for (const folder of folders) {
     const viewport = window.visualViewport;
     const width = viewport?.width || innerWidth;
     const height = viewport?.height || innerHeight;
-    return box.left >= -1 && box.top >= -1 && box.right <= width + 1 && box.bottom <= height + 1;
+    return {
+      contained: box.left >= -1 && box.top >= -1 && box.right <= width + 1 && box.bottom <= height + 1,
+      fillsLandscape: width <= height || (box.width >= width - 2 && box.height >= height - 2),
+      frameWidth: Math.round(box.width),
+      frameHeight: Math.round(box.height),
+      viewportWidth: Math.round(width),
+      viewportHeight: Math.round(height),
+    };
   });
 
   if (captureDir) {
@@ -216,9 +223,9 @@ for (const folder of folders) {
     !['hidden', 'clip'].includes(result.bodyOverflowX);
   const reportedSlideCollision = folder === 'lesson-04-past-continuous-accidents-funny-stories' &&
     result.reportedSlideCollision;
-  const overflow = !frameFit || documentCanScroll || bodyCanScroll || result.overflowingScenes.length > 0 ||
+  const overflow = !frameFit.contained || !frameFit.fillsLandscape || documentCanScroll || bodyCanScroll || result.overflowingScenes.length > 0 ||
     result.controlOverlaps.length > 0 || reportedSlideCollision;
-  console.log(`${overflow ? 'FAIL' : 'PASS'} - ${folder}${overflow ? `: ${JSON.stringify(result)}` : ''}`);
+  console.log(`${overflow ? 'FAIL' : 'PASS'} - ${folder}${overflow ? `: ${JSON.stringify({ ...result, frameFit })}` : ''}`);
   if (overflow) failures.push(folder);
 
   if (folder === 'lesson-04-past-continuous-accidents-funny-stories') {
