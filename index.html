@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4efe4">
+  <title>English Presentation Library</title>
+  <style>
+    :root {
+      --paper: #f4efe4;
+      --panel: #fffdf7;
+      --ink: #17201d;
+      --muted: #68716c;
+      --line: #d8d1c3;
+      --folder: #f4bd39;
+      --folder-dark: #d99a16;
+      --accent: #e95336;
+      --focus: #067f8e;
+      --shadow: 0 22px 60px rgba(28, 34, 31, .13);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { background: var(--paper); }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(255,255,255,.35), rgba(255,255,255,0)),
+        radial-gradient(circle at 12% 8%, rgba(244,189,57,.23), transparent 24rem),
+        var(--paper);
+      font-family: "Aptos", "Trebuchet MS", sans-serif;
+    }
+
+    button, input { font: inherit; }
+
+    .shell {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 42px 0 56px;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      margin: 0;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .count {
+      padding: 7px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,.5);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(42px, 7vw, 76px);
+      font-weight: 700;
+      line-height: .98;
+      letter-spacing: -.045em;
+    }
+
+    .intro {
+      max-width: 650px;
+      margin: 18px 0 30px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
+    .browser {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .browser-bar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(240px, 340px);
+      align-items: center;
+      gap: 20px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      background: #ece6d9;
+    }
+
+    .path {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      color: #4e5853;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .path span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .path b { color: var(--ink); }
+    .path i { margin: 0 8px; color: #9b9385; font-style: normal; }
+
+    .search-wrap { position: relative; }
+
+    .search-wrap::before {
+      content: "";
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      width: 10px;
+      height: 10px;
+      border: 2px solid #65706a;
+      border-radius: 50%;
+      transform: translateY(-62%);
+      pointer-events: none;
+    }
+
+    .search-wrap::after {
+      content: "";
+      position: absolute;
+      left: 25px;
+      top: 55%;
+      width: 7px;
+      height: 2px;
+      background: #65706a;
+      transform: rotate(45deg);
+      transform-origin: left center;
+      pointer-events: none;
+    }
+
+    #search {
+      width: 100%;
+      height: 42px;
+      padding: 0 14px 0 42px;
+      border: 1px solid #c6bfb2;
+      border-radius: 10px;
+      outline: 0;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    #search:focus {
+      border-color: var(--focus);
+      box-shadow: 0 0 0 3px rgba(6,127,142,.15);
+    }
+
+    .column-head {
+      display: grid;
+      grid-template-columns: 64px minmax(0, 1fr) 210px 28px;
+      gap: 16px;
+      padding: 11px 22px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .lesson-list { margin: 0; padding: 0; list-style: none; }
+
+    .lesson-row {
+      display: grid;
+      grid-template-columns: 64px minmax(0, 1fr) 210px 28px;
+      align-items: center;
+      gap: 16px;
+      min-height: 76px;
+      padding: 11px 22px;
+      border-bottom: 1px solid #e5dfd3;
+      color: inherit;
+      text-decoration: none;
+      transition: background .18s ease, transform .18s ease;
+    }
+
+    li:last-child .lesson-row { border-bottom: 0; }
+    .lesson-row:hover { background: #fff5d8; }
+    .lesson-row:active { transform: scale(.996); }
+    .lesson-row:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; }
+
+    .folder {
+      position: relative;
+      width: 48px;
+      height: 34px;
+      border-radius: 5px 6px 7px 7px;
+      background: var(--folder);
+      box-shadow: inset 0 -5px 0 rgba(217,154,22,.42);
+    }
+
+    .folder::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: -7px;
+      width: 21px;
+      height: 10px;
+      border-radius: 5px 5px 0 0;
+      background: var(--folder-dark);
+    }
+
+    .lesson-number {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding-top: 2px;
+      color: #4a3505;
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .lesson-title {
+      display: block;
+      overflow: hidden;
+      font-size: 17px;
+      font-weight: 900;
+      line-height: 1.2;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .lesson-theme {
+      display: block;
+      margin-top: 4px;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 14px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .lesson-type {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .lesson-row > span:nth-child(2) { min-width: 0; }
+
+    .open-arrow {
+      color: var(--accent);
+      font-size: 24px;
+      font-weight: 900;
+      transition: transform .18s ease;
+    }
+
+    .lesson-row:hover .open-arrow { transform: translateX(4px); }
+
+    .empty {
+      display: none;
+      padding: 50px 24px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .empty strong { display: block; margin-bottom: 6px; color: var(--ink); font-size: 18px; }
+
+    .hint {
+      margin: 18px 4px 0;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 720px) {
+      .shell { width: min(100% - 20px, 1080px); padding-top: 24px; }
+      .topline { margin-bottom: 13px; }
+      .intro { margin-bottom: 22px; font-size: 16px; }
+      .browser { border-radius: 13px; }
+      .browser-bar { grid-template-columns: 1fr; gap: 12px; }
+      .column-head { display: none; }
+      .lesson-row { grid-template-columns: 54px minmax(0, 1fr) 22px; gap: 12px; min-height: 73px; padding: 10px 14px; }
+      .lesson-type { display: none; }
+      .folder { width: 44px; height: 32px; }
+      .lesson-title { font-size: 15px; }
+      .lesson-theme { font-size: 12px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="topline">
+      <p class="eyebrow">Presentation Library</p>
+      <span class="count" id="count">30 lessons</span>
+    </div>
+    <h1>Choose a lesson.</h1>
+    <p class="intro">Open a folder to start its presentation. Everything is arranged in lesson order.</p>
+
+    <section class="browser" aria-label="English lesson presentations">
+      <div class="browser-bar">
+        <div class="path" aria-label="Current folder"><span><b>Presentations</b><i>/</i>English Course</span></div>
+        <label class="search-wrap">
+          <span hidden>Search presentations</span>
+          <input id="search" type="search" placeholder="Search lessons" autocomplete="off">
+        </label>
+      </div>
+
+      <div class="column-head" aria-hidden="true">
+        <span>Folder</span><span>Name</span><span>Type</span><span></span>
+      </div>
+
+      <ul class="lesson-list" id="lessonList">
+        <li data-search="1 revision getting to know each other postcard exchange"><a class="lesson-row" href="./lesson-01-revision-getting-to-know-each-other/"><span class="folder"><span class="lesson-number">01</span></span><span><span class="lesson-title">Getting to Know Each Other</span><span class="lesson-theme">Revision · Postcard Exchange</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="2 present perfect continuous guild unfinished things"><a class="lesson-row" href="./lesson-02-present-perfect-continuous/"><span class="folder"><span class="lesson-number">02</span></span><span><span class="lesson-title">Present Perfect Continuous</span><span class="lesson-theme">The Guild of Unfinished Things</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="3 speaking medicine health body broadcast"><a class="lesson-row" href="./lesson-03-speaking-medicine-health/"><span class="folder"><span class="lesson-number">03</span></span><span><span class="lesson-title">Medicine &amp; Health</span><span class="lesson-theme">Speaking · The Body Broadcast</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="4 past continuous accidents funny stories stop motion"><a class="lesson-row" href="./lesson-04-past-continuous-accidents-funny-stories/"><span class="folder"><span class="lesson-number">04</span></span><span><span class="lesson-title">Past Continuous</span><span class="lesson-theme">Accidents &amp; Funny Stories</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="5 reading social media good bad feed trial"><a class="lesson-row" href="./lesson-05-reading-social-media-good-or-bad/"><span class="folder"><span class="lesson-number">05</span></span><span><span class="lesson-title">Social Media: Good or Bad?</span><span class="lesson-theme">Reading · The Feed on Trial</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="6 past simple continuous crime news breaking"><a class="lesson-row" href="./lesson-06-past-simple-vs-past-continuous-crime-news/"><span class="folder"><span class="lesson-number">06</span></span><span><span class="lesson-title">Past Simple vs Past Continuous</span><span class="lesson-theme">Crime &amp; News · Breaking at 9:17</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="7 vocabulary personality emotions character hotel"><a class="lesson-row" href="./lesson-07-vocabulary-personality-emotions/"><span class="folder"><span class="lesson-number">07</span></span><span><span class="lesson-title">Personality &amp; Emotions</span><span class="lesson-theme">Vocabulary · The Character Hotel</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="8 past perfect life stories memory metro"><a class="lesson-row" href="./lesson-08-past-perfect-life-stories/"><span class="folder"><span class="lesson-number">08</span></span><span><span class="lesson-title">Past Perfect</span><span class="lesson-theme">Life Stories · The Memory Metro</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="9 speaking club technology ai signal city"><a class="lesson-row" href="./lesson-09-speaking-club-technology-ai/"><span class="folder"><span class="lesson-number">09</span></span><span><span class="lesson-title">Technology &amp; AI</span><span class="lesson-theme">Speaking Club · Signal City</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="10 future continuous meanwhile tomorrow travel plans"><a class="lesson-row" href="./lesson-10-future-continuous-meanwhile-tomorrow/"><span class="folder"><span class="lesson-number">10</span></span><span><span class="lesson-title">Future Continuous</span><span class="lesson-theme">Meanwhile, Tomorrow</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="11 video jobs careers worklight"><a class="lesson-row" href="./lesson-11-video-jobs-careers-worklight/"><span class="folder"><span class="lesson-number">11</span></span><span><span class="lesson-title">Jobs &amp; Careers</span><span class="lesson-theme">Video Lesson · Worklight</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="12 second conditional dreams hypothetical reality remix"><a class="lesson-row" href="./lesson-12-second-conditional-reality-remix/"><span class="folder"><span class="lesson-number">12</span></span><span><span class="lesson-title">Second Conditional</span><span class="lesson-theme">Dreams &amp; Hypothetical Situations · Reality Remix</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="13 debate money happiness can buy"><a class="lesson-row" href="./lesson-13-debate-money-happiness/"><span class="folder"><span class="lesson-number">13</span></span><span><span class="lesson-title">Can Money Buy Happiness?</span><span class="lesson-theme">Debate</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="14 passive voice technology inventions"><a class="lesson-row" href="./lesson-14-passive-voice-technology-inventions/"><span class="folder"><span class="lesson-number">14</span></span><span><span class="lesson-title">Passive Voice</span><span class="lesson-theme">Technology &amp; Inventions</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="15 pronunciation fluency sound natural studio"><a class="lesson-row" href="./lesson-15-pronunciation-fluency-sound-natural/"><span class="folder"><span class="lesson-number">15</span></span><span><span class="lesson-title">Pronunciation &amp; Fluency</span><span class="lesson-theme">Sound Natural · Sound Studio</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="16 reported speech gossip communication"><a class="lesson-row" href="./lesson-16-reported-speech-gossip-communication/"><span class="folder"><span class="lesson-number">16</span></span><span><span class="lesson-title">Reported Speech</span><span class="lesson-theme">Gossip &amp; Communication</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="17 reading psychology human behaviour behavior mind atlas"><a class="lesson-row" href="./lesson-17-reading-psychology-human-behaviour/"><span class="folder"><span class="lesson-number">17</span></span><span><span class="lesson-title">Psychology &amp; Human Behaviour</span><span class="lesson-theme">Reading · Mind Atlas</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="18 relative clauses describing people places route"><a class="lesson-row" href="./lesson-18-relative-clauses-describing-people-places/"><span class="folder"><span class="lesson-number">18</span></span><span><span class="lesson-title">Relative Clauses</span><span class="lesson-theme">Describing People &amp; Places</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="19 listening airport travelling traveling terminal frequency"><a class="lesson-row" href="./lesson-19-listening-airport-travelling/"><span class="folder"><span class="lesson-number">19</span></span><span><span class="lesson-title">Airport &amp; Travelling</span><span class="lesson-theme">Listening · Terminal Frequency</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="20 used to childhood habits then now"><a class="lesson-row" href="./lesson-20-used-to-childhood-habits/"><span class="folder"><span class="lesson-number">20</span></span><span><span class="lesson-title">Used To</span><span class="lesson-theme">Childhood Habits · Then / Now</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="21 business english basics office outfitters"><a class="lesson-row" href="./lesson-21-business-english-basics/"><span class="folder"><span class="lesson-number">21</span></span><span><span class="lesson-title">Business English Basics</span><span class="lesson-theme">Office Outfitters</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="22 gerunds infinitives hobbies interests verb garden"><a class="lesson-row" href="./lesson-22-gerunds-infinitives-hobbies-interests/"><span class="folder"><span class="lesson-number">22</span></span><span><span class="lesson-title">Gerunds &amp; Infinitives</span><span class="lesson-theme">Hobbies &amp; Interests · Verb Garden</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="23 movies books reviews critics zine"><a class="lesson-row" href="./lesson-23-movies-books-reviews/"><span class="folder"><span class="lesson-number">23</span></span><span><span class="lesson-title">Movies &amp; Books</span><span class="lesson-theme">Reviews · Critics' Zine</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="24 phrasal verbs daily life house"><a class="lesson-row" href="./lesson-24-phrasal-verbs-daily-life/"><span class="folder"><span class="lesson-number">24</span></span><span><span class="lesson-title">Phrasal Verbs</span><span class="lesson-theme">Daily Life · Phrasal Verb House</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="25 survival game escape room protocol"><a class="lesson-row" href="./lesson-25-survival-game-escape-room/"><span class="folder"><span class="lesson-number">25</span></span><span><span class="lesson-title">Survival Game</span><span class="lesson-theme">Escape Room · Escape Protocol</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="26 question tags small talk cafe"><a class="lesson-row" href="./lesson-26-question-tags-small-talk/"><span class="folder"><span class="lesson-number">26</span></span><span><span class="lesson-title">Question Tags &amp; Small Talk</span><span class="lesson-theme">Tag Cafe</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="27 presentation skills speaking confidently stagecraft studio"><a class="lesson-row" href="./lesson-27-presentation-skills-speaking-confidently/"><span class="folder"><span class="lesson-number">27</span></span><span><span class="lesson-title">Presentation Skills</span><span class="lesson-theme">Speaking Confidently · Stagecraft Studio</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="28 linking words giving opinions opinion loom"><a class="lesson-row" href="./lesson-28-linking-words-giving-opinions/"><span class="folder"><span class="lesson-number">28</span></span><span><span class="lesson-title">Linking Words</span><span class="lesson-theme">Giving Opinions · Opinion Loom</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="29 final speaking project presentation debate forum mosaic"><a class="lesson-row" href="./lesson-29-final-speaking-project-presentation-debate/"><span class="folder"><span class="lesson-number">29</span></span><span><span class="lesson-title">Final Speaking Project</span><span class="lesson-theme">Presentation &amp; Debate · Forum Mosaic</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+        <li data-search="30 final revision level test constellation review"><a class="lesson-row" href="./lesson-30-final-revision-level-test/"><span class="folder"><span class="lesson-number">30</span></span><span><span class="lesson-title">Final Revision &amp; Level Test</span><span class="lesson-theme">Constellation Review</span></span><span class="lesson-type">Interactive lesson</span><span class="open-arrow">›</span></a></li>
+      </ul>
+
+      <div class="empty" id="empty"><strong>No lesson found.</strong>Try another title, topic, or lesson number.</div>
+    </section>
+    <p class="hint">Tip: press <b>/</b> to search, then press <b>Enter</b> to open the first result.</p>
+  </main>
+
+  <script>
+    const search = document.getElementById('search');
+    const lessons = [...document.querySelectorAll('#lessonList > li')];
+    const count = document.getElementById('count');
+    const empty = document.getElementById('empty');
+
+    function filterLessons() {
+      const query = search.value.trim().toLowerCase();
+      let visible = 0;
+
+      lessons.forEach((lesson) => {
+        const matches = lesson.dataset.search.includes(query);
+        lesson.hidden = !matches;
+        if (matches) visible += 1;
+      });
+
+      count.textContent = query ? `${visible} found` : '30 lessons';
+      empty.style.display = visible ? 'none' : 'block';
+    }
+
+    search.addEventListener('input', filterLessons);
+    search.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter') return;
+      const first = lessons.find((lesson) => !lesson.hidden)?.querySelector('a');
+      if (first) first.click();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === '/' && document.activeElement !== search) {
+        event.preventDefault();
+        search.focus();
+      }
+    });
+  </script>
+</body>
+</html>
