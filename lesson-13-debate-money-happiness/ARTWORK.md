@@ -1,11 +1,35 @@
-# Lesson 13 artwork
+# Lesson 13 artwork and audio
 
-Both images were created with OpenAI's built-in image generation workflow on 15 August 2026.
+All presentation assets are stored locally for offline use.
 
-## `happiness-exchange-hero.png`
+## New image generation
 
-Prompt: “Use case: illustration-story. Asset type: wide hero illustration for an offline English debate-class presentation for teenagers. Primary request: an original editorial collage called 'Happiness Exchange' that contrasts money and wellbeing without using any words. Scene/backdrop: a warm, imaginative public square that looks like a mix of a street market and a community garden. Subject: diverse teenagers at a circular balance scale; on one side a wallet, coins, shopping bags and a phone; on the other side friendship, a guitar, a dog, a tree, family dinner, free time and a sunrise. Style/medium: sophisticated handmade paper-cut collage with ink, gouache texture, clear simple forms, modern teen magazine art. Composition/framing: extra wide 16:9, center-right weighted with generous quiet dark-teal negative space on the left for title text. Lighting/mood: golden late afternoon, curious and hopeful rather than moralising. Color palette: dark teal, cream, coral, saffron yellow, mint, cobalt. Constraints: no text, no logos, no watermarks, no distorted hands, classroom-friendly.”
+Generated with OpenAI's built-in image generation workflow on 19 August 2026.
 
-## `two-saturdays.png`
+### `happiness-auction-hero.png`
 
-Prompt: “Use case: illustration-story. Asset type: wide reading-and-debate evidence illustration for an offline English lesson. Primary request: a handmade collage infographic without text showing two parallel teenage Saturdays. Left scene: a teen earns money by doing a short job, then later buys headphones and looks happy. Right scene: another teen spends time cooking with family, playing football with friends, volunteering in a garden and resting under a tree. A small bridge joins the scenes to imply balance rather than choosing one side. Style/medium: modern paper-cut collage, subtle ink linework, warm premium editorial illustration, simple recognizable faces, no text. Composition/framing: wide 16:9 with space around each scene so it can be cropped. Lighting/mood: lively, thoughtful and humane. Color palette: cream paper, deep teal, coral, sunny yellow, mint, cobalt. Constraints: no written words, no logos, no watermark, respectful and classroom-friendly.”
+Wide editorial paper-cut collage of diverse teenagers in an imaginative Happiness Auction hall. Symbolic lots include housing, food, headphones, a bicycle, friendship, time, music, family and nature. The composition reserves deep-navy space for title copy and uses tomato red, acid yellow, cream, turquoise and cobalt.
+
+### `evidence-auction-desk.png`
+
+Top-down evidence-inspection desk with a balance scale, grocery basket, housing key, medicine, transport, bicycle, friendship, experiences, nature and an hourglass. Students' hands point, compare and take notes.
+
+### `final-debate-arena.png`
+
+Two teenage teams debate respectfully in a theatrical auction arena while a moderator and audience use evidence cards and bid paddles. Symbolic lots represent security, choices, relationships, health, time and purpose.
+
+## Retained original collage assets
+
+### `happiness-exchange-hero.png`
+
+Teenagers compare money and wellbeing around a balance scale in a community square.
+
+### `two-saturdays.png`
+
+Parallel scenes show a teenager earning and buying second-hand headphones alongside family cooking, football, gardening and rest.
+
+Both retained images were generated with OpenAI's built-in image generation workflow on 15 August 2026.
+
+## Offline audio
+
+The six WAV clips in `assets/audio/` were synthesized locally with Microsoft David Desktop and Microsoft Zira Desktop on 19 August 2026. They model three vocabulary items, the Two Saturdays listening story, one balanced claim, and one respectful response.

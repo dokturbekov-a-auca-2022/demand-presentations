@@ -1,9 +1,18 @@
-# Lesson 13 — Happiness Exchange
+# Lesson 13 - The Happiness Auction
 
-Interactive 26-scene debate lesson for **Money: Can Money Buy Happiness?** (Pre-Intermediate 2, ages 13–17).
+Interactive 28-scene debate lesson for **Money: Can Money Buy Happiness?** (Pre-Intermediate 2, ages 13-17).
 
-Open `index.html` in a current browser. It works offline and includes scene navigation, keyboard and swipe controls, a scene map (`M`), teacher notes (`N`), clickable vocabulary and listening checks, a sorting prompt, position vote, claim-strength game, 45-second debate timer, preparation cards, structured roles, perspective switch, review quiz, homework and exit ticket.
+The lesson follows one coherent auction journey: students make an opening bid, inspect value lots, classify evidence, build arguments, hear a short listening story, prepare both sides, complete timed debate rounds, switch perspective, give coaching feedback, revise their position, and leave with a value receipt.
 
-The visual identity is **Happiness Exchange**: warm paper-collage public spaces, value scales, stamps and evidence cards. It treats money as a useful tool that can support wellbeing, while inviting a careful, respectful debate rather than a one-sided answer.
+The presentation works offline and includes keyboard and swipe navigation, scene map, teacher notes, fullscreen handling, six local audio clips, five original illustrations, graded interaction states, two timers, responsive layouts, and reduced-motion support.
 
-Artwork is original and stored locally in `assets/`. Full prompts and provenance are in `ARTWORK.md`.
+Visual identity: **The Happiness Auction** - midnight auction halls, acid-yellow bid paddles, red evidence stamps, cream catalog paper, editorial collage textures, spotlight motion, and balanced value scales.
+
+Run checks:
+
+```powershell
+node validate.mjs
+node syntax-check.mjs
+node interaction-check.mjs
+node visual-audit.mjs
+```
