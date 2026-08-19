@@ -89,6 +89,7 @@ const failures = [];
 }
 
 for (const folder of folders) {
+  const testLessonSwipe = folder === 'lesson-13-debate-money-happiness';
   const page = await context.newPage();
   await page.goto(`${baseUrl}/viewer.html?lesson=${encodeURIComponent(folder)}`);
   const deckFrame = page.frames().find((candidate) => candidate !== page.mainFrame());
@@ -96,6 +97,98 @@ for (const folder of folders) {
   await deckFrame.waitForLoadState('load');
   await deckFrame.addStyleTag({ content: '*,*::before,*::after{animation:none!important;transition:none!important}' });
   await page.waitForTimeout(120);
+
+  const pinchResult = await deckFrame.evaluate(async (testSingleSwipe) => {
+    const counter = document.querySelector('#counter, .counter');
+    const target = document.querySelector('.scene.active') || document.body;
+    if (!counter || typeof Touch !== 'function' || typeof TouchEvent !== 'function') {
+      return { supported: false, stable: true };
+    }
+    const before = counter.textContent;
+    const hrefBefore = location.href;
+    const point = (identifier, clientX) => new Touch({
+      identifier,
+      target,
+      clientX,
+      clientY: 220,
+      pageX: clientX,
+      pageY: 220,
+      screenX: clientX,
+      screenY: 220,
+      radiusX: 8,
+      radiusY: 8,
+      force: 1,
+    });
+    const dispatch = (type, touches, changedTouches) => target.dispatchEvent(new TouchEvent(type, {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+      touches,
+      targetTouches: touches,
+      changedTouches,
+    }));
+    const start = [point(1, 310), point(2, 530)];
+    const moved = [point(1, 190), point(2, 650)];
+    dispatch('touchstart', start, start);
+    dispatch('touchmove', moved, moved);
+    dispatch('touchend', [], moved);
+    const pinchStable = counter.textContent === before && location.href === hrefBefore;
+    if (!testSingleSwipe) {
+      return { supported: true, stable: pinchStable, singleSwipeWorks: null, before, after: counter.textContent };
+    }
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const swipeStart = [point(3, 430)];
+    const swipeEnd = [point(3, 300)];
+    dispatch('touchstart', swipeStart, swipeStart);
+    dispatch('touchmove', swipeEnd, swipeEnd);
+    dispatch('touchend', [], swipeEnd);
+    return {
+      supported: true,
+      stable: pinchStable,
+      singleSwipeWorks: counter.textContent !== before,
+      before,
+      after: counter.textContent,
+      hrefBefore,
+      hrefAfter: location.href,
+    };
+  }, testLessonSwipe);
+  console.log(`${pinchResult.stable ? 'PASS' : 'FAIL'} - ${folder} two-finger pinch does not navigate${pinchResult.stable ? '' : `: ${JSON.stringify(pinchResult)}`}`);
+  if (!pinchResult.stable) failures.push(`${folder}-pinch-navigation`);
+  if (testLessonSwipe) {
+    console.log(`${pinchResult.singleSwipeWorks ? 'PASS' : 'FAIL'} - ${folder} one-finger swipe still navigates`);
+    if (!pinchResult.singleSwipeWorks) failures.push(`${folder}-single-swipe-navigation`);
+  }
+
+  if (testLessonSwipe && viewportWidth > viewportHeight) {
+    const cdp = await context.newCDPSession(page);
+    await cdp.send('Emulation.setPageScaleFactor', { pageScaleFactor: 2 });
+    await page.waitForTimeout(80);
+    const zoomedPanStable = await deckFrame.evaluate(() => {
+      const counter = document.querySelector('#counter, .counter');
+      const target = document.querySelector('.scene.active') || document.body;
+      const before = counter?.textContent;
+      const hrefBefore = location.href;
+      if (!counter || typeof Touch !== 'function' || typeof TouchEvent !== 'function') return true;
+      const point = (clientX) => new Touch({ identifier: 9, target, clientX, clientY: 220, pageX: clientX, pageY: 220, screenX: clientX, screenY: 220 });
+      const dispatch = (type, touches, changedTouches) => target.dispatchEvent(new TouchEvent(type, {
+        bubbles: true,
+        cancelable: true,
+        composed: true,
+        touches,
+        targetTouches: touches,
+        changedTouches,
+      }));
+      const start = [point(430)];
+      const moved = [point(290)];
+      dispatch('touchstart', start, start);
+      dispatch('touchmove', moved, moved);
+      dispatch('touchend', [], moved);
+      return counter.textContent === before && location.href === hrefBefore;
+    });
+    await cdp.send('Emulation.setPageScaleFactor', { pageScaleFactor: 1 });
+    console.log(`${zoomedPanStable ? 'PASS' : 'FAIL'} - ${folder} zoomed one-finger pan does not navigate`);
+    if (!zoomedPanStable) failures.push(`${folder}-zoomed-pan-navigation`);
+  }
 
   const result = await deckFrame.evaluate(() => {
     const scenes = [...document.querySelectorAll('.scene')];

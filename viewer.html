@@ -11,7 +11,7 @@
   <title>Presentation Viewer</title>
   <style>
     * { box-sizing: border-box; }
-    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #111714; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; overscroll-behavior: none; background: #111714; }
     body { height: 100dvh; min-height: 100svh; font-family: "Aptos", "Trebuchet MS", sans-serif; }
     iframe {
       position: absolute;
@@ -21,6 +21,7 @@
       border: 0;
       background: #111714;
       transform-origin: 0 0;
+      touch-action: pan-x pan-y pinch-zoom;
     }
 
     .help {
@@ -162,7 +163,7 @@
       style.dataset.phoneFit = 'true';
       style.textContent = `
         @media (max-width: 700px) {
-          html, body { width: 100% !important; max-width: 100% !important; overflow-x: hidden !important; }
+          html, body { width: 100% !important; max-width: 100% !important; overflow-x: hidden !important; overscroll-behavior: none !important; touch-action: pan-x pan-y pinch-zoom; }
           .deck, main { max-width: 100vw !important; }
           .scene { max-width: 100vw !important; overflow-x: hidden !important; overscroll-behavior-x: none; }
           .scene > * { max-width: 100%; }
@@ -170,6 +171,20 @@
         }
       `;
       childDocument.head.append(style);
+
+      let browserGesture = false;
+      const guardBrowserGesture = (event) => {
+        const zoomed = (window.visualViewport?.scale || 1) > 1.01;
+        if (event.touches.length > 1 || event.changedTouches.length > 1) browserGesture = true;
+        if (!browserGesture && !zoomed) return;
+        event.stopImmediatePropagation();
+        if ((event.type === 'touchend' || event.type === 'touchcancel') && event.touches.length === 0) {
+          setTimeout(() => { browserGesture = false; }, 0);
+        }
+      };
+      ['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach((type) => {
+        childDocument.addEventListener(type, guardBrowserGesture, { capture: true, passive: true });
+      });
 
       childDocument.addEventListener('click', (event) => {
         const button = event.target.closest?.('#full, #fullBtn, #fullscreenBtn, [aria-label*="Fullscreen" i]');
