@@ -120,6 +120,7 @@
 
     function fitPresentation() {
       const viewport = window.visualViewport;
+      if (viewport?.scale > 1.01) return;
       const width = Math.round(viewport?.width || innerWidth);
       const height = Math.round(viewport?.height || innerHeight);
       const useCanvas = isMobile && width > height;

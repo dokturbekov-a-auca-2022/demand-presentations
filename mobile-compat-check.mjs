@@ -72,6 +72,19 @@ const failures = [];
     !/maximum-scale\s*=\s*1(?:\D|$)/i.test(viewport || '');
   console.log(`${zoomable ? 'PASS' : 'FAIL'} - mobile viewer allows pinch zoom`);
   if (!zoomable) failures.push('pinch-zoom');
+
+  if (viewportWidth > viewportHeight) {
+    const frame = viewerPage.locator('#presentation');
+    const transformBeforeZoom = await frame.evaluate((iframe) => iframe.style.transform);
+    const cdp = await context.newCDPSession(viewerPage);
+    await cdp.send('Emulation.setPageScaleFactor', { pageScaleFactor: 2 });
+    await viewerPage.waitForTimeout(120);
+    const transformDuringZoom = await frame.evaluate((iframe) => iframe.style.transform);
+    const landscapeZoomStable = transformDuringZoom === transformBeforeZoom;
+    console.log(`${landscapeZoomStable ? 'PASS' : 'FAIL'} - landscape fit does not cancel pinch zoom`);
+    if (!landscapeZoomStable) failures.push('landscape-pinch-zoom');
+    await cdp.send('Emulation.setPageScaleFactor', { pageScaleFactor: 1 });
+  }
   await viewerPage.close();
 }
 
