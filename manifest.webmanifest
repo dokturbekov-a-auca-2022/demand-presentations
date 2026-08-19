@@ -1,0 +1,10 @@
+{
+  "name": "Demand English Presentations",
+  "short_name": "Presentations",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#111714",
+  "theme_color": "#111714"
+}

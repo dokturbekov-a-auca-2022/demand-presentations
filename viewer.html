@@ -6,12 +6,22 @@
   <meta name="theme-color" content="#111714">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="./manifest.webmanifest">
   <title>Presentation Viewer</title>
   <style>
     * { box-sizing: border-box; }
     html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #111714; }
     body { height: 100dvh; min-height: 100svh; font-family: "Aptos", "Trebuchet MS", sans-serif; }
-    iframe { display: block; width: 100%; height: 100%; border: 0; background: #111714; }
+    iframe {
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #111714;
+      transform-origin: 0 0;
+    }
 
     .help {
       position: fixed;
@@ -83,11 +93,11 @@
   <section class="help" id="phoneHelp" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="help-card">
       <p class="help-label">iPhone display mode</p>
-      <h1>Chrome on iPhone cannot enter true webpage fullscreen.</h1>
-      <p>All iPhone browsers use Apple's browser engine, so this limitation also affects Chrome. The presentation still works normally.</p>
+      <h1>Chrome on iPhone cannot hide its toolbar from a webpage.</h1>
+      <p>All iPhone browsers use Apple's browser engine, so a fullscreen button cannot remove Chrome's controls. The presentation is already fitted to the visible area.</p>
       <ol>
         <li>Rotate the phone sideways for the widest view.</li>
-        <li>For an app-like view, tap <b>Share</b>, choose <b>Add to Home Screen</b>, then open the new icon.</li>
+        <li>For the largest app-like view, tap <b>Share</b>, choose <b>Add to Home Screen</b>, then open the new presentation icon.</li>
       </ol>
       <button id="continueBtn" type="button">Continue presentation</button>
     </div>
@@ -104,6 +114,32 @@
     const lesson = new URLSearchParams(location.search).get('lesson') || '';
     const validLesson = /^lesson-(?:0[1-9]|[12][0-9]|30)-[a-z0-9-]+$/.test(lesson);
     const isiPhone = /iPhone|iPod/i.test(navigator.userAgent);
+    const isMobile = isiPhone || /Android/i.test(navigator.userAgent) || matchMedia('(pointer: coarse)').matches;
+    const canvasWidth = 1920;
+    const canvasHeight = 1080;
+
+    function fitPresentation() {
+      const viewport = window.visualViewport;
+      const width = Math.round(viewport?.width || innerWidth);
+      const height = Math.round(viewport?.height || innerHeight);
+      const useCanvas = isMobile && width > height;
+
+      if (!useCanvas) {
+        frame.style.width = '100%';
+        frame.style.height = '100%';
+        frame.style.left = '0';
+        frame.style.top = '0';
+        frame.style.transform = 'none';
+        return;
+      }
+
+      const scale = Math.min(width / canvasWidth, height / canvasHeight);
+      frame.style.width = `${canvasWidth}px`;
+      frame.style.height = `${canvasHeight}px`;
+      frame.style.left = `${Math.max(0, (width - canvasWidth * scale) / 2)}px`;
+      frame.style.top = `${Math.max(0, (height - canvasHeight * scale) / 2)}px`;
+      frame.style.transform = `scale(${scale})`;
+    }
 
     function showHelp() {
       help.classList.add('open');
@@ -145,12 +181,16 @@
 
     document.getElementById('continueBtn').addEventListener('click', hideHelp);
     help.addEventListener('click', (event) => { if (event.target === help) hideHelp(); });
+    addEventListener('resize', fitPresentation);
+    addEventListener('orientationchange', fitPresentation);
+    window.visualViewport?.addEventListener('resize', fitPresentation);
 
     if (!validLesson) {
       frame.hidden = true;
       error.classList.add('show');
     } else {
       frame.addEventListener('load', installPhoneFit);
+      fitPresentation();
       frame.src = `./${lesson}/`;
     }
   </script>

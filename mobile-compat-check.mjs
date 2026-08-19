@@ -9,6 +9,7 @@ const root = process.cwd();
 const launcher = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const requested = new Set(process.argv.slice(2));
 const captureDir = process.env.MOBILE_CAPTURE;
+const captureScene = Number(process.env.MOBILE_SCENE || 0);
 const viewportWidth = Number(process.env.MOBILE_WIDTH || 390);
 const viewportHeight = Number(process.env.MOBILE_HEIGHT || 844);
 const folders = [...launcher.matchAll(/href="\.\/(lesson-[^"]+)\/"/g)]
@@ -35,6 +36,7 @@ const server = process.env.BASE_URL ? null : http.createServer((request, respons
   const contentType = extension === '.html' ? 'text/html; charset=utf-8' :
     extension === '.css' ? 'text/css; charset=utf-8' :
     extension === '.js' ? 'text/javascript; charset=utf-8' :
+    extension === '.webmanifest' ? 'application/manifest+json; charset=utf-8' :
     extension === '.png' ? 'image/png' : extension === '.wav' ? 'audio/wav' : 'application/octet-stream';
   response.writeHead(200, { 'Content-Type': contentType });
   fs.createReadStream(target).pipe(response);
@@ -74,6 +76,12 @@ for (const folder of folders) {
   const result = await deckFrame.evaluate(() => {
     const scenes = [...document.querySelectorAll('.scene')];
     const overflowingScenes = [];
+    const clippedScenes = [];
+    const controlOverlaps = [];
+    let reportedSlideCollision = false;
+    const controls = document.querySelector('.controls');
+    const controlsBox = controls?.getBoundingClientRect();
+    const isLandscape = innerWidth > innerHeight;
 
     scenes.forEach((scene, index) => {
       scenes.forEach((item) => item.classList.remove('active'));
@@ -94,7 +102,53 @@ for (const folder of folders) {
           })
           .filter((item) => item.width > 0 && (item.left < -2 || item.right > innerWidth + 2))
           .slice(0, 6);
-        overflowingScenes.push({ scene: index + 1, scroll: scene.scrollWidth, client: scene.clientWidth, overflowX, offenders });
+        if (offenders.length) {
+          overflowingScenes.push({ scene: index + 1, scroll: scene.scrollWidth, client: scene.clientWidth, overflowX, offenders });
+        }
+      }
+
+      if (isLandscape && (scene.scrollWidth > scene.clientWidth + 2 || scene.scrollHeight > scene.clientHeight + 2)) {
+        clippedScenes.push({
+          scene: index + 1,
+          scrollWidth: scene.scrollWidth,
+          clientWidth: scene.clientWidth,
+          scrollHeight: scene.scrollHeight,
+          clientHeight: scene.clientHeight,
+        });
+      }
+
+      if (isLandscape && controlsBox) {
+        const overlaps = [...scene.querySelectorAll('button, input, textarea, h1, h2, h3, p')]
+          .filter((node) => {
+            const box = node.getBoundingClientRect();
+            return box.width > 0 && box.height > 0 &&
+              box.right > controlsBox.left + 2 && box.left < controlsBox.right - 2 &&
+              box.bottom > controlsBox.top + 2 && box.top < controlsBox.bottom - 2;
+          })
+          .map((node) => {
+            const box = node.getBoundingClientRect();
+            return {
+              tag: node.tagName.toLowerCase(),
+              id: node.id,
+              text: node.textContent.trim().slice(0, 60),
+              top: Math.round(box.top),
+              bottom: Math.round(box.bottom),
+            };
+          });
+        if (overlaps.length) {
+          controlOverlaps.push({
+            scene: index + 1,
+            controlsTop: Math.round(controlsBox.top),
+            controlsBottom: Math.round(controlsBox.bottom),
+            overlaps: overlaps.slice(0, 5),
+          });
+        }
+      }
+
+      if (index === 13) {
+        const headerBox = scene.querySelector('.scene-head')?.getBoundingClientRect();
+        const bodyBox = scene.querySelector('.scene-body')?.getBoundingClientRect();
+        reportedSlideCollision = Boolean(headerBox && bodyBox && headerBox.bottom > bodyBox.top + 2);
       }
     });
 
@@ -105,10 +159,29 @@ for (const folder of folders) {
       documentOverflowX: getComputedStyle(document.documentElement).overflowX,
       bodyOverflowX: getComputedStyle(document.body).overflowX,
       overflowingScenes,
+      clippedScenes,
+      controlOverlaps,
+      reportedSlideCollision,
     };
   });
 
+  const frameFit = await page.locator('#presentation').evaluate((iframe) => {
+    const box = iframe.getBoundingClientRect();
+    const viewport = window.visualViewport;
+    const width = viewport?.width || innerWidth;
+    const height = viewport?.height || innerHeight;
+    return box.left >= -1 && box.top >= -1 && box.right <= width + 1 && box.bottom <= height + 1;
+  });
+
   if (captureDir) {
+    if (captureScene > 0) {
+      await deckFrame.evaluate((sceneNumber) => {
+        const scenes = [...document.querySelectorAll('.scene')];
+        scenes.forEach((scene, index) => scene.classList.toggle('active', index === sceneNumber - 1));
+        const counter = document.querySelector('#counter, .counter');
+        if (counter) counter.textContent = `${sceneNumber} / ${scenes.length}`;
+      }, captureScene);
+    }
     fs.mkdirSync(captureDir, { recursive: true });
     await page.screenshot({ path: path.join(captureDir, `${folder}.png`), fullPage: false });
   }
@@ -117,7 +190,10 @@ for (const folder of folders) {
     !['hidden', 'clip'].includes(result.documentOverflowX);
   const bodyCanScroll = result.bodyScrollWidth > result.innerWidth + 2 &&
     !['hidden', 'clip'].includes(result.bodyOverflowX);
-  const overflow = documentCanScroll || bodyCanScroll || result.overflowingScenes.length > 0;
+  const reportedSlideCollision = folder === 'lesson-04-past-continuous-accidents-funny-stories' &&
+    result.reportedSlideCollision;
+  const overflow = !frameFit || documentCanScroll || bodyCanScroll || result.overflowingScenes.length > 0 ||
+    result.controlOverlaps.length > 0 || reportedSlideCollision;
   console.log(`${overflow ? 'FAIL' : 'PASS'} - ${folder}${overflow ? `: ${JSON.stringify(result)}` : ''}`);
   if (overflow) failures.push(folder);
 
