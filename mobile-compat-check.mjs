@@ -19,7 +19,7 @@ const browser = await chromium.launch({
   headless: true,
 });
 
-const server = http.createServer((request, response) => {
+const server = process.env.BASE_URL ? null : http.createServer((request, response) => {
   const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
   let target = path.resolve(root, `.${pathname}`);
   if (!target.startsWith(root)) {
@@ -39,8 +39,8 @@ const server = http.createServer((request, response) => {
   response.writeHead(200, { 'Content-Type': contentType });
   fs.createReadStream(target).pipe(response);
 });
-await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
-const baseUrl = `http://127.0.0.1:${server.address().port}`;
+if (server) await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+const baseUrl = process.env.BASE_URL?.replace(/\/$/, '') || `http://127.0.0.1:${server.address().port}`;
 
 const context = await browser.newContext({
   viewport: { width: viewportWidth, height: viewportHeight },
@@ -132,6 +132,6 @@ for (const folder of folders) {
 }
 
 await browser.close();
-await new Promise((resolve) => server.close(resolve));
+if (server) await new Promise((resolve) => server.close(resolve));
 console.log(`Checked ${folders.length} lessons at ${viewportWidth}px in iPhone Chrome mode.`);
 if (failures.length) process.exitCode = 1;
