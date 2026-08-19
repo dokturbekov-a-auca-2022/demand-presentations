@@ -64,6 +64,17 @@ const failures = [];
   await launcherPage.close();
 }
 
+{
+  const viewerPage = await context.newPage();
+  await viewerPage.goto(`${baseUrl}/viewer.html?lesson=${encodeURIComponent(folders[0])}`);
+  const viewport = await viewerPage.locator('meta[name="viewport"]').getAttribute('content');
+  const zoomable = /user-scalable\s*=\s*yes/i.test(viewport || '') &&
+    !/maximum-scale\s*=\s*1(?:\D|$)/i.test(viewport || '');
+  console.log(`${zoomable ? 'PASS' : 'FAIL'} - mobile viewer allows pinch zoom`);
+  if (!zoomable) failures.push('pinch-zoom');
+  await viewerPage.close();
+}
+
 for (const folder of folders) {
   const page = await context.newPage();
   await page.goto(`${baseUrl}/viewer.html?lesson=${encodeURIComponent(folder)}`);
