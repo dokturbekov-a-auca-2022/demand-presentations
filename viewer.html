@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+  <meta name="theme-color" content="#111714">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Presentation Viewer</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #111714; }
+    body { height: 100dvh; min-height: 100svh; font-family: "Aptos", "Trebuchet MS", sans-serif; }
+    iframe { display: block; width: 100%; height: 100%; border: 0; background: #111714; }
+
+    .help {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      place-items: center;
+      padding: max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));
+      background: rgba(13, 18, 16, .92);
+      color: #17201d;
+    }
+
+    .help.open { display: grid; }
+
+    .help-card {
+      width: min(430px, 100%);
+      padding: 24px;
+      border-radius: 18px;
+      background: #fffaf0;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .38);
+    }
+
+    .help-label {
+      margin: 0 0 8px;
+      color: #e95336;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .help h1 { margin: 0 0 12px; font: 700 31px/1.05 Georgia, serif; }
+    .help p, .help li { font-size: 16px; line-height: 1.45; }
+    .help ol { margin: 14px 0 20px; padding-left: 23px; }
+    .help li + li { margin-top: 7px; }
+
+    .help button, .error a {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 18px;
+      border: 0;
+      border-radius: 999px;
+      background: #e95336;
+      color: white;
+      font: 900 15px "Aptos", "Trebuchet MS", sans-serif;
+      text-decoration: none;
+    }
+
+    .error {
+      display: none;
+      min-height: 100%;
+      place-items: center;
+      padding: 24px;
+      background: #f4efe4;
+      color: #17201d;
+      text-align: center;
+    }
+
+    .error.show { display: grid; }
+    .error h1 { margin: 0 0 10px; font: 700 36px/1 Georgia, serif; }
+    .error p { margin: 0 0 18px; color: #68716c; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <iframe id="presentation" title="Interactive English presentation" allow="fullscreen; autoplay" allowfullscreen></iframe>
+
+  <section class="help" id="phoneHelp" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="help-card">
+      <p class="help-label">iPhone display mode</p>
+      <h1>Chrome on iPhone cannot enter true webpage fullscreen.</h1>
+      <p>All iPhone browsers use Apple's browser engine, so this limitation also affects Chrome. The presentation still works normally.</p>
+      <ol>
+        <li>Rotate the phone sideways for the widest view.</li>
+        <li>For an app-like view, tap <b>Share</b>, choose <b>Add to Home Screen</b>, then open the new icon.</li>
+      </ol>
+      <button id="continueBtn" type="button">Continue presentation</button>
+    </div>
+  </section>
+
+  <section class="error" id="error">
+    <div><h1>Presentation not found.</h1><p>Return to the library and choose a lesson folder.</p><a href="./">Open library</a></div>
+  </section>
+
+  <script>
+    const frame = document.getElementById('presentation');
+    const help = document.getElementById('phoneHelp');
+    const error = document.getElementById('error');
+    const lesson = new URLSearchParams(location.search).get('lesson') || '';
+    const validLesson = /^lesson-(?:0[1-9]|[12][0-9]|30)-[a-z0-9-]+$/.test(lesson);
+    const isiPhone = /iPhone|iPod/i.test(navigator.userAgent);
+
+    function showHelp() {
+      help.classList.add('open');
+      help.setAttribute('aria-hidden', 'false');
+      document.getElementById('continueBtn').focus();
+    }
+
+    function hideHelp() {
+      help.classList.remove('open');
+      help.setAttribute('aria-hidden', 'true');
+      frame.focus();
+    }
+
+    function installPhoneFit() {
+      const childDocument = frame.contentDocument;
+      if (!childDocument) return;
+
+      const style = childDocument.createElement('style');
+      style.dataset.phoneFit = 'true';
+      style.textContent = `
+        @media (max-width: 700px) {
+          html, body { width: 100% !important; max-width: 100% !important; overflow-x: hidden !important; }
+          .deck, main { max-width: 100vw !important; }
+          .scene { max-width: 100vw !important; overflow-x: hidden !important; overscroll-behavior-x: none; }
+          .scene > * { max-width: 100%; }
+          img, video, canvas, svg { max-width: 100%; }
+        }
+      `;
+      childDocument.head.append(style);
+
+      childDocument.addEventListener('click', (event) => {
+        const button = event.target.closest?.('#full, #fullBtn, #fullscreenBtn, [aria-label*="Fullscreen" i]');
+        if (!button || !isiPhone) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        showHelp();
+      }, true);
+    }
+
+    document.getElementById('continueBtn').addEventListener('click', hideHelp);
+    help.addEventListener('click', (event) => { if (event.target === help) hideHelp(); });
+
+    if (!validLesson) {
+      frame.hidden = true;
+      error.classList.add('show');
+    } else {
+      frame.addEventListener('load', installPhoneFit);
+      frame.src = `./${lesson}/`;
+    }
+  </script>
+</body>
+</html>

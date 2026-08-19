@@ -368,6 +368,15 @@
     const lessons = [...document.querySelectorAll('#lessonList > li')];
     const count = document.getElementById('count');
     const empty = document.getElementById('empty');
+    const usePhoneViewer = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (usePhoneViewer) {
+      lessons.forEach((lesson) => {
+        const link = lesson.querySelector('a');
+        const folder = link.getAttribute('href').replace(/^\.\//, '').replace(/\/$/, '');
+        link.href = `./viewer.html?lesson=${encodeURIComponent(folder)}`;
+      });
+    }
 
     function filterLessons() {
       const query = search.value.trim().toLowerCase();
