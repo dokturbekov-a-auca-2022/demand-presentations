@@ -1,9 +1,11 @@
-# Lesson 22 — Verb Garden
+# Lesson 22 - After-School Live
 
-Offline interactive Pre-Intermediate 2 grammar lesson: Gerunds & Infinitives | Hobbies & Interests.
+Teacher-led Pre-Intermediate 2 grammar lesson for ages 13-17.
 
-Creative identity: a botanical field guide. Students grow gerund leaves and infinitive stems, sort verb families, repair hybrid forms, choose a path, interview a hobby gardener, and present a seed packet. It intentionally avoids the office catalog, time capsule, airport, and route-board visual systems.
+Topic: Gerunds and Infinitives through Hobbies and Interests.
 
-Controls: arrows, Page Up/Down, Space, swipe, `M` garden map, `N` teacher notes.
+Language focus: verb + verb-ing, verb + to + base verb, verbs that allow both forms, and the difference between `like doing` and `would like to do`.
 
-27 scenes with teacher notes. Local artwork only; no external runtime dependencies.
+Creative identity: a professionally art-directed youth hobby broadcast. Students identify hobbies, edit captions, repair grammar, read a hobby-swap story, listen to interviews, match hobby partners, and produce a seven-person live segment.
+
+The deck has 27 slides, seven original local illustrations, three local audio tracks, seven-student task banks, four transition families, staged motion builds, keyboard and swipe navigation, teacher notes, responsive internal scrolling, pinch-zoom support, and reduced-motion support.
