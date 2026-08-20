@@ -1,9 +1,11 @@
-# Lesson 23 — Critics’ Zine
+# Lesson 23 - Midnight Story Festival
 
-Offline interactive Pre-Intermediate 2 speaking lesson: Movies, Books & Reviews.
+Teacher-led Pre-Intermediate 2 speaking lesson for ages 13-17.
 
-Creative identity: a handmade critics’ zine with cinema marquee strips, review ingredients, star bars, evidence quotes, polite-disagreement stamps, speed-date reviews, and a published micro-review. It intentionally avoids the greenhouse, office, time-capsule, airport, and town-route systems.
+Topic: Movies, Books, and Reviews.
 
-Controls: arrows, Page Up/Down, Space, swipe, `M` zine map, `N` teacher notes.
+Language focus: spoiler-free plot summaries, precise reactions, opinion plus evidence, audience recommendations, polite disagreement, and book-to-film comparison.
 
-27 scenes with teacher notes. Local artwork only; no external runtime dependencies.
+Creative identity: a sophisticated midnight film-and-book festival. Students enter with genre preferences, analyse a fictional selection, compare its book and screen versions, join a seven-person jury, deliver individual micro-reviews, and announce an audience winner.
+
+The deck has 28 slides, eight original local illustrations, three local audio tracks, nine seven-student task banks, four cinematic transition families, staged motion, keyboard and swipe navigation, teacher notes, responsive internal scrolling, pinch-zoom support, and reduced-motion support.

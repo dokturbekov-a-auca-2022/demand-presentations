@@ -1,11 +1,9 @@
 # Local lesson media
 
-Theme: CRITICS’ CUT
+All media is stored locally. No network connection or autoplay is required. Audio transcripts remain hidden until the teacher chooses SHOW TEXT.
 
-All audio is local WAV media generated for this teacher-led lesson. No network connection or autoplay is required. Transcripts are hidden by default so teachers can control when text becomes visible.
+- `assets/audio/polite-disagreement.wav` - slide 12: respectful disagreement model.
+- `assets/audio/micro-review.wav` - slide 14: complete micro-review model.
+- `assets/audio/critic-speed.wav` - slide 25: 45-second review cue.
 
-- `assets/audio/micro-review.wav` — scene 13: MICRO-REVIEW · MAP FIVE MOVES
-- `assets/audio/polite-disagreement.wav` — scene 11: COUNTER-TAKE · STAY RESPECTFUL
-- `assets/audio/critic-speed.wav` — scene 21: 45-SECOND CUE · KEEP IT MOVING
-
-Interaction design: the live-class console is opened only on the signature activity scene and gives breakout-room roles, timed rounds, and a visible success criterion.
+The live jury task opens on slide 24 and assigns seven distinct discussion responsibilities.
