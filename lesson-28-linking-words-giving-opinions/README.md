@@ -1,9 +1,21 @@
-# Lesson 28 — Opinion Loom
+# Lesson 28 - Say What?
 
-Offline interactive Pre-Intermediate 2 lesson: Linking Words | Giving Opinions.
+Interactive Pre-Intermediate 2 lesson on linking words for giving opinions, designed for students aged 13-17.
 
-Creative identity: a patchwork studio. Students weave reason, contrast, result, and example threads; untangle punctuation knots; balance two viewpoints; and create a four-panel opinion tapestry.
+## Creative direction
 
-Controls: arrows, Page Up/Down, Space, swipe, `M` loom map, `N` teacher notes.
+`Say What? The Opinion Show` is an entertainment-led lesson rather than a formal classroom deck. It uses mixed-media game-show imagery, kinetic typography, reaction graphics, animated score states, a topic wheel, comic transitions, and playful sound effects.
 
-27 scenes with teacher notes. Local artwork only; no external runtime dependencies.
+## Lesson content
+
+- 28 teacher-led scenes with notes.
+- Opinion starters and connectors for reason, contrast, result, example, and addition.
+- Punctuation, word-order, and common-error practice.
+- Three local listening tracks with natural examples and a complete model opinion.
+- Reading, polite agreement/disagreement, balanced opinions, and a snack-court role play.
+- Multiple exact seven-student activity banks and a seven-person final online show.
+- Desktop, phone portrait, and phone landscape layouts.
+- Vertical scrolling and browser pinch-zoom remain available on mobile.
+- Swipe navigation is guarded during zooming, vertical scrolling, multi-touch, and control use.
+
+Open `index.html` directly or through the shared presentation viewer.

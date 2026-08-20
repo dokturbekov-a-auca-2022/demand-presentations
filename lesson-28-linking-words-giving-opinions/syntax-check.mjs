@@ -1,1 +1,6 @@
-import fs from 'node:fs';import vm from 'node:vm';const p=fs.readFileSync('index.html','utf8');const scripts=[...p.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);for(const s of scripts)new vm.Script(s);console.log(`PASS — JavaScript syntax (${scripts.length} scripts)`);
+import fs from 'node:fs';
+import vm from 'node:vm';
+
+const script = fs.readFileSync('experience-v8.js','utf8');
+new vm.Script(script,{ filename: 'experience-v8.js' });
+console.log('PASS - JavaScript syntax (external experience-v8.js)');

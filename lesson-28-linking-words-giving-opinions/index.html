@@ -1,35 +1,424 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lesson 28 — Opinion Loom</title><style>
-:root{--indigo:#26345f;--coral:#e9685e;--mustard:#e9bf53;--mint:#a8d9c8;--cream:#fff7e5;--ink:#262a36}*{box-sizing:border-box}body{margin:0;background:var(--indigo);color:var(--ink);font-family:Georgia,'Times New Roman',serif;overflow:hidden}.scene{display:none;min-height:100vh;padding:5.5vh 8vw 10vh;background:var(--cream);position:relative;overflow:auto}.scene.active{display:block;animation:weave .35s both}.scene:before{content:'✣';position:absolute;right:4vw;bottom:7vh;color:var(--coral);font-size:8rem;opacity:.13}.stage{position:relative;z-index:1;max-width:1150px}.hero{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.veil{position:absolute;inset:0;background:linear-gradient(90deg,#26345fe9,#26345fa5 48%,#26345f20)}.title{position:relative;z-index:2;color:#fff;max-width:52rem;padding:11vh 2rem 2rem;border-left:12px solid var(--mustard);background:#26345f9b}.title h1{font-size:clamp(4rem,8vw,9rem);line-height:.82;margin:.1em 0}.title p{font-size:clamp(1.1rem,2vw,1.7rem)}.eyebrow,h3{font:900 .78rem 'Courier New',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--coral)}h2{font-size:clamp(2rem,4vw,4.2rem);line-height:.95;color:var(--indigo);margin:.2em 0 .55em}p{font-size:clamp(1rem,1.4vw,1.4rem);line-height:1.42}.thread{display:inline-block;background:var(--mint);color:var(--indigo);padding:.45rem .8rem;font-weight:900;margin:.2rem;transform:rotate(-3deg)}.weave{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.patch{background:#fff;border:3px solid var(--indigo);padding:1.1rem;min-height:8rem;box-shadow:7px 7px 0 #26345f22;position:relative}.patch:nth-child(2){background:var(--mint)}.patch:nth-child(3){background:var(--mustard)}.patch:after{content:'⌁';position:absolute;right:.6rem;top:.4rem;color:var(--coral);font-size:2rem}.choice{background:#fff;border:3px solid var(--indigo);padding:.85rem 1rem;color:var(--indigo);font-weight:900;cursor:pointer;text-align:left;box-shadow:4px 4px 0 #26345f22}.choice:hover,.choice.selected{background:var(--mint)}.sentence{background:#fff;border-left:12px solid var(--coral);padding:1.2rem 1.5rem;font-size:clamp(1.3rem,2.2vw,2.2rem);box-shadow:8px 8px 0 #26345f22}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.figure{width:100%;max-height:43vh;object-fit:cover;border:8px solid #fff;box-shadow:12px 12px 0 var(--mustard)}.feedback{font-weight:900;color:var(--coral);min-height:1.5em}.tokens{display:flex;flex-wrap:wrap;gap:.65rem}.token{background:var(--indigo);color:#fff;border:0;padding:.8rem 1rem;font-weight:900;cursor:pointer}.token.on{background:var(--coral)}.meter{height:20px;background:#d8cebd;margin:1rem 0}.meter i{display:block;height:100%;width:35%;background:var(--coral);transition:.25s}.tools{position:fixed;z-index:20;right:1rem;top:1rem;display:flex;gap:.4rem}.tools button,.nav button{border:0;background:var(--coral);color:#fff;padding:.55rem .8rem;font-weight:900;cursor:pointer}.nav{position:fixed;z-index:20;left:50%;transform:translateX(-50%);bottom:1rem;background:#26345fef;color:#fff;padding:.5rem .8rem;display:flex;gap:.6rem;align-items:center}.count{min-width:5rem;text-align:center}.progress{width:8rem;height:5px;background:#ffffff44}.progress i{display:block;height:100%;background:var(--mustard)}.note,.map{display:none;position:fixed;z-index:30;background:#26345ff5;color:#fff;padding:1rem;top:4.4rem;right:1rem;max-width:30rem}.note.open,.map.open{display:block}.map{left:50%;right:auto;transform:translateX(-50%);width:min(800px,92vw)}.map button{margin:.2rem;padding:.4rem;border:0}.timer{font-size:clamp(4rem,8vw,7rem);font-weight:900;text-align:center;color:var(--indigo)}@keyframes weave{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}@media(max-width:700px){.scene{padding:4.5rem 1rem 6.5rem}.weave,.grid2{grid-template-columns:1fr}.figure{max-height:30vh}.title{padding-top:13vh}.tools{top:.5rem;right:.5rem}.nav{bottom:.5rem}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style></head><body><main id="deck"></main><div class="tools"><button id="mapBtn">LOOM MAP</button><button id="noteBtn">NOTE</button></div><aside id="note" class="note"></aside><aside id="map" class="map"></aside><nav class="nav"><button id="prev">←</button><span id="count"></span><span class="progress"><i id="bar"></i></span><button id="next">→</button></nav><script>
-const A='assets/';const S=(t,n,b)=>({t,n,b});const scenes=[
-S('Opinion Loom','2 min. Open with the weaving image. Ask how separate ideas become one clear opinion.',`<img class="hero" src="${A}loom-team.png" alt="Illustrated teens weaving a large tapestry of ideas with colorful ribbons"><div class="veil"></div><div class="title"><div class="eyebrow">Lesson 28 · linking words</div><h1>Opinion<br>Loom</h1><p>Connect ideas, balance opinions, and make your meaning stronger.</p><span class="thread">BECAUSE</span><span class="thread">HOWEVER</span><span class="thread">SO</span></div>`),
-S('Check-in: one opinion thread','4 min. Students choose a safe or imaginary topic.',`<div class="stage"><h3>01 · check-in</h3><h2>What do you have an opinion about?</h2><div class="tokens" id="topics">${['school uniforms','music','weekends','sport','pets','a topic I invent'].map(x=>`<button class="token" data-topic="${x}">${x}</button>`).join('')}</div><p id="topicOut" class="feedback">Choose one and finish: “I think …”</p></div>`),
-S('Bridge from Lesson 27','3 min. Connect presentation structure to linking ideas.',`<div class="stage"><h3>02 · bridge</h3><div class="sentence">My idea is clear <b>because</b> my points are connected.</div><p>Today we add the threads that show reason, contrast, result, and example.</p></div>`),
-S('Read the patchwork table','5 min. Students predict which words connect the strips.',`<div class="stage"><h3>03 · visual lead-in</h3><h2>Which thread would join these ideas?</h2><img class="figure" src="${A}patchwork-table.png" alt="Illustrated patchwork table with fabric strips thread spools scissors speech bubbles and opinion cards"><p class="feedback">Point to a thread and name its job.</p></div>`),
-S('Today’s weave','1 min. Preview the linking-word route.',`<div class="stage"><h3>04 · route</h3><div class="weave"><div class="patch"><b>Reason</b><p>because</p></div><div class="patch"><b>Contrast</b><p>but / however</p></div><div class="patch"><b>Result</b><p>so / therefore</p></div></div></div>`),
-S('Reason thread','5 min. Join an opinion to its reason.',`<div class="stage"><h3>05 · because</h3><div class="sentence">I like school clubs <b>because</b> I meet new people.</div><div class="tokens" id="reason">${['because','since','as'].map(x=>`<button class="token" data-reason="${x}">${x}</button>`).join('')}</div><p id="reasonOut" class="feedback">Choose a reason thread and complete the sentence.</p></div>`),
-S('Contrast thread','5 min. Notice the turn in the sentence.',`<div class="stage"><h3>06 · contrast</h3><div class="grid2"><div class="sentence">I like the idea, <b>but</b> it is expensive.</div><div class="sentence">I like the idea. <b>However</b>, it is expensive.</div></div><p>Contrast threads show two ideas that do not fully match.</p></div>`),
-S('Result thread','4 min. Build a cause → result sentence.',`<div class="stage"><h3>07 · result</h3><div class="sentence">The bus was late, <b>so</b> we walked.</div><div class="tokens"><span class="thread">therefore</span><span class="thread">as a result</span><span class="thread">so</span></div></div>`),
-S('Example thread','4 min. Add a specific example to a broad opinion.',`<div class="stage"><h3>08 · examples</h3><div class="sentence">I enjoy outdoor hobbies, <b>for example</b>, cycling and hiking.</div><p>Use “for example” to make an opinion concrete.</p></div>`),
-S('Choose the thread','5 min. Students select the connector that fits the relationship.',`<div class="stage"><h3>09 · choice</h3><div class="grid2" id="choose"><button class="choice">I was tired, ___ I finished. (but)</button><button class="choice">I stayed home ___ it rained. (because)</button><button class="choice">The shop was closed, ___ we returned. (so)</button><button class="choice">I like fruit, ___ apples. (for example)</button></div><p id="chooseOut" class="feedback">Name the relationship: reason, contrast, result, example.</p></div>`),
-S('Punctuation knots','4 min. Untangle commas and full stops.',`<div class="stage"><h3>10 · punctuation</h3><div class="sentence">I like the plan, <b>but</b> it needs more time.<br><br>I like the plan. <b>However</b>, it needs more time.</div><p>Short connectors often join with a comma. However can start a new sentence.</p></div>`),
-S('Balanced opinion frame','5 min. Students build an opinion with two sides.',`<div class="stage"><h3>11 · balance</h3><div class="sentence">On the one hand, ___ . On the other hand, ___ .</div><p>Use this frame when a topic has more than one reasonable view.</p></div>`),
-S('Common linking mistakes','4 min. Repair missing or repeated connectors.',`<div class="stage"><h3>12 · repair</h3><div class="weave"><div class="patch"><b>✗</b><p>Because I was late, so I ran.</p></div><div class="patch"><b>✓</b><p>Because I was late, I ran.</p></div><div class="patch"><b>✓</b><p>I was late, so I ran.</p></div></div></div>`),
-S('Read the opinion patch','2 min. Predict the writer’s position.',`<div class="stage"><h3>13 · reading preview</h3><div class="sentence">“School clubs should be longer; however, students also need free time.”</div><p>Which side does the writer include? Find the contrast thread.</p></div>`),
-S('Text: One More Hour?','6 min. Partner-read and highlight the connector jobs.',`<div class="stage"><h3>14 · close reading</h3><div class="sentence"><p>Some students want clubs to last longer because they enjoy practising together. However, a longer club can make the day tiring. For example, students who travel far need time to get home. A good plan could add one extra session each month, so students get more practice without losing every afternoon.</p></div><p>Circle reason, contrast, example, and result threads.</p></div>`),
-S('Reading check','4 min. Click the line that matches each relationship.',`<div class="stage"><h3>15 · evidence</h3><div class="grid2" id="read"><button class="choice">because they enjoy practising</button><button class="choice">However, a longer club …</button><button class="choice">For example, students …</button><button class="choice">so students get more practice</button></div><p id="readOut" class="feedback">Name the job of the thread you chose.</p></div>`),
-S('Finished tapestry','4 min. Use the image to compare two viewpoints.',`<div class="stage"><h3>16 · visual language</h3><img class="figure" src="${A}opinion-tapestry.png" alt="Finished wall tapestry made from connected viewpoint panels and arrows"><p class="feedback">Join two panels with however, because, or so.</p></div>`),
-S('Information gap: opinion cards','6 min. Partners connect two different cards into one sentence.',`<div class="stage"><h3>17 · pair task</h3><div class="grid2"><div class="sentence"><b>Card A:</b> Homework helps practice.</div><div class="sentence"><b>Card B:</b> Too much homework feels stressful.</div></div><p>Use: “On the one hand … On the other hand …”</p></div>`),
-S('Thread the evidence','5 min. Students choose an example that makes a claim stronger.',`<div class="stage"><h3>18 · support</h3><div class="grid2" id="support"><button class="choice">Claim: parks are useful.<br>Example: people can exercise there.</button><button class="choice">Claim: parks are useful.<br>Example: I like blue.</button></div><p id="supportOut" class="feedback">Choose the example that actually supports the claim.</p></div>`),
-S('Opinion circle','6 min. Students share an opinion, then add a connector.',`<div class="stage"><h3>19 · speaking</h3><div class="weave"><div class="patch"><b>Say</b><p>your opinion</p></div><div class="patch"><b>Thread</b><p>because / however / so</p></div><div class="patch"><b>Extend</b><p>one detail</p></div></div></div>`),
-S('Build a viewpoint tapestry','7 min. Students create a four-panel opinion poster.',`<div class="stage"><h3>20 · production setup</h3><div class="weave"><div class="patch"><b>Claim</b><p>I think …</p></div><div class="patch"><b>Reason</b><p>because …</p></div><div class="patch"><b>Contrast</b><p>however …</p></div><div class="patch"><b>Result</b><p>so …</p></div></div></div>`),
-S('Present the woven opinion','7 min. Students present a 60-second balanced view.',`<div class="stage"><h3>21 · production</h3><div class="sentence">Aim for: one claim, one reason, one contrast, one example, one result.</div><p>Listeners point to the thread they hear.</p></div>`),
-S('Peer weaver notes','5 min. Use three checks for feedback.',`<div class="stage"><h3>22 · feedback</h3><div class="weave"><div class="patch"><b>Connected</b><p>I heard clear links.</p></div><div class="patch"><b>Balanced</b><p>I heard another side.</p></div><div class="patch"><b>Specific</b><p>I heard an example.</p></div></div></div>`),
-S('Review: knot quiz','5 min. Teams choose the best connector.',`<div class="stage"><h3>23 · review</h3><div class="grid2" id="quiz"><button class="choice">I stayed home ___ it rained. (because)</button><button class="choice">I was tired; ___, I finished. (however)</button><button class="choice">The road was closed, ___ we turned back. (so)</button><button class="choice">I like fruit, ___ apples. (for example)</button></div><p id="quizOut" class="feedback">Choose four accurate threads.</p></div>`),
-S('One-minute opinion sprint','2 min. Students speak under a short timer.',`<div class="stage"><h3>24 · fluency</h3><div class="timer" id="timer">60</div><button class="choice" id="start">START WEAVE</button><p>Connect five ideas with at least three linking words.</p></div>`),
-S('Self-check meter','3 min. Students choose a confidence level.',`<div class="stage"><h3>25 · reflection</h3><div class="meter"><i id="meter"></i></div><div class="tokens" id="levels"><button class="token" data-level="30">I can spot links</button><button class="token" data-level="60">I can choose links</button><button class="token" data-level="90">I can weave a viewpoint</button></div><p id="levelOut" class="feedback">Choose honestly, then name one connector.</p></div>`),
-S('Homework: opinion patch','2 min. Students make a short written or recorded viewpoint.',`<div class="stage"><h3>26 · homework</h3><div class="weave"><div class="patch"><b>Claim</b><p>one opinion</p></div><div class="patch"><b>Threads</b><p>because + however + so</p></div><div class="patch"><b>Example</b><p>one specific detail</p></div></div></div>`),
-S('Exit ticket','2 min. Students complete one connector frame. Preview Final Speaking Project.',`<div class="stage"><h3>27 · exit ticket</h3><h2>Tie one final knot.</h2><div class="tokens" id="exit"><button class="token">I think … because …</button><button class="token">I agree; however, …</button><button class="token">For example, … so …</button></div><p id="exitOut" class="feedback">Choose one and complete it for a partner.</p><div class="eyebrow">Next: Final Speaking Project</div></div>`)
-];
-const deck=document.querySelector('#deck');deck.innerHTML=scenes.map((s,i)=>`<section class="scene ${i?'':'active'}">${s.b}</section>`).join('');const note=document.querySelector('#note'),map=document.querySelector('#map');map.innerHTML='<h3 style="color:var(--mustard)">Opinion Loom map</h3>'+scenes.map((s,i)=>`<button data-jump="${i}">${i+1}. ${s.t}</button>`).join('');let cur=0;function show(i){cur=(i+scenes.length)%scenes.length;document.querySelectorAll('.scene').forEach((x,n)=>x.classList.toggle('active',n===cur));count.textContent=`${cur+1} / ${scenes.length}`;bar.style.width=`${(cur+1)/scenes.length*100}%`;note.classList.remove('open');map.classList.remove('open');window.scrollTo(0,0)}show(0);next.onclick=()=>show(cur+1);prev.onclick=()=>show(cur-1);mapBtn.onclick=()=>map.classList.toggle('open');noteBtn.onclick=()=>{note.innerHTML=`<b>Teacher note · ${cur+1}</b><br>${scenes[cur].n}`;note.classList.toggle('open')};map.onclick=e=>{if(e.target.dataset.jump!==undefined)show(+e.target.dataset.jump)};document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(cur+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(cur-1)}if(e.key.toLowerCase()==='m')map.classList.toggle('open');if(e.key.toLowerCase()==='n')noteBtn.click()});let sx=0;document.addEventListener('touchstart',e=>sx=e.changedTouches[0].screenX,{passive:true});document.addEventListener('touchend',e=>{let d=e.changedTouches[0].screenX-sx;if(Math.abs(d)>45)show(cur+(d<0?1:-1))},{passive:true});document.querySelectorAll('[data-topic]').forEach(b=>b.onclick=()=>{b.classList.add('on');topicOut.textContent=`Your thread: I think ${b.dataset.topic} …`});document.querySelectorAll('[data-reason]').forEach(b=>b.onclick=()=>{b.classList.add('on');reasonOut.textContent=`Use ${b.dataset.reason} to add your reason.`});document.querySelectorAll('#choose .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');chooseOut.textContent='Name the relationship: reason, contrast, result, or example.'});document.querySelectorAll('#read .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');readOut.textContent='Thread selected — explain its job.'});document.querySelectorAll('#support .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');supportOut.textContent='Choose evidence that makes the claim clearer.'});document.querySelectorAll('#quiz .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');quizOut.textContent='Good — the connector matches the relationship.'});let seconds=60,run;start.onclick=()=>{clearInterval(run);seconds=60;timer.textContent=seconds;run=setInterval(()=>{seconds--;timer.textContent=seconds;if(seconds<=0)clearInterval(run)},1000)};document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{meter.style.width=b.dataset.level+'%';levelOut.textContent='Now say one sentence with a linking word.'});document.querySelectorAll('#exit .token').forEach(b=>b.onclick=()=>{b.classList.add('on');exitOut.textContent='Complete the connector frame for a partner.'});
-</script><style>.title{z-index:10!important;color:#fff!important;text-shadow:0 3px 15px #07102c}.title h1,.title p{color:#fff!important}.title .eyebrow{color:#ffe2a0!important}</style></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+  <meta name="theme-color" content="#101936">
+  <title>Lesson 28 | Say What?</title>
+  <link rel="stylesheet" href="experience-v8.css">
+</head>
+<body>
+  <div class="show-mark"><span id="roundNumber">OPENING</span><b id="roundName">WELCOME</b></div>
+  <div class="tools">
+    <button id="mapBtn" type="button">ROUNDS</button>
+    <button id="noteBtn" type="button">NOTES</button>
+  </div>
+
+  <main id="deck">
+    <section class="scene image-scene active transition-0" data-scene="1" data-round="OPENING|WELCOME" data-title="Say What?" data-note="Begin with energy. Ask students to count the people, notice the wheel, and predict what kind of language a good opinion show needs.">
+      <img class="fullbleed" src="assets/hero-show-v2.jpg" alt="Exactly seven teenagers reacting on a colorful opinion game-show stage">
+      <div class="hero-scrim"></div>
+      <div class="hero-copy">
+        <p class="kicker">Lesson 28 / Linking words</p>
+        <h1>SAY WHAT?</h1>
+        <p class="hero-sub">The opinion show where every idea needs a connection.</p>
+        <button class="start-button" id="begin" type="button">START THE SHOW</button>
+      </div>
+      <div class="floating-words" aria-hidden="true"><span>BECAUSE</span><span>HOWEVER</span><span>SO</span></div>
+    </section>
+
+    <section class="scene lemon transition-1" data-scene="2" data-round="ROUND 1|WARM-UP" data-title="Choose a harmless hot take" data-note="Give one prompt to each student. They state an opinion but do not explain it yet. Return to the same prompt after the language input.">
+      <p class="kicker">01 / Seven quick opinions</p>
+      <h2>Choose a harmless<br>hot take.</h2>
+      <div class="hot-takes" id="hotTakes">
+        <button data-topic="pineapple belongs on pizza">1 <span>Pineapple belongs on pizza.</span></button>
+        <button data-topic="weekends should be three days">2 <span>Weekends should be three days.</span></button>
+        <button data-topic="books are better than films">3 <span>Books are better than films.</span></button>
+        <button data-topic="school should start later">4 <span>School should start later.</span></button>
+        <button data-topic="pets improve every home">5 <span>Pets improve every home.</span></button>
+        <button data-topic="games can teach useful skills">6 <span>Games can teach useful skills.</span></button>
+        <button data-topic="uniforms make mornings easier">7 <span>Uniforms make mornings easier.</span></button>
+      </div>
+      <p class="instruction"><b>i</b>Choose one. Say only: "I think..." Your reason comes later.</p>
+      <p class="feedback" id="hotTakeOut">Seven students can choose seven different opinions.</p>
+    </section>
+
+    <section class="scene image-scene transition-2" data-scene="3" data-round="ROUND 1|REACT" data-title="React, then explain" data-note="Students read the faces and vote. Ask two students with different votes to give reasons. Do not correct linking words yet.">
+      <img class="fullbleed" src="assets/pineapple-reaction-v2.jpg" alt="Seven teenagers reacting differently to a pineapple pizza">
+      <div class="reaction-copy">
+        <p class="kicker">02 / Picture reaction</p>
+        <h2>Should pineapple<br>stay on the pizza?</h2>
+        <div class="reaction-vote" id="pizzaVote">
+          <button data-vote="YES">YES</button><button data-vote="NO">NO</button><button data-vote="DEPENDS">DEPENDS</button>
+        </div>
+        <p class="feedback" id="pizzaOut">Vote first. Then add one reason.</p>
+      </div>
+    </section>
+
+    <section class="scene cyan transition-3" data-scene="4" data-round="ROUND 1|GOALS" data-title="What you will be able to do" data-note="Preview the language jobs. Students choose the job they use least often. Keep the terminology practical.">
+      <p class="kicker">03 / Tonight's challenges</p>
+      <h2>Make your opinion<br>easy to follow.</h2>
+      <div class="goal-ticker">
+        <span><b>1</b> State a view naturally</span>
+        <span><b>2</b> Add a reason</span>
+        <span><b>3</b> Show contrast</span>
+        <span><b>4</b> Explain a result</span>
+        <span><b>5</b> Give an example</span>
+        <span><b>6</b> Add another point</span>
+        <span><b>7</b> Disagree politely</span>
+      </div>
+      <p class="instruction"><b>i</b>Choose one challenge you want to improve today.</p>
+    </section>
+
+    <section class="scene image-scene transition-4" data-scene="5" data-round="ROUND 2|THE JOBS" data-title="Each connector shows a relationship" data-note="Use the domino image to show that connectors do not simply make a sentence longer. They tell listeners how the next idea relates to the first.">
+      <img class="fullbleed" src="assets/connector-domino-v2.jpg" alt="Colorful domino paths linking blank speech bubbles through five visual relationships">
+      <div class="job-strip">
+        <span><b>REASON</b> because</span>
+        <span><b>CONTRAST</b> but</span>
+        <span><b>RESULT</b> so</span>
+        <span><b>EXAMPLE</b> for example</span>
+        <span><b>ADDITION</b> in addition</span>
+      </div>
+      <p class="image-instruction"><b>i</b>A linking word tells the audience what the second idea is doing.</p>
+    </section>
+
+    <section class="scene pink transition-0" data-scene="6" data-round="ROUND 2|OPINION" data-title="Start with a natural opinion phrase" data-note="Model the three phrases with the same opinion. Students choose the phrase that feels most natural, then repeat it with their warm-up topic.">
+      <p class="kicker">04 / Opinion starters</p>
+      <h2>Say what<br>you think.</h2>
+      <div class="starter-stack" id="opinionStarters">
+        <button data-tone="direct"><strong>I THINK...</strong><span>direct and common</span></button>
+        <button data-tone="clear"><strong>IN MY OPINION,...</strong><span>clear and slightly more formal</span></button>
+        <button data-tone="personal"><strong>FROM MY POINT OF VIEW,...</strong><span>emphasizes your perspective</span></button>
+      </div>
+      <p class="instruction"><b>i</b>Choose one starter. Add a complete opinion, not only a topic.</p>
+      <p class="feedback" id="starterOut">Example: "I think school should start later."</p>
+    </section>
+
+    <section class="scene cream transition-1" data-scene="7" data-round="ROUND 2|REASON" data-title="Because answers why" data-note="Contrast a topic with a reason. Students choose the option that genuinely explains the opinion, then create their own reason.">
+      <p class="kicker">05 / Reason</p>
+      <h2>Give the audience<br>a reason.</h2>
+      <div class="equation"><span>I prefer online notes</span><b>BECAUSE</b><span id="reasonFinish">...</span></div>
+      <div class="reason-options" id="reasonOptions">
+        <button data-correct="true">I can find them quickly.</button>
+        <button>my notebook is blue.</button>
+        <button>some lessons are on Tuesday.</button>
+      </div>
+      <p class="mini-rule"><b>because / since</b> + subject + verb</p>
+      <p class="feedback" id="reasonOut">Choose the idea that really answers "Why?"</p>
+    </section>
+
+    <section class="scene navy transition-2" data-scene="8" data-round="ROUND 2|CONTRAST" data-title="Contrast shows a difference" data-note="Click each connector to reveal its sentence pattern. Make students notice that but joins one sentence, however often begins a new sentence, and although introduces one side.">
+      <p class="kicker">06 / Contrast</p>
+      <h2>Turn the idea<br>in a new direction.</h2>
+      <div class="contrast-stage" id="contrastStage">
+        <button data-model="I enjoy group projects, but I need clear roles."><b>BUT</b><span>one sentence</span></button>
+        <button data-model="I enjoy group projects. However, I need clear roles."><b>HOWEVER</b><span>new sentence</span></button>
+        <button data-model="Although I enjoy group projects, I need clear roles."><b>ALTHOUGH</b><span>contrast clause</span></button>
+      </div>
+      <p class="contrast-model" id="contrastOut">Choose a connector to reveal its pattern.</p>
+      <p class="instruction"><b>i</b>All three show contrast, but their punctuation is different.</p>
+    </section>
+
+    <section class="scene orange transition-3" data-scene="9" data-round="ROUND 2|RESULT" data-title="So introduces a result" data-note="Open the chain from cause to connector to result. Students then create a different possible result from the same cause.">
+      <p class="kicker">07 / Result</p>
+      <h2>What happened<br>because of it?</h2>
+      <div class="result-chain" id="resultChain">
+        <button data-order="1"><b>CAUSE</b><span>The bus was late.</span></button>
+        <i>+</i>
+        <button data-order="2"><b>CONNECTOR</b><span>so</span></button>
+        <i>=</i>
+        <button data-order="3"><b>RESULT</b><span>I joined the class online.</span></button>
+      </div>
+      <p class="mini-rule"><b>so</b> joins clauses. <b>Therefore / As a result</b> can begin a new sentence.</p>
+      <p class="feedback" id="resultOut">Open the chain from left to right.</p>
+    </section>
+
+    <section class="scene lemon transition-4" data-scene="10" data-round="ROUND 2|EXAMPLE" data-title="Examples make broad ideas concrete" data-note="Students choose which detail proves the broad claim. Ask why the other detail does not help.">
+      <p class="kicker">08 / Example</p>
+      <h2>Show one<br>real detail.</h2>
+      <p class="big-claim">Games can teach useful skills.</p>
+      <div class="example-choice" id="exampleChoice">
+        <button data-correct="true"><b>FOR EXAMPLE,</b> team games require players to plan and communicate.</button>
+        <button><b>FOR EXAMPLE,</b> my controller is black.</button>
+      </div>
+      <p class="mini-rule"><b>for example</b> + a complete example &nbsp; / &nbsp; <b>such as</b> + examples in a list</p>
+      <p class="feedback" id="exampleOut">Choose the detail that supports the opinion.</p>
+    </section>
+
+    <section class="scene cyan transition-0" data-scene="11" data-round="ROUND 2|ADDITION" data-title="Addition gives one more related point" data-note="Students reveal the second point and check that it supports the same opinion. Explain placement of also.">
+      <p class="kicker">09 / Addition</p>
+      <h2>Add one more<br>useful point.</h2>
+      <div class="addition-lines">
+        <p>School clubs build confidence.</p>
+        <button id="additionReveal" type="button">+ ADD ANOTHER POINT</button>
+        <p id="additionLine" class="hidden-line"><b>In addition,</b> they help students make friends.</p>
+      </div>
+      <div class="word-order"><span>They</span><b>also</b><span>help students make friends.</span></div>
+      <p class="instruction"><b>i</b>Use addition only when the new idea supports the same main point.</p>
+    </section>
+
+    <section class="scene cream transition-1" data-scene="12" data-round="ROUND 3|PUNCTUATION" data-title="Punctuation changes with the connector" data-note="Assign examples to students. They click the punctuation option, read the complete sentence aloud, and explain the pattern.">
+      <p class="kicker">10 / Punctuation challenge</p>
+      <h2>Choose the<br>correct pattern.</h2>
+      <div class="punctuation-quiz" id="punctuationQuiz">
+        <div data-answer="comma"><span>I like the idea ___ but it is expensive.</span><button data-choice="comma">,</button><button data-choice="period">.</button></div>
+        <div data-answer="period"><span>I like the idea ___ However, it is expensive.</span><button data-choice="comma">,</button><button data-choice="period">.</button></div>
+        <div data-answer="comma"><span>Although it is expensive ___ I like the idea.</span><button data-choice="comma">,</button><button data-choice="period">.</button></div>
+        <div data-answer="comma"><span>The road was closed ___ so we turned back.</span><button data-choice="comma">,</button><button data-choice="period">.</button></div>
+      </div>
+      <p class="feedback" id="punctuationOut">0 / 4 patterns correct.</p>
+    </section>
+
+    <section class="scene navy transition-2" data-scene="13" data-round="ROUND 3|REPAIR" data-title="Do not use two connectors for one relationship" data-note="One line per student. Students identify the unnecessary word before clicking. They perform the repaired version.">
+      <p class="kicker">11 / Error repair</p>
+      <h2>Remove the<br>extra connector.</h2>
+      <div class="repair-lines" id="repairLines">
+        <button data-clean="Because I was tired, I went home."><b>1</b>Because I was tired, so I went home.</button>
+        <button data-clean="Although the film was long, I enjoyed it."><b>2</b>Although the film was long, but I enjoyed it.</button>
+        <button data-clean="I agree. However, the plan needs more time."><b>3</b>I agree, however the plan needs more time.</button>
+        <button data-clean="For example, students can use a timer."><b>4</b>For example students can use a timer.</button>
+        <button data-clean="The task was difficult, so we asked for help."><b>5</b>The task was difficult so we asked for help.</button>
+        <button data-clean="In addition, clubs create new friendships."><b>6</b>In addition clubs create new friendships.</button>
+        <button data-clean="I think school should start later."><b>7</b>I think that in my opinion school should start later.</button>
+      </div>
+      <p class="instruction"><b>i</b>Click your line only after you can explain what must change.</p>
+    </section>
+
+    <section class="scene pink transition-3" data-scene="14" data-round="ROUND 3|SPEED QUIZ" data-title="Choose the relationship, not your favourite word" data-note="Run as a team challenge. Every student answers one item. The class must explain the relationship before choosing.">
+      <p class="kicker">12 / Seven-question speed round</p>
+      <h2>Which link<br>fits the meaning?</h2>
+      <div class="speed-quiz" id="speedQuiz">
+        <div data-answer="because"><span>We stayed inside ___ it was raining.</span><button>because</button><button>however</button></div>
+        <div data-answer="but"><span>I like the design, ___ it is too expensive.</span><button>but</button><button>so</button></div>
+        <div data-answer="so"><span>The train stopped, ___ we called a taxi.</span><button>because</button><button>so</button></div>
+        <div data-answer="for example"><span>Some hobbies are creative. ___, photography teaches composition.</span><button>For example</button><button>Although</button></div>
+        <div data-answer="in addition"><span>The app is easy to use. ___, it is free.</span><button>In addition</button><button>Because</button></div>
+        <div data-answer="although"><span>___ the task was difficult, we finished it.</span><button>Although</button><button>Therefore</button></div>
+        <div data-answer="therefore"><span>The room was full. ___, we moved online.</span><button>Since</button><button>Therefore</button></div>
+      </div>
+      <p class="feedback" id="speedOut">Score: 0 / 7</p>
+    </section>
+
+    <section class="scene image-scene transition-4" data-scene="15" data-round="ROUND 4|PICTURE TALK" data-title="Use the image to build linked opinions" data-note="Assign one prompt per student. Students answer from the visual using the required connector. Reveal the model only after the student speaks.">
+      <img class="fullbleed" src="assets/phone-debate-v2.jpg" alt="Seven teenagers showing useful and distracting ways phones can affect learning">
+      <div class="phone-prompts" id="phonePrompts">
+        <button data-model="Phones can help because students can photograph instructions.">1 / because</button>
+        <button data-model="Phones are useful, but notifications can distract students.">2 / but</button>
+        <button data-model="Some apps support learning. For example, a timer can organize revision.">3 / for example</button>
+        <button data-model="A phone can record pronunciation. In addition, it can store notes.">4 / in addition</button>
+        <button data-model="Notifications interrupt attention, so phones should be silent during explanations.">5 / so</button>
+        <button data-model="Although phones can distract us, they can support specific tasks.">6 / although</button>
+        <button data-model="Phones can be useful. However, teachers need clear rules.">7 / however</button>
+      </div>
+      <p class="phone-model" id="phoneModel">Choose your connector. Say an opinion from the picture, then reveal the model.</p>
+    </section>
+
+    <section class="scene navy transition-0" data-scene="16" data-round="ROUND 4|LISTEN" data-title="Listen for seven connector jobs" data-note="Assign one number to each student. Play once without revealing. Each student names the connector and its job, then clicks their number.">
+      <p class="kicker">14 / Listening mix</p>
+      <h2>Catch your<br>connector.</h2>
+      <div class="audio-strip">
+        <audio preload="metadata" src="assets/audio/connector-mix.wav"></audio>
+        <button class="audio-play" type="button">PLAY 7 LINES</button>
+        <span>Each student listens for one numbered line.</span>
+      </div>
+      <div class="listen-jobs" id="listenJobs">
+        <button data-answer="because / reason">1</button><button data-answer="but / contrast">2</button><button data-answer="so / result">3</button><button data-answer="for example / example">4</button><button data-answer="in addition / addition">5</button><button data-answer="however / contrast">6</button><button data-answer="although / contrast">7</button>
+      </div>
+      <p class="instruction"><b>i</b>Say the connector and its job before you reveal.</p>
+      <p class="feedback" id="listenOut">No answers revealed yet.</p>
+    </section>
+
+    <section class="scene orange transition-1" data-scene="17" data-round="ROUND 4|DIALOGUE" data-title="Agreement can still include a different point" data-note="Play the dialogue twice. First ask for the main topic. Second ask students to identify agreement, contrast, example, and result.">
+      <p class="kicker">15 / Two-speaker dialogue</p>
+      <h2>Do they agree<br>or disagree?</h2>
+      <div class="audio-strip dark-audio">
+        <audio preload="metadata" src="assets/audio/agree-disagree-dialogue.wav"></audio>
+        <button class="audio-play" type="button">PLAY DIALOGUE</button>
+        <span>Topic: the amount of homework</span>
+      </div>
+      <div class="dialogue-vote" id="dialogueVote">
+        <button data-answer="partial">They partly agree.</button>
+        <button data-answer="same">They completely agree.</button>
+        <button data-answer="opposite">They completely disagree.</button>
+      </div>
+      <p class="feedback" id="dialogueOut">Choose, then support your answer with one phrase you heard.</p>
+    </section>
+
+    <section class="scene cream transition-2" data-scene="18" data-round="ROUND 4|POLITE REPLY" data-title="Disagree with the idea, not the person" data-note="Students choose a response, adapt it to a topic, and use calm intonation. Emphasize that polite disagreement includes recognition before contrast.">
+      <p class="kicker">16 / Useful responses</p>
+      <h2>Keep the<br>conversation open.</h2>
+      <div class="reply-ladder" id="replyLadder">
+        <button data-start="agree"><b>AGREE</b><span>I agree because...</span></button>
+        <button data-start="partial"><b>PARTLY AGREE</b><span>I agree that..., but...</span></button>
+        <button data-start="different"><b>ADD A DIFFERENT VIEW</b><span>I see your point. However,...</span></button>
+        <button data-start="clarify"><b>ASK</b><span>What makes you think that?</span></button>
+      </div>
+      <p class="instruction"><b>i</b>Reply to this opinion: "Homework should disappear completely."</p>
+      <p class="feedback" id="replyOut">Choose a response type and complete it naturally.</p>
+    </section>
+
+    <section class="scene image-scene comments-scene transition-3" data-scene="19" data-round="ROUND 5|READ COMMENTS" data-title="Turn short comments into connected opinions" data-note="Assign one comment to each student. They improve it orally before clicking to reveal a connected version.">
+      <img class="fullbleed" src="assets/comment-wall-v2.jpg" alt="Three teenagers reacting to a colorful wall of blank online comment bubbles">
+      <div class="comment-lines" id="commentLines">
+        <button data-better="I like online lessons because I can join from anywhere.">Online lessons are good.</button>
+        <button data-better="Uniforms save time; however, they limit personal choice.">Uniforms are fine. Choice matters.</button>
+        <button data-better="The cafeteria was full, so we ate outside.">The cafeteria was full. We ate outside.</button>
+        <button data-better="Some clubs teach practical skills. For example, drama builds confidence.">Clubs teach skills.</button>
+        <button data-better="The library is quiet. In addition, it has reliable internet.">The library is useful.</button>
+        <button data-better="Although the game is difficult, the rules are clear.">The game is difficult. The rules are clear.</button>
+        <button data-better="From my point of view, students need both study time and free time.">Students need balance.</button>
+      </div>
+      <p class="comment-instruction"><b>i</b>Improve your comment aloud. Then reveal one possible answer.</p>
+    </section>
+
+    <section class="scene lemon transition-4" data-scene="20" data-round="ROUND 5|READ" data-title="A connected opinion is easier to follow" data-note="Read aloud once. Students raise a finger when they hear a connector. On the second read, identify the job of each highlighted connector.">
+      <p class="kicker">18 / Short opinion post</p>
+      <h2>Should phones be<br>used in class?</h2>
+      <article class="reading-post">
+        <p><b>In my opinion,</b> phones can support some classroom tasks <em>because</em> they give students quick access to useful tools.</p>
+        <p><em>For example,</em> students can record pronunciation or photograph homework instructions. <em>In addition,</em> a phone can help an absent student join online.</p>
+        <p><em>However,</em> notifications can distract people, and not every student has the same device. <em>Therefore,</em> teachers need clear rules. Phones should stay away during explanations, <em>but</em> students can use them when a task requires them.</p>
+      </article>
+      <p class="instruction"><b>i</b>Find: opinion / reason / example / addition / contrast / result.</p>
+    </section>
+
+    <section class="scene cyan transition-0" data-scene="21" data-round="ROUND 5|READING CHECK" data-title="Find evidence for each connector job" data-note="Assign exactly one question to each student. Require full sentences before revealing the answer.">
+      <p class="kicker">19 / Seven reading jobs</p>
+      <h2>Prove your answer<br>from the text.</h2>
+      <div class="reading-jobs" id="readingJobs">
+        <button data-answer="The writer supports controlled phone use."><b>1 / POSITION</b><span>What is the writer's opinion?</span></button>
+        <button data-answer="Phones give quick access to useful tools."><b>2 / REASON</b><span>Why can phones help?</span></button>
+        <button data-answer="Recording pronunciation and photographing instructions."><b>3 / EXAMPLES</b><span>Which two examples appear?</span></button>
+        <button data-answer="An absent student can join online."><b>4 / ADDITION</b><span>What extra benefit appears?</span></button>
+        <button data-answer="Notifications distract people and devices are unequal."><b>5 / CONTRAST</b><span>Which problems appear?</span></button>
+        <button data-answer="Teachers need clear rules."><b>6 / RESULT</b><span>What conclusion follows?</span></button>
+        <button data-answer="Away during explanations; available when a task requires them."><b>7 / RULE</b><span>What balanced rule is suggested?</span></button>
+      </div>
+      <p class="instruction"><b>i</b>Answer in a full sentence. Reveal only after everyone has spoken.</p>
+    </section>
+
+    <section class="scene image-scene balance-scene transition-1" data-scene="22" data-round="ROUND 6|BALANCE" data-title="A balanced opinion includes both sides" data-note="Reveal the three parts in order. Students then create the same structure for a new topic.">
+      <img class="fullbleed" src="assets/balance-stage-v2.jpg" alt="Teenagers balancing a giant backpack and game controller on a colorful seesaw stage">
+      <div class="balance-copy">
+        <p class="kicker">20 / Balanced opinion</p>
+        <h2>Show both sides.<br>Then choose.</h2>
+        <div class="balance-steps" id="balanceSteps">
+          <button data-order="1"><b>ONE SIDE</b><span>On the one hand, games help us relax.</span></button>
+          <button data-order="2"><b>OTHER SIDE</b><span>On the other hand, too much screen time can affect sleep.</span></button>
+          <button data-order="3"><b>YOUR VIEW</b><span>In my opinion, games are positive when we manage our time.</span></button>
+        </div>
+        <p class="feedback" id="balanceOut">Open the three parts in order.</p>
+      </div>
+    </section>
+
+    <section class="scene image-scene court-scene transition-2" data-scene="23" data-round="ROUND 6|SNACK COURT" data-title="Use evidence in the snack court" data-note="Assign exactly seven roles. The judge asks for a decision after both speakers give a reason, contrast, and example. Keep it playful but require complete linked opinions.">
+      <img class="fullbleed" src="assets/snack-court-v2.jpg" alt="Exactly seven teenagers in a playful courtroom debate about movie snacks">
+      <div class="court-copy">
+        <p class="kicker">21 / Snack court</p>
+        <h2>Which movie snack<br>should win?</h2>
+        <div class="court-roles">
+          <span><b>1 JUDGE</b> ask for reasons and decide</span>
+          <span><b>2 CRISPS</b> give a claim + reason</span>
+          <span><b>3 POPCORN</b> give a claim + reason</span>
+          <span><b>4 EXAMPLE</b> demand one specific example</span>
+          <span><b>5 CONTRAST</b> listen for but / however</span>
+          <span><b>6 RESULT</b> listen for so / therefore</span>
+          <span><b>7 REPORTER</b> summarize the final decision</span>
+        </div>
+        <p class="instruction"><b>i</b>Each speaker gets 30 seconds. The judge may ask one follow-up question.</p>
+      </div>
+    </section>
+
+    <section class="scene pink transition-3" data-scene="24" data-round="ROUND 6|REACTION RELAY" data-title="Continue the opinion without repeating the same connector" data-note="Display one topic. Student one begins, then each student adds one linked sentence using the assigned connector. Restart if the relationship is unclear.">
+      <p class="kicker">22 / Seven-person relay</p>
+      <h2>Keep the opinion<br>moving.</h2>
+      <div class="relay-topic" id="relayTopic">School should start later.</div>
+      <div class="relay-track">
+        <span><b>1</b> I think...</span><span><b>2</b> because...</span><span><b>3</b> for example...</span><span><b>4</b> in addition...</span><span><b>5</b> however...</span><span><b>6</b> so...</span><span><b>7</b> to sum up...</span>
+      </div>
+      <button class="shuffle-button" id="newRelay" type="button">NEW TOPIC</button>
+      <p class="instruction"><b>i</b>Listen to the previous speaker. Your sentence must connect to their idea.</p>
+    </section>
+
+    <section class="scene navy transition-4" data-scene="25" data-round="ROUND 7|MODEL" data-title="Listen to a complete balanced opinion" data-note="First listen for the position. Second listen for six connector jobs. Reveal the transcript only after students reconstruct the structure.">
+      <p class="kicker">23 / Model opinion</p>
+      <h2>Can you hear<br>the structure?</h2>
+      <div class="audio-strip">
+        <audio preload="metadata" src="assets/audio/model-balanced-opinion.wav"></audio>
+        <button class="audio-play" type="button">PLAY MODEL</button>
+        <span>Topic: controlled phone use in class</span>
+      </div>
+      <div class="model-listen"><span>1 position</span><span>2 reason</span><span>3 example</span><span>4 addition</span><span>5 contrast</span><span>6 result</span><span>7 final view</span></div>
+      <button class="transcript-button" id="transcriptToggle" type="button">REVEAL TRANSCRIPT</button>
+      <p class="model-transcript" id="modelTranscript">In my opinion, students should be allowed to use phones for some classroom tasks <b>because</b> phones can be useful learning tools. <b>For example,</b> students can record pronunciation, check a word, or photograph homework instructions. <b>In addition,</b> a phone can help a student join an online lesson when they are absent. <b>However,</b> notifications can easily distract people, and not every student has the same device. <b>Therefore,</b> teachers need clear rules. Phones should stay away during explanations, <b>but</b> students can use them when a task requires them. <b>To sum up,</b> I support controlled phone use because it gives us the benefits without allowing the phone to control the lesson.</p>
+    </section>
+
+    <section class="scene image-scene finale-scene transition-0" data-scene="26" data-round="FINAL SHOW|SETUP" data-title="Prepare the seven-student opinion show" data-note="Assign one role per student. Spin the topic wheel. Give the host one minute to prepare questions while the speaker organizes a balanced opinion.">
+      <img class="fullbleed" src="assets/online-finale-v2.jpg" alt="Exactly seven teenagers in seven online game-show windows around a topic wheel">
+      <div class="finale-copy">
+        <p class="kicker">24 / Seven-person final show</p>
+        <h2>Spin a topic.<br>Take a role.</h2>
+        <div class="final-roles">
+          <span><b>1 HOST</b> introduce the topic</span><span><b>2 SPEAKER</b> give a 75-second opinion</span><span><b>3 REASON</b> listen for because</span><span><b>4 CONTRAST</b> listen for but / however</span><span><b>5 EXAMPLE</b> listen for a specific detail</span><span><b>6 RESULT</b> listen for so / therefore</span><span><b>7 REPLY</b> ask one polite follow-up</span>
+        </div>
+        <button class="wheel-button" id="topicWheel" type="button">SPIN TOPIC WHEEL</button>
+        <p class="wheel-result" id="wheelResult">The wheel is ready.</p>
+      </div>
+    </section>
+
+    <section class="scene orange transition-1" data-scene="27" data-round="FINAL SHOW|LIVE" data-title="Deliver a linked opinion and track what listeners hear" data-note="Start the timer. Listeners click only language they actually hear. After feedback, the speaker repeats one section with one improvement.">
+      <p class="kicker">25 / Live round</p>
+      <div class="live-stage">
+        <div class="show-timer" id="showTimer">75</div>
+        <div>
+          <h2>Give one<br>connected opinion.</h2>
+          <p>Include a clear position, both sides, one example, and a final view.</p>
+          <button class="start-button dark" id="showStart" type="button">START 75 SECONDS</button>
+        </div>
+      </div>
+      <div class="peer-lights" id="peerLights">
+        <button>clear position</button><button>reason</button><button>contrast</button><button>example</button><button>addition</button><button>result</button><button>polite reply</button>
+      </div>
+      <p class="feedback" id="peerOut">0 / 7 language lights switched on.</p>
+    </section>
+
+    <section class="scene lemon transition-2" data-scene="28" data-round="CREDITS|EXIT" data-title="Review, reflect, and prepare the final project" data-note="Complete one exit line per student. Explain the homework as preparation for Lesson 29's final speaking project.">
+      <p class="kicker">26 / Final score</p>
+      <div class="credits-grid">
+        <div>
+          <h2>What can you<br>connect now?</h2>
+          <div class="exit-lines" id="exitLines">
+            <button>One connector I can use confidently is...</button>
+            <button>One punctuation pattern I remember is...</button>
+            <button>One polite disagreement phrase is...</button>
+          </div>
+          <p class="feedback" id="exitOut">Choose one and give a complete example.</p>
+        </div>
+        <div class="homework">
+          <p class="kicker">Homework / Final-project preparation</p>
+          <ol>
+            <li>Choose one safe topic you genuinely care about.</li>
+            <li>Write a clear opinion in one sentence.</li>
+            <li>Add one reason and one specific example.</li>
+            <li>Add one contrasting point with but, however, or although.</li>
+            <li>Add one result with so or therefore.</li>
+            <li>Record a 60-90 second practice answer.</li>
+            <li>Listen again and mark every linking word you used.</li>
+          </ol>
+          <p class="next">NEXT: FINAL SPEAKING PROJECT / PRESENTATION OR DEBATE</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="map" id="map" aria-label="Round list"></aside>
+  <aside class="note" id="note" aria-label="Teacher notes"></aside>
+  <nav class="nav" aria-label="Slide navigation">
+    <button id="prev" type="button" aria-label="Previous scene">&#8592;</button>
+    <span id="count">1 / 28</span>
+    <span class="progress"><i id="bar"></i></span>
+    <button id="next" type="button" aria-label="Next scene">&#8594;</button>
+  </nav>
+  <script src="experience-v8.js"></script>
+</body>
+</html>
