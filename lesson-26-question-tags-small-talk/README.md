@@ -1,9 +1,9 @@
-# Lesson 26 — Tag Café
+# Lesson 26 - Frequency 26
 
-Offline interactive Pre-Intermediate 2 speaking lesson: Question Tags | Small Talk.
+Interactive Pre-Intermediate 2 lesson for ages 13-17: Question Tags | Small Talk.
 
-Creative identity: a neighborhood café conversation lab. Students use café table prompts, tag flips, intonation choices, safe-topic menus, information-gap cards, small-talk carousel rounds, and dialogue performance.
+The lesson uses an analog youth-radio world to connect grammar, intonation, listening, and real conversation. Twenty-eight scenes move from meaning and worked examples to controlled practice, a three-voice listening, seven-person online roles, and a timed live broadcast.
 
-Controls: arrows, Page Up/Down, Space, swipe, `M` café map, `N` teacher notes.
+Controls: arrow keys, Page Up/Down, Space, swipe, `M` for the track list, and `N` for teacher notes. The viewer supports vertical scrolling and pinch zoom on iPhone portrait and landscape screens.
 
-27 scenes with teacher notes. Local artwork only; no external runtime dependencies.
+All visuals, audio, scripts, and runtime files are local.

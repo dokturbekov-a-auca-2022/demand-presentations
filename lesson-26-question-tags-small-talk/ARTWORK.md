@@ -1,7 +1,14 @@
-# Artwork provenance
+# Artwork
 
-Generated with the built-in image-generation workflow on 16 August 2026.
+Eight original image-generation assets create the Frequency 26 visual world.
 
-- `assets/cafe-chat.png` — “Wide landscape soft paper collage illustration: lively neighborhood cafe with diverse fictional teens chatting at small tables, mugs, notebooks, blank speech bubbles, warm cocoa brown sage green coral pink cream sky blue, generous blank space on left, no readable text.”
-- `assets/table-cards.png` — “Wide landscape soft paper collage illustration: close-up cafe table with two mugs, question-mark sugar packets, tiny conversation cards, headphones and a plant, warm cocoa brown sage green coral pink cream sky blue, no readable text.”
-- `assets/park-chat.png` — “Wide landscape soft paper collage illustration: evening community park conversation scene with teens greeting and chatting, string lights and empty speech bubbles, warm cocoa brown sage green coral pink cream sky blue, no readable text.”
+- `radio-crew-v2.png`: exactly seven teens hosting an analog youth-radio show.
+- `polarity-tuner-v2.png`: tactile plus/minus radio tuner for the polarity rule.
+- `intonation-host-v2.png`: split falling/rising intonation portrait and waveforms.
+- `bus-stop-chat-v2.png`: realistic after-school small talk at a rainy bus stop.
+- `small-talk-topics-v2.png`: seven object groups for safe conversation topics.
+- `listening-studio-v2.png`: three students recording the listening dialogue.
+- `rooftop-show-v2.png`: exactly seven students performing at a school music event.
+- `broadcast-mic-v2.png`: vintage broadcast microphone for special tag patterns.
+
+Art direction: premium youth editorial photography, analog print grain, cobalt shadows, tomato red, warm cream, and acid-yellow signal accents. No external assets are loaded at runtime.

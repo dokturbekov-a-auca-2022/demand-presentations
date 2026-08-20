@@ -1,35 +1,440 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lesson 26 — Tag Café</title><style>
-:root{--cocoa:#553c36;--sage:#a8c9af;--coral:#ed806d;--cream:#fff6e8;--sky:#c2e4ef;--ink:#302a2a}*{box-sizing:border-box}body{margin:0;background:var(--cocoa);color:var(--ink);font-family:'Trebuchet MS',Arial,sans-serif;overflow:hidden}.scene{display:none;min-height:100vh;padding:5.5vh 8vw 10vh;background:var(--cream);position:relative;overflow:auto}.scene.active{display:block;animation:pour .35s both}.scene:before{content:'☕';position:absolute;right:4vw;bottom:7vh;font-size:8rem;color:var(--coral);opacity:.12}.stage{position:relative;z-index:1;max-width:1150px}.hero{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.veil{position:absolute;inset:0;background:linear-gradient(90deg,#553c36ed,#553c36a6 48%,#553c3620)}.title{position:relative;z-index:2;color:#fff;max-width:52rem;padding:11vh 2rem 2rem;border-left:12px solid var(--sage);background:#553c369b;border-radius:0 28px 28px 0}.title h1{font:900 clamp(4rem,8vw,9rem)/.82 Georgia,serif;margin:.1em 0}.title p{font-size:clamp(1.1rem,2vw,1.7rem)}.eyebrow,h3{font-weight:900;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--coral)}h2{font-size:clamp(2rem,4vw,4.2rem);line-height:.95;color:var(--cocoa);margin:.2em 0 .55em}p{font-size:clamp(1rem,1.4vw,1.4rem);line-height:1.42}.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.item{background:#fff;border:3px solid var(--cocoa);border-radius:18px;padding:1.1rem;min-height:8rem;box-shadow:7px 7px 0 #553c3622;cursor:pointer}.item:nth-child(2){background:var(--sage)}.item:nth-child(3){background:var(--sky)}.item.selected{outline:5px solid var(--coral)}.speech{background:#fff;border:3px solid var(--cocoa);border-radius:24px;padding:1.2rem 1.5rem;font-size:clamp(1.3rem,2.2vw,2.3rem);box-shadow:8px 8px 0 #553c3622;position:relative}.speech:after{content:'';position:absolute;bottom:-16px;left:28px;border-width:16px 16px 0 0;border-style:solid;border-color:var(--cocoa) transparent transparent transparent}.tag{display:inline-block;background:var(--coral);color:#fff;padding:.4rem .65rem;border-radius:99px;font-weight:900;margin:.2rem}.choice{background:#fff;border:3px solid var(--cocoa);border-radius:14px;padding:.85rem 1rem;color:var(--cocoa);font-weight:900;cursor:pointer;text-align:left;box-shadow:4px 4px 0 #553c3622}.choice:hover,.choice.selected{background:var(--sage)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.figure{width:100%;max-height:43vh;object-fit:cover;border:8px solid #fff;border-radius:24px;box-shadow:12px 12px 0 var(--sky)}.feedback{font-weight:900;color:var(--coral);min-height:1.5em}.flip{display:inline-block;background:var(--sky);padding:1rem;border-radius:18px;cursor:pointer;min-width:12rem;text-align:center}.flip .back{display:none}.flip.open .front{display:none}.flip.open .back{display:block}.meter{height:20px;background:#d8c6b6;border-radius:99px;margin:1rem 0}.meter i{display:block;height:100%;width:35%;background:var(--coral);border-radius:99px;transition:.25s}.tools{position:fixed;z-index:20;right:1rem;top:1rem;display:flex;gap:.4rem}.tools button,.nav button{border:0;background:var(--coral);color:#fff;padding:.55rem .8rem;font-weight:900;cursor:pointer;border-radius:12px}.nav{position:fixed;z-index:20;left:50%;transform:translateX(-50%);bottom:1rem;background:#553c36ef;color:#fff;padding:.5rem .8rem;display:flex;gap:.6rem;align-items:center;border-radius:14px}.count{min-width:5rem;text-align:center}.progress{width:8rem;height:5px;background:#ffffff44;border-radius:99px}.progress i{display:block;height:100%;background:var(--sage);border-radius:99px}.note,.map{display:none;position:fixed;z-index:30;background:#553c36f5;color:#fff;padding:1rem;top:4.4rem;right:1rem;max-width:30rem;border-radius:16px}.note.open,.map.open{display:block}.map{left:50%;right:auto;transform:translateX(-50%);width:min(800px,92vw)}.map button{margin:.2rem;padding:.4rem;border:0;border-radius:8px}.timer{font-size:clamp(4rem,8vw,7rem);font-weight:900;text-align:center;color:var(--cocoa)}@keyframes pour{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}@media(max-width:700px){.scene{padding:4.5rem 1rem 6.5rem}.menu,.grid2{grid-template-columns:1fr}.figure{max-height:30vh}.title{padding-top:13vh}.tools{top:.5rem;right:.5rem}.nav{bottom:.5rem}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style></head><body><main id="deck"></main><div class="tools"><button id="mapBtn">CAFÉ MAP</button><button id="noteBtn">NOTE</button></div><aside id="note" class="note"></aside><aside id="map" class="map"></aside><nav class="nav"><button id="prev">←</button><span id="count"></span><span class="progress"><i id="bar"></i></span><button id="next">→</button></nav><script>
-const A='assets/';const S=(t,n,b)=>({t,n,b});const scenes=[
-S('Tag Café','2 min. Open with the café image. Ask what makes a conversation comfortable.',`<img class="hero" src="${A}cafe-chat.png" alt="Illustrated neighborhood cafe with diverse teens chatting at tables"><div class="veil"></div><div class="title"><div class="eyebrow">Lesson 26 · speaking + grammar</div><h1>Tag<br>Café</h1><p>Keep small talk warm, natural, and easy to continue.</p><span class="tag">REACT</span><span class="tag">CHECK</span><span class="tag">CONNECT</span></div>`),
-S('Check-in: café mood','4 min. Students choose a mood and give a reason.',`<div class="stage"><h3>01 · check-in</h3><h2>How is your conversation today?</h2><div class="menu" id="mood"><button class="item choice">ready to chat</button><button class="item choice">a little quiet</button><button class="item choice">full of questions</button><button class="item choice">somewhere in between</button></div><p id="moodOut" class="feedback">Choose one. Add: “It is, isn’t it?”</p></div>`),
-S('Bridge from Lesson 25','3 min. Connect team decisions to checking agreement.',`<div class="stage"><h3>02 · bridge</h3><div class="speech">We chose the river path, <b>didn’t we?</b></div><p>A question tag turns a statement into a friendly check.</p></div>`),
-S('Read the table','5 min. Students predict small-talk topics from the image.',`<div class="stage"><h3>03 · visual lead-in</h3><h2>What could these two people talk about?</h2><img class="figure" src="${A}table-cards.png" alt="Illustrated cafe table with mugs conversation cards headphones and a plant"><p class="feedback">Choose a safe topic: music, weekend plans, food, school, or weather.</p></div>`),
-S('Today’s café menu','1 min. Preview the conversation sequence.',`<div class="stage"><h3>04 · route</h3><div class="menu"><div class="item"><b>Open</b><p>start a topic</p></div><div class="item"><b>Check</b><p>use a tag</p></div><div class="item"><b>Continue</b><p>ask a follow-up</p></div></div></div>`),
-S('Tag recipe','5 min. Notice the positive/negative switch.',`<div class="stage"><h3>05 · grammar recipe</h3><div class="grid2"><div class="speech">You like tea, <b>don’t you?</b></div><div class="speech">You don’t like coffee, <b>do you?</b></div></div><p>Positive statement → negative tag. Negative statement → positive tag.</p></div>`),
-S('Be / do / can tags','5 min. Students tap a base and complete the tag.',`<div class="stage"><h3>06 · tag bases</h3><div class="menu" id="bases"><button class="item choice" data-base="be">She is ready, ___?</button><button class="item choice" data-base="do">They play here, ___?</button><button class="item choice" data-base="can">You can join us, ___?</button></div><p id="baseOut" class="feedback">Match the helper: is → isn’t · play → don’t · can → can’t.</p></div>`),
-S('Flip the sugar packet','4 min. Tap to reveal the matching tag.',`<div class="stage"><h3>07 · flip reveal</h3><div class="menu"><button class="flip"><span class="front">It’s warm today</span><span class="back">isn’t it?</span></button><button class="flip"><span class="front">You like music</span><span class="back">don’t you?</span></button><button class="flip"><span class="front">We can sit here</span><span class="back">can’t we?</span></button></div></div>`),
-S('Intonation dial','5 min. Practise a real question versus a friendly check.',`<div class="stage"><h3>08 · voice</h3><div class="speech">You’re coming with us, aren’t you?</div><div class="menu"><div class="item"><b>Falling ↘</b><p>I expect yes.</p></div><div class="item"><b>Rising ↗</b><p>I really need to know.</p></div></div></div>`),
-S('Small-talk openers','5 min. Students select an opener and add a tag.',`<div class="stage"><h3>09 · openers</h3><div class="menu" id="openers"><button class="item choice">Nice weather today, ___?</button><button class="item choice">You’re in the music club, ___?</button><button class="item choice">That was a long week, ___?</button><button class="item choice">You’ve seen this film, ___?</button></div><p id="openOut" class="feedback">Choose one and say it with a warm voice.</p></div>`),
-S('Follow-up questions','5 min. Keep the conversation moving after the tag answer.',`<div class="stage"><h3>10 · keep going</h3><div class="menu"><div class="item"><b>Really?</b><p>Show interest.</p></div><div class="item"><b>How about you?</b><p>Return the question.</p></div><div class="item"><b>What happened next?</b><p>Invite detail.</p></div></div></div>`),
-S('Repair the tag','4 min. Students correct the helper and polarity.',`<div class="stage"><h3>11 · repair</h3><div class="grid2" id="repair"><button class="choice">You like it, isn’t it?</button><button class="choice">You like it, don’t you?</button><button class="choice">She isn’t late, isn’t she?</button><button class="choice">She isn’t late, is she?</button></div><p id="repairOut" class="feedback">Check the main verb and the positive/negative switch.</p></div>`),
-S('Small talk topics','4 min. Sort topics into easy, careful, or avoid.',`<div class="stage"><h3>12 · topic map</h3><div class="menu"><div class="item"><b>Easy</b><p>weather · music · food · hobbies</p></div><div class="item"><b>Careful</b><p>school · travel · plans</p></div><div class="item"><b>Respect boundaries</b><p>private money · health · family details</p></div></div></div>`),
-S('Café script','5 min. Students notice the open → tag → follow-up pattern.',`<div class="stage"><h3>13 · model</h3><div class="speech">A: You’ve tried the new café, haven’t you?<br>B: Yes, I have. The cakes are great.<br>A: Really? Which one did you like?</div></div>`),
-S('Reading the room','2 min. Predict the topic from the scene.',`<div class="stage"><h3>14 · visual preview</h3><img class="figure" src="${A}park-chat.png" alt="Illustrated evening park with teens greeting and chatting under string lights"><p>Choose one opener that fits this setting.</p></div>`),
-S('Text: The bench conversation','6 min. Partner-read and underline the tags.',`<div class="stage"><h3>15 · dialogue</h3><div class="speech"><p>“You’re new to the park club, aren’t you?” asked Mina.</p><p>“Yes, I am. The games are fun, aren’t they?” said Noor.</p><p>“They are. You can join our team, can’t you?”</p><p>Noor smiled. “I can. What do you usually play?”</p></div><p>Circle the tags. Box the follow-up question.</p></div>`),
-S('Dialogue check','4 min. Click the line that keeps the conversation moving.',`<div class="stage"><h3>16 · evidence</h3><div class="grid2" id="dialogue"><button class="choice">You’re new, aren’t you?</button><button class="choice">Yes, I am.</button><button class="choice">What do you usually play?</button><button class="choice">No more talking.</button></div><p id="dialogueOut" class="feedback">Choose one tag and one follow-up.</p></div>`),
-S('Tag table close-up','4 min. Build two lines from the image.',`<div class="stage"><h3>17 · visual language</h3><img class="figure" src="${A}table-cards.png" alt="Illustrated conversation table with mugs, tag cards and a plant"><p class="feedback">Use: “You like ___, don’t you?” and “You can ___, can’t you?”</p></div>`),
-S('Information gap: café cards','6 min. Partner A has a person card; Partner B finds shared interests.',`<div class="stage"><h3>18 · pair task</h3><div class="grid2"><div class="speech"><b>Card A</b><br>likes: jazz · cycling · spicy food</div><div class="speech"><b>Card B</b><br>likes: pop · cycling · noodles</div></div><p>Find one match and ask a tag question about it.</p></div>`),
-S('Conversation temperature','5 min. Choose a response that sounds warm, neutral, or closed.',`<div class="stage"><h3>19 · response choices</h3><div class="menu" id="responses"><button class="item choice">Really? Tell me more.</button><button class="item choice">Oh.</button><button class="item choice">How about you?</button><button class="item choice">That’s private.</button></div><p id="responseOut" class="feedback">Choose the responses that keep a safe conversation alive.</p></div>`),
-S('Small-talk carousel','6 min. Rotate partners after each topic.',`<div class="stage"><h3>20 · speaking circuit</h3><div class="path"><div class="node">open</div><div class="line"></div><div class="node">tag</div><div class="line"></div><div class="node">answer</div><div class="line"></div><div class="node">follow up</div></div><p>Use a new topic each round.</p></div>`),
-S('Build a café conversation','7 min. Students create a four-line dialogue.',`<div class="stage"><h3>21 · production setup</h3><div class="menu"><div class="item"><b>Line 1</b><p>topic opener</p></div><div class="item"><b>Line 2</b><p>question tag</p></div><div class="item"><b>Line 3</b><p>answer + detail</p></div><div class="item"><b>Line 4</b><p>follow-up</p></div></div></div>`),
-S('Perform the dialogue','7 min. Pairs perform with natural intonation.',`<div class="stage"><h3>22 · production</h3><div class="speech">Aim for: one rising tag, one falling tag, one follow-up, and one “How about you?”</div><p>Listeners note the topic they heard.</p></div>`),
-S('Peer café check','5 min. Use three quick checks.',`<div class="stage"><h3>23 · feedback</h3><div class="menu"><div class="item"><b>Warm</b><p>Did the voice sound friendly?</p></div><div class="item"><b>Accurate</b><p>Did the helper match?</p></div><div class="item"><b>Open</b><p>Did the talk continue?</p></div></div></div>`),
-S('Review: tag menu','5 min. Teams choose the best tag for each line.',`<div class="stage"><h3>24 · review</h3><div class="grid2" id="quiz"><button class="choice">You’re ready, aren’t you?</button><button class="choice">They don’t eat meat, do they?</button><button class="choice">We can start, can’t we?</button><button class="choice">She likes it, doesn’t she?</button></div><p id="quizOut" class="feedback">Choose four accurate tags.</p></div>`),
-S('One-minute café round','2 min. Students speak under a short timer.',`<div class="stage"><h3>25 · fluency</h3><div class="timer" id="timer">60</div><button class="choice" id="start">START CHAT</button><p>Open, add a tag, answer, and ask a follow-up.</p></div>`),
-S('Homework: small-talk menu','2 min. Students prepare six safe topics and tag questions.',`<div class="stage"><h3>26 · homework</h3><div class="menu"><div class="item"><b>Write</b><p>six topic openers</p></div><div class="item"><b>Add</b><p>one question tag to each</p></div><div class="item"><b>Prepare</b><p>two follow-ups</p></div></div></div>`),
-S('Exit ticket','2 min. Students complete one friendly line. Preview presentation skills.',`<div class="stage"><h3>27 · exit ticket</h3><h2>Leave the café with a question.</h2><div class="tokens" id="exit"><button class="tag">You like …, don’t you?</button><button class="tag">You can …, can’t you?</button><button class="tag">It’s …, isn’t it?</button></div><p id="exitOut" class="feedback">Choose one and complete it for a partner.</p><div class="eyebrow">Next: Presentation Skills · Speak Confidently</div></div>`)
-];
-const deck=document.querySelector('#deck');deck.innerHTML=scenes.map((s,i)=>`<section class="scene ${i?'':'active'}">${s.b}</section>`).join('');const note=document.querySelector('#note'),map=document.querySelector('#map');map.innerHTML='<h3 style="color:var(--sage)">Tag Café map</h3>'+scenes.map((s,i)=>`<button data-jump="${i}">${i+1}. ${s.t}</button>`).join('');let cur=0;function show(i){cur=(i+scenes.length)%scenes.length;document.querySelectorAll('.scene').forEach((x,n)=>x.classList.toggle('active',n===cur));count.textContent=`${cur+1} / ${scenes.length}`;bar.style.width=`${(cur+1)/scenes.length*100}%`;note.classList.remove('open');map.classList.remove('open');window.scrollTo(0,0)}show(0);next.onclick=()=>show(cur+1);prev.onclick=()=>show(cur-1);mapBtn.onclick=()=>map.classList.toggle('open');noteBtn.onclick=()=>{note.innerHTML=`<b>Teacher note · ${cur+1}</b><br>${scenes[cur].n}`;note.classList.toggle('open')};map.onclick=e=>{if(e.target.dataset.jump!==undefined)show(+e.target.dataset.jump)};document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(cur+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(cur-1)}if(e.key.toLowerCase()==='m')map.classList.toggle('open');if(e.key.toLowerCase()==='n')noteBtn.click()});let sx=0;document.addEventListener('touchstart',e=>sx=e.changedTouches[0].screenX,{passive:true});document.addEventListener('touchend',e=>{let d=e.changedTouches[0].screenX-sx;if(Math.abs(d)>45)show(cur+(d<0?1:-1))},{passive:true});document.querySelectorAll('#mood .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');moodOut.textContent='Now add a tag: It is, isn’t it?'});document.querySelectorAll('[data-base]').forEach(b=>b.onclick=()=>{b.classList.add('selected');baseOut.textContent='Good — match the auxiliary and switch polarity.'});document.querySelectorAll('.flip').forEach(b=>b.onclick=()=>b.classList.toggle('open'));document.querySelectorAll('#openers .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');openOut.textContent='Say it with a friendly tag and eye contact.'});document.querySelectorAll('#repair .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');repairOut.textContent='Check the helper and polarity.'});document.querySelectorAll('#dialogue .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');dialogueOut.textContent='Choose one tag and one follow-up.'});document.querySelectorAll('#responses .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');responseOut.textContent='Which response keeps the talk moving?'});document.querySelectorAll('#quiz .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');quizOut.textContent='Good — accurate tags help the conversation flow.'});let seconds=60,run;start.onclick=()=>{clearInterval(run);seconds=60;timer.textContent=seconds;run=setInterval(()=>{seconds--;timer.textContent=seconds;if(seconds<=0)clearInterval(run)},1000)};document.querySelectorAll('#exit .tag').forEach(b=>b.onclick=()=>{b.classList.add('selected');exitOut.textContent='Complete the tag for a partner.'});
-</script><style>.title{z-index:10!important;color:#fff!important;text-shadow:0 3px 15px #241410}.title h1,.title p{color:#fff!important}.title .eyebrow{color:#ffe0a4!important}</style></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+  <meta name="theme-color" content="#080b12">
+  <title>Lesson 26 | Frequency 26</title>
+  <link rel="stylesheet" href="experience-v6.css">
+</head>
+<body>
+  <header class="broadcast-hud" aria-label="Lesson status">
+    <span class="live-dot"></span><b>FREQUENCY 26</b><span>TAG SIGNAL <strong id="tagScore">00</strong></span>
+  </header>
+
+  <div class="tools">
+    <button id="mapBtn" type="button">TRACK LIST</button>
+    <button id="noteBtn" type="button">NOTES</button>
+  </div>
+
+  <main id="deck">
+    <section class="scene image-scene active transition-0" data-scene="1" data-title="Frequency 26" data-note="Open with the image. Ask students what makes a radio conversation enjoyable to hear. Do not explain question tags yet.">
+      <img class="fullbleed" src="assets/radio-crew-v2.png" alt="Exactly seven teenagers hosting a lively radio show together in an analog studio">
+      <div class="photo-shade left"></div>
+      <div class="hero-copy">
+        <p class="kicker">Lesson 26 · Question tags + small talk</p>
+        <h1>KEEP THE<br><i>CONVERSATION</i><br>ON AIR.</h1>
+        <p class="standfirst">Use a short tag to check, connect, and invite another person to respond.</p>
+        <button class="start-button" id="startLesson" type="button">START THE SHOW</button>
+      </div>
+      <div class="vinyl-orbit" aria-hidden="true"><i></i></div>
+    </section>
+
+    <section class="scene paper transition-1" data-scene="2" data-title="Conversation check-in" data-note="Give one choice to each student. Students select one quality and support it with a real example or a short reason.">
+      <div class="track">01 · SOUND CHECK</div>
+      <h2 class="poster-title">WHAT MAKES<br>A CONVERSATION<br><i>FEEL EASY?</i></h2>
+      <div class="word-burst" id="checkIn">
+        <button data-word="listening">LISTENING</button>
+        <button data-word="shared interests">SHARED INTERESTS</button>
+        <button data-word="friendly questions">FRIENDLY QUESTIONS</button>
+        <button data-word="time to answer">TIME TO ANSWER</button>
+        <button data-word="humour">HUMOUR</button>
+        <button data-word="respect">RESPECT</button>
+        <button data-word="follow-up questions">FOLLOW-UPS</button>
+      </div>
+      <p class="instruction"><span>i</span>Choose one. Give a real or imaginary example: “A conversation feels easy when…”</p>
+      <p class="response-line" id="checkInOut">Seven people can choose seven different strengths.</p>
+    </section>
+
+    <section class="scene image-scene transition-2" data-scene="3" data-title="The bus-stop opener" data-note="Students study the image for 20 seconds. Invite seven possible openers, then compare which sound natural for people who have just met.">
+      <img class="fullbleed" src="assets/bus-stop-chat-v2.png" alt="Two teenagers making friendly small talk while waiting at a rainy city bus stop">
+      <div class="photo-shade left"></div>
+      <div class="scenario-copy">
+        <p class="kicker">02 · REAL-LIFE SIGNAL</p>
+        <h2>THEY HAVE<br>JUST MET.</h2>
+        <p>Which line sounds natural here?</p>
+        <div class="open-lines" id="busOpeners">
+          <button data-quality="good">The bus is late, isn't it?</button>
+          <button data-quality="good">You go to West High, don't you?</button>
+          <button data-quality="weak">Tell me your private family problems.</button>
+        </div>
+        <p class="response-line" id="busOut">Choose a line, then explain why it fits or does not fit.</p>
+      </div>
+    </section>
+
+    <section class="scene blue transition-3" data-scene="4" data-title="Lesson goals" data-note="Read the four outcomes quickly. Ask students which one is most useful outside class.">
+      <div class="track">03 · TODAY'S PLAYLIST</div>
+      <div class="goal-stack">
+        <div><b>01</b><strong>UNDERSTAND</strong><span>why speakers use question tags</span></div>
+        <div><b>02</b><strong>BUILD</strong><span>accurate tags with the correct helper and pronoun</span></div>
+        <div><b>03</b><strong>HEAR</strong><span>the difference between falling and rising intonation</span></div>
+        <div><b>04</b><strong>HOST</strong><span>a natural small-talk conversation online</span></div>
+      </div>
+      <div class="needle" aria-hidden="true"></div>
+    </section>
+
+    <section class="scene image-scene topic-scene transition-4" data-scene="5" data-title="Seven safe topics" data-note="Assign one object to each student. They name the topic and create one safe opener. Click a topic label to show a model.">
+      <img class="fullbleed" src="assets/small-talk-topics-v2.png" alt="Seven groups of objects representing weather, music, films, games, food, hobbies, and weekend plans">
+      <div class="topic-copy">
+        <p class="kicker">04 · SMALL-TALK TOPICS</p>
+        <h2>START WITH<br>WHAT YOU<br>CAN SHARE.</h2>
+      </div>
+      <div class="topic-strip" id="topicStrip">
+        <button data-model="The weather changed quickly, didn't it?">WEATHER</button>
+        <button data-model="You listen to music while studying, don't you?">MUSIC</button>
+        <button data-model="That film was popular, wasn't it?">FILMS</button>
+        <button data-model="You play online games sometimes, don't you?">GAMES</button>
+        <button data-model="The snacks look good, don't they?">FOOD</button>
+        <button data-model="You enjoy drawing, don't you?">HOBBIES</button>
+        <button data-model="You're free this weekend, aren't you?">PLANS</button>
+      </div>
+      <p class="topic-model" id="topicModel">Choose a topic to reveal a natural opener.</p>
+    </section>
+
+    <section class="scene ink transition-5" data-scene="6" data-title="The conversation groove" data-note="Demonstrate the four moves with one confident student. Then have the class repeat the sequence using a different topic.">
+      <div class="track">05 · THE CONVERSATION GROOVE</div>
+      <h2 class="wide-heading">SMALL TALK NEEDS<br>FOUR MOVES.</h2>
+      <div class="groove" id="groove">
+        <button data-step="1"><b>NOTICE</b><span>“The rain finally stopped.”</span></button>
+        <button data-step="2"><b>TAG</b><span>“It was heavy, wasn't it?”</span></button>
+        <button data-step="3"><b>LISTEN</b><span>“Yes, especially this morning.”</span></button>
+        <button data-step="4"><b>FOLLOW UP</b><span>“Did you get wet?”</span></button>
+      </div>
+      <p class="instruction"><span>i</span>Click the four moves in order. Then repeat the pattern with music, films, or weekend plans.</p>
+      <p class="response-line" id="grooveOut">A tag invites a response; a follow-up develops it.</p>
+    </section>
+
+    <section class="scene cream transition-0" data-scene="7" data-title="What a question tag does" data-note="Teach meaning before form. Contrast the three purposes and ask students to paraphrase the speaker's intention.">
+      <div class="track">06 · MEANING</div>
+      <h2 class="wide-heading">A QUESTION TAG IS A<br><i>MINI-QUESTION</i> AFTER A STATEMENT.</h2>
+      <div class="meaning-lines">
+        <div><b>CHECK A FACT</b><p>“The meeting starts at four, <strong>doesn't it?</strong>”</p><em>I think this is true, but I want confirmation.</em></div>
+        <div><b>INVITE AGREEMENT</b><p>“That song is catchy, <strong>isn't it?</strong>”</p><em>I expect you may agree with my opinion.</em></div>
+        <div><b>SOFTEN AN OPENER</b><p>“It's quieter here, <strong>isn't it?</strong>”</p><em>This is warmer than asking a sudden direct question.</em></div>
+      </div>
+      <p class="instruction"><span>i</span>For each example, say what the speaker wants: information, agreement, or a friendly start.</p>
+    </section>
+
+    <section class="scene image-scene tuner-scene transition-1" data-scene="8" data-title="The polarity switch" data-note="Use the tuner image as a physical metaphor. Students point left or right as they say each example.">
+      <img class="fullbleed" src="assets/polarity-tuner-v2.png" alt="Analog radio tuner showing a positive and negative signal on opposite sides of one dial">
+      <div class="tuner-copy">
+        <p class="kicker">07 · THE MAIN RULE</p>
+        <h2>OPPOSITES<br>CONNECT.</h2>
+        <div class="polarity-rule"><strong>POSITIVE STATEMENT</strong><span>→</span><b>NEGATIVE TAG</b></div>
+        <p>You <u>like</u> this song, <mark>don't you?</mark></p>
+        <div class="polarity-rule reverse"><strong>NEGATIVE STATEMENT</strong><span>→</span><b>POSITIVE TAG</b></div>
+        <p>She <u>isn't</u> late, <mark>is she?</mark></p>
+      </div>
+    </section>
+
+    <section class="scene red transition-2" data-scene="9" data-title="Tags with be" data-note="Explain that BE repeats itself in the tag. Click each line to reveal the tag and the pronoun.">
+      <div class="track">08 · HELPER FAMILY A</div>
+      <h2 class="poster-title">IF THE MAIN VERB IS<br><i>BE, REPEAT BE.</i></h2>
+      <div class="family-lines" id="beFamily">
+        <button data-answer="isn't she?">Maya is online, <em>_____</em></button>
+        <button data-answer="aren't they?">The headphones are new, <em>_____</em></button>
+        <button data-answer="wasn't it?">The show was useful, <em>_____</em></button>
+        <button data-answer="were they?">They weren't nervous, <em>_____</em></button>
+      </div>
+      <p class="rule-note"><b>FORM:</b> am / is / are / was / were + pronoun</p>
+    </section>
+
+    <section class="scene paper transition-3" data-scene="10" data-title="Tags with do, does, and did" data-note="Point out that ordinary verbs need DO in present and DID in past. Ask for the tense before revealing the tag.">
+      <div class="track">09 · HELPER FAMILY B</div>
+      <h2 class="wide-heading">ORDINARY VERB?<br><i>CALL DO.</i></h2>
+      <div class="timeline-family" id="doFamily">
+        <button data-answer="don't you?"><b>NOW · I/YOU/WE/THEY</b><span>You play basketball,</span><em>_____</em></button>
+        <button data-answer="doesn't he?"><b>NOW · HE/SHE/IT</b><span>Omar likes podcasts,</span><em>_____</em></button>
+        <button data-answer="didn't they?"><b>PAST · ALL SUBJECTS</b><span>They watched the final,</span><em>_____</em></button>
+        <button data-answer="did she?"><b>PAST NEGATIVE</b><span>Lina didn't call,</span><em>_____</em></button>
+      </div>
+      <p class="rule-note"><b>LOOK FOR:</b> present habit → do/does · finished past → did</p>
+    </section>
+
+    <section class="scene blue transition-4" data-scene="11" data-title="Tags with have, can, and will" data-note="Show that an existing helper or modal repeats in the tag. Students identify the helper before they say the answer.">
+      <div class="track">10 · HELPER FAMILY C</div>
+      <h2 class="poster-title">A HELPER ALREADY<br>EXISTS. <i>REUSE IT.</i></h2>
+      <div class="helper-wave" id="helperFamily">
+        <button data-answer="haven't you?"><b>HAVE</b><span>You've heard this track,</span><em>_____</em></button>
+        <button data-answer="has she?"><b>HAS</b><span>She hasn't arrived,</span><em>_____</em></button>
+        <button data-answer="can't we?"><b>CAN</b><span>We can record here,</span><em>_____</em></button>
+        <button data-answer="will they?"><b>WILL</b><span>They won't be late,</span><em>_____</em></button>
+      </div>
+      <p class="rule-note"><b>RULE:</b> copy the helper, switch positive/negative, then add a pronoun.</p>
+    </section>
+
+    <section class="scene cream transition-5" data-scene="12" data-title="Change the subject to a pronoun" data-note="Students should say the replacement pronoun first, then complete the tag. Emphasise noun agreement.">
+      <div class="track">11 · PRONOUN SIGNAL</div>
+      <h2 class="wide-heading">THE TAG USES<br><i>A PRONOUN.</i></h2>
+      <div class="pronoun-track">
+        <div><strong>MAYA</strong><span>→</span><b>SHE</b><p>Maya is ready, isn't <u>she</u>?</p></div>
+        <div><strong>THE BOYS</strong><span>→</span><b>THEY</b><p>The boys play here, don't <u>they</u>?</p></div>
+        <div><strong>THIS SONG</strong><span>→</span><b>IT</b><p>This song is new, isn't <u>it</u>?</p></div>
+        <div><strong>THOSE LIGHTS</strong><span>→</span><b>THEY</b><p>Those lights work, don't <u>they</u>?</p></div>
+        <div><strong>THERE IS</strong><span>→</span><b>THERE</b><p>There's a studio upstairs, isn't <u>there</u>?</p></div>
+      </div>
+    </section>
+
+    <section class="scene ink transition-0" data-scene="13" data-title="Three useful special tags" data-note="Teach these as fixed useful patterns, not as the central rule. Choral drill each one twice.">
+      <img class="mic-object" src="assets/broadcast-mic-v2.png" alt="Vintage broadcast microphone with a blue coiled cable and red indicator light">
+      <div class="special-copy">
+        <div class="track">12 · SPECIAL TRACKS</div>
+        <h2>THREE PATTERNS<br>TO REMEMBER.</h2>
+        <div class="special-lines">
+          <p><b>I'M LATE,</b> <mark>AREN'T I?</mark><em>not “amn't I?”</em></p>
+          <p><b>LET'S START,</b> <mark>SHALL WE?</mark><em>a suggestion together</em></p>
+          <p><b>OPEN THE CHAT,</b> <mark>WILL YOU?</mark><em>a friendly request</em></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene paper transition-1" data-scene="14" data-title="Choose the helper" data-note="Assign one line per student. Students name the tense or modal, then click to reveal the complete tag.">
+      <div class="track">13 · CONTROLLED PRACTICE</div>
+      <h2 class="wide-heading">FIND THE HELPER<br>BEFORE THE TAG.</h2>
+      <div class="seven-lines reveal-lines" id="helperReveal">
+        <button data-answer="isn't she?"><b>1</b><span>Rina is in the film club,</span><em>_____</em></button>
+        <button data-answer="don't they?"><b>2</b><span>Your friends live nearby,</span><em>_____</em></button>
+        <button data-answer="didn't he?"><b>3</b><span>Aziz called yesterday,</span><em>_____</em></button>
+        <button data-answer="haven't we?"><b>4</b><span>We've met before,</span><em>_____</em></button>
+        <button data-answer="can't you?"><b>5</b><span>You can hear me,</span><em>_____</em></button>
+        <button data-answer="will she?"><b>6</b><span>She won't miss the show,</span><em>_____</em></button>
+        <button data-answer="were they?"><b>7</b><span>They weren't at school,</span><em>_____</em></button>
+      </div>
+      <p class="instruction"><span>i</span>One line per student: name the grammar signal, predict the tag, then click to check.</p>
+    </section>
+
+    <section class="scene yellow transition-2" data-scene="15" data-title="Build accurate tags" data-note="Students choose one of the two options. Ask them to explain both the helper and the pronoun before clicking.">
+      <div class="track">14 · BUILD THE TAG</div>
+      <h2 class="poster-title">TWO CHOICES.<br><i>ONE CLEAN SIGNAL.</i></h2>
+      <div class="tag-builder" id="tagBuilder">
+        <div data-question><p>The café closes at eight,</p><button data-correct="true">doesn't it?</button><button>isn't it?</button></div>
+        <div data-question><p>Nora isn't in class,</p><button>isn't she?</button><button data-correct="true">is she?</button></div>
+        <div data-question><p>Those films were funny,</p><button data-correct="true">weren't they?</button><button>didn't it?</button></div>
+        <div data-question><p>You haven't finished,</p><button>don't you?</button><button data-correct="true">have you?</button></div>
+      </div>
+      <p class="response-line" id="builderOut">0 / 4 correct. Explain each choice before you click.</p>
+    </section>
+
+    <section class="scene red transition-3" data-scene="16" data-title="Repair common mistakes" data-note="Pairs explain the problem first. Click each line to reveal the correction and a short reason.">
+      <div class="track">15 · ERROR REPAIR</div>
+      <h2 class="wide-heading">HEAR THE STATIC.<br><i>FIX THE SIGNAL.</i></h2>
+      <div class="repair-list" id="repairList">
+        <button data-fix="You like jazz, don't you? · Ordinary present verb → DO.">You like jazz, isn't it?</button>
+        <button data-fix="Mina is here, isn't she? · Mina becomes SHE.">Mina is here, isn't Mina?</button>
+        <button data-fix="They didn't call, did they? · Negative statement → positive tag.">They didn't call, didn't they?</button>
+        <button data-fix="He can swim, can't he? · Repeat CAN, not DO.">He can swim, doesn't he?</button>
+        <button data-fix="I'm next, aren't I? · This is the fixed form.">I'm next, amn't I?</button>
+      </div>
+      <p class="instruction"><span>i</span>Say what is wrong: helper, positive/negative switch, or pronoun. Then click to repair.</p>
+    </section>
+
+    <section class="scene image-scene intonation-scene transition-4" data-scene="17" data-title="Falling and rising intonation" data-note="Play the audio twice. Students trace the arrow in the air. Explain expectation versus real uncertainty.">
+      <img class="fullbleed" src="assets/intonation-host-v2.png" alt="The same teenage radio host showing falling and rising question-tag intonation with waveforms">
+      <div class="intonation-label fall"><b>FALLING ↘</b><span>I expect agreement.</span><p>“Great show, <u>wasn't it?</u>”</p></div>
+      <div class="intonation-label rise"><b>RISING ↗</b><span>I genuinely need to know.</span><p>“The show starts at six, <u>doesn't it?</u>”</p></div>
+      <div class="audio-rail compact">
+        <audio preload="metadata" src="assets/audio/tag-intonation.wav"></audio>
+        <button class="audio-play" type="button">PLAY CONTRAST</button>
+        <span>Listen for certainty versus uncertainty.</span>
+      </div>
+    </section>
+
+    <section class="scene blue transition-5" data-scene="18" data-title="Choose the intonation" data-note="One situation per student. They choose falling or rising and explain the speaker's level of certainty.">
+      <div class="track">17 · INTONATION PRACTICE</div>
+      <h2 class="wide-heading">WHAT DOES THE<br>SPEAKER <i>MEAN?</i></h2>
+      <div class="intonation-quiz" id="intonationQuiz">
+        <div data-answer="fall"><b>1</b><span>You both loved the film.</span><p>It was brilliant, wasn't it?</p><button data-choice="fall">↘</button><button data-choice="rise">↗</button></div>
+        <div data-answer="rise"><b>2</b><span>You forgot the meeting time.</span><p>It starts at four, doesn't it?</p><button data-choice="fall">↘</button><button data-choice="rise">↗</button></div>
+        <div data-answer="fall"><b>3</b><span>You can see your friend is tired.</span><p>Long day, wasn't it?</p><button data-choice="fall">↘</button><button data-choice="rise">↗</button></div>
+        <div data-answer="rise"><b>4</b><span>You are unsure about the Wi-Fi.</span><p>The password changed, didn't it?</p><button data-choice="fall">↘</button><button data-choice="rise">↗</button></div>
+        <div data-answer="fall"><b>5</b><span>You share the same opinion.</span><p>This track is better, isn't it?</p><button data-choice="fall">↘</button><button data-choice="rise">↗</button></div>
+        <div data-answer="rise"><b>6</b><span>You cannot remember the room.</span><p>We're in Studio B, aren't we?</p><button data-choice="fall">↘</button><button data-choice="rise">↗</button></div>
+        <div data-answer="fall"><b>7</b><span>You invite a friend to agree.</span><p>That was fun, wasn't it?</p><button data-choice="fall">↘</button><button data-choice="rise">↗</button></div>
+      </div>
+      <p class="response-line" id="intonationOut">Choose an arrow for each context.</p>
+    </section>
+
+    <section class="scene ink transition-0" data-scene="19" data-title="Sound natural" data-note="Play one phrase at a time. Students repeat with the same rhythm, then personalise one sentence.">
+      <div class="track">18 · PRONUNCIATION</div>
+      <h2 class="poster-title">THE TAG IS<br><i>SHORT + LIGHT.</i></h2>
+      <div class="shadow-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="shadow-lines">
+        <p>It's <strong>COLD</strong> today, <em>isn't it?</em></p>
+        <p>You <strong>LIKE</strong> this song, <em>don't you?</em></p>
+        <p>Maya <strong>FINISHED</strong>, <em>didn't she?</em></p>
+        <p>They can <strong>JOIN</strong> us, <em>can't they?</em></p>
+      </div>
+      <div class="audio-rail">
+        <audio preload="metadata" src="assets/audio/tag-shadowing.wav"></audio>
+        <button class="audio-play" type="button">PLAY + SHADOW</button>
+        <span>Stress the main information. Keep the tag lighter.</span>
+      </div>
+    </section>
+
+    <section class="scene image-scene listening-scene transition-1" data-scene="20" data-title="Listening preview" data-note="Before playing the audio, students predict the relationship, topic, and one possible tag from the image.">
+      <img class="fullbleed" src="assets/listening-studio-v2.png" alt="Three teenagers recording a friendly conversation in a school radio studio">
+      <div class="photo-shade right"></div>
+      <div class="listening-copy">
+        <p class="kicker">19 · LISTENING</p>
+        <h2>WHO IS NEW<br>TO THE STUDIO?</h2>
+        <ol>
+          <li>Predict one safe topic.</li>
+          <li>Listen for four question tags.</li>
+          <li>Notice one follow-up question.</li>
+        </ol>
+        <div class="audio-rail light-rail">
+          <audio preload="metadata" src="assets/audio/studio-small-talk.wav"></audio>
+          <button class="audio-play" type="button">PLAY DIALOGUE</button>
+          <span>First listen: understand the situation. Second listen: collect language.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene cream transition-2" data-scene="21" data-title="Listening questions" data-note="Assign one question to each student. Play the audio again, allow note-taking, then click each line for the answer.">
+      <div class="track">20 · LISTEN FOR EVIDENCE</div>
+      <h2 class="wide-heading">SEVEN LISTENERS.<br>SEVEN DETAILS.</h2>
+      <div class="seven-lines listening-questions" id="listeningQuestions">
+        <button data-answer="Sam is new to the media club."><b>1</b><span>Who is new?</span><em>REVEAL</em></button>
+        <button data-answer="He joined on Monday."><b>2</b><span>When did Sam join?</span><em>REVEAL</em></button>
+        <button data-answer="Lina says the studio looks amazing."><b>3</b><span>What opinion do they share?</span><em>REVEAL</em></button>
+        <button data-answer="She asks if he has used a mixer before."><b>4</b><span>What experience does Lina check?</span><em>REVEAL</em></button>
+        <button data-answer="Sam says he can learn quickly."><b>5</b><span>What ability does Sam mention?</span><em>REVEAL</em></button>
+        <button data-answer="Lina asks what music he listens to."><b>6</b><span>What follow-up question keeps the talk going?</span><em>REVEAL</em></button>
+        <button data-answer="Sam likes hip hop and film soundtracks."><b>7</b><span>What music does Sam like?</span><em>REVEAL</em></button>
+      </div>
+      <p class="instruction"><span>i</span>One question per student. Answer in a full sentence, then click to check.</p>
+    </section>
+
+    <section class="scene paper transition-3" data-scene="22" data-title="Transcript detective" data-note="Students click the tags and follow-ups. Then read the dialogue in roles, changing the intonation to match confidence.">
+      <div class="track">21 · TRANSCRIPT DETECTIVE</div>
+      <h2 class="wide-heading">WHAT KEEPS THE<br>CONVERSATION MOVING?</h2>
+      <div class="transcript">
+        <p><b>LINA</b> You're new to the media club, <button data-kind="tag">aren't you?</button></p>
+        <p><b>SAM</b> Yes, I joined on Monday. The studio looks amazing.</p>
+        <p><b>LINA</b> It does, <button data-kind="tag">doesn't it?</button> You've used a mixer before, <button data-kind="tag">haven't you?</button></p>
+        <p><b>SAM</b> Not this kind. I can learn quickly, <button data-kind="tag">can't I?</button></p>
+        <p><b>LINA</b> Of course. You like music, <button data-kind="tag">don't you?</button> <button data-kind="follow">What do you listen to?</button></p>
+        <p><b>SAM</b> Mostly hip hop and film soundtracks. <button data-kind="follow">How about you?</button></p>
+      </div>
+      <p class="response-line" id="transcriptOut">Find five tags and two follow-up questions.</p>
+    </section>
+
+    <section class="scene yellow transition-4" data-scene="23" data-title="Signal check" data-note="Run this as a team review. Students justify each answer. The score counts only first correct choices.">
+      <div class="track">22 · RAPID REVIEW</div>
+      <h2 class="poster-title">SEVEN SIGNALS.<br><i>HOW MANY ARE CLEAN?</i></h2>
+      <div class="rapid-quiz" id="rapidQuiz">
+        <div data-answer="b"><b>1</b><p>She's your cousin, ___?</p><button data-choice="a">doesn't she</button><button data-choice="b">isn't she</button></div>
+        <div data-answer="a"><b>2</b><p>They study here, ___?</p><button data-choice="a">don't they</button><button data-choice="b">aren't they</button></div>
+        <div data-answer="b"><b>3</b><p>He didn't text, ___?</p><button data-choice="a">didn't he</button><button data-choice="b">did he</button></div>
+        <div data-answer="a"><b>4</b><p>You've met Ana, ___?</p><button data-choice="a">haven't you</button><button data-choice="b">don't you</button></div>
+        <div data-answer="b"><b>5</b><p>We can start, ___?</p><button data-choice="a">don't we</button><button data-choice="b">can't we</button></div>
+        <div data-answer="a"><b>6</b><p>Let's record, ___?</p><button data-choice="a">shall we</button><button data-choice="b">will we</button></div>
+        <div data-answer="b"><b>7</b><p>I'm first, ___?</p><button data-choice="a">amn't I</button><button data-choice="b">aren't I</button></div>
+      </div>
+      <p class="response-line" id="rapidOut">SCORE 0 / 7</p>
+    </section>
+
+    <section class="scene red transition-5" data-scene="24" data-title="A complete model conversation" data-note="Read the model once. Seven students then identify the function of one numbered move each.">
+      <div class="track">23 · MODEL BEFORE YOU SPEAK</div>
+      <h2 class="wide-heading">A GOOD OPENER<br>DOES NOT STOP<br>AT THE TAG.</h2>
+      <div class="conversation-ladder">
+        <p><b>1 · NOTICE</b><span>The school festival starts today.</span></p>
+        <p><b>2 · TAG</b><span>It looks busy, <u>doesn't it?</u></span></p>
+        <p><b>3 · ANSWER</b><span>Yes, especially near the music stage.</span></p>
+        <p><b>4 · DETAIL</b><span>My friend's band is playing there.</span></p>
+        <p><b>5 · FOLLOW UP</b><span>Really? What kind of music do they play?</span></p>
+        <p><b>6 · RETURN</b><span>Mostly rock. How about you?</span></p>
+        <p><b>7 · CONTINUE</b><span>I like pop, but I want to hear the bands.</span></p>
+      </div>
+    </section>
+
+    <section class="scene ink transition-0" data-scene="25" data-title="Seven private prompt cards" data-note="In an online class, assign one numbered prompt privately or let students choose. Click only when the student is ready. Students must not read the prompt word for word.">
+      <div class="track">24 · INFORMATION GAP</div>
+      <h2 class="poster-title">EVERYONE HAS<br><i>A DIFFERENT SIGNAL.</i></h2>
+      <div class="role-grooves" id="roleGrooves">
+        <button><b>1 · WEATHER</b><span>It rained during your walk. You liked the cool air.</span></button>
+        <button><b>2 · MUSIC</b><span>You discovered a new singer yesterday. Ask about genres.</span></button>
+        <button><b>3 · FILM</b><span>You watched a comedy. It was fun but too long.</span></button>
+        <button><b>4 · FOOD</b><span>You tried spicy noodles. You want another recommendation.</span></button>
+        <button><b>5 · GAMES</b><span>You enjoy team games. You dislike playing alone.</span></button>
+        <button><b>6 · HOBBY</b><span>You started photography. You take pictures on your phone.</span></button>
+        <button><b>7 · WEEKEND</b><span>You are free on Saturday afternoon. You want a simple plan.</span></button>
+      </div>
+      <p class="instruction"><span>i</span>Open your number. Start with a statement + tag. Your partner answers, adds detail, and asks a follow-up.</p>
+    </section>
+
+    <section class="scene image-scene rooftop-scene transition-1" data-scene="26" data-title="Build the live radio segment" data-note="Assign exactly one role to each of seven students. Give two minutes to prepare. The Producer chooses order and prevents repeated topics.">
+      <img class="fullbleed" src="assets/rooftop-show-v2.png" alt="Exactly seven teenagers taking turns speaking at a school rooftop music event">
+      <div class="photo-shade bottom"></div>
+      <div class="rooftop-copy">
+        <p class="kicker">25 · FINAL PRODUCTION</p>
+        <h2>SEVEN VOICES.<br>ONE LIVE SHOW.</h2>
+        <div class="broadcast-roles">
+          <span><b>1 HOST</b> open the show</span>
+          <span><b>2 FACT CHECKER</b> use a rising tag</span>
+          <span><b>3 REVIEWER</b> use a falling tag</span>
+          <span><b>4 GUEST</b> answer + add detail</span>
+          <span><b>5 FOLLOW-UP HOST</b> ask for detail</span>
+          <span><b>6 CONNECTOR</b> return the question</span>
+          <span><b>7 PRODUCER</b> summarise and close</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene blue transition-2" data-scene="27" data-title="Go live for 90 seconds" data-note="Start the timer. Every student must speak once. Listeners count correct tags and follow-ups. Replay once if the group wants to improve the score.">
+      <div class="track">26 · ON AIR</div>
+      <div class="live-stage">
+        <div class="timer" id="liveTimer">90</div>
+        <div>
+          <h2>GO LIVE.</h2>
+          <p>Use one shared topic. Keep the conversation moving without reading a script.</p>
+          <button class="start-button" id="liveStart" type="button">START 90 SECONDS</button>
+        </div>
+      </div>
+      <div class="listener-strip">
+        <button data-count="tag">+ CORRECT TAG</button><strong id="tagCount">0</strong>
+        <button data-count="follow">+ FOLLOW-UP</button><strong id="followCount">0</strong>
+        <span>Target: 7 accurate tags + 3 follow-ups</span>
+      </div>
+      <p class="instruction"><span>i</span>All seven students speak. The listeners count language, not mistakes in ideas.</p>
+    </section>
+
+    <section class="scene cream transition-3" data-scene="28" data-title="Mix-down" data-note="Students choose one exit line and complete it aloud. Explain the homework and preview the next lesson on presentation skills.">
+      <div class="track">27 · MIX-DOWN</div>
+      <div class="closing-layout">
+        <div>
+          <h2>WHAT CAN YOU<br>DO <i>NOW?</i></h2>
+          <div class="exit-lines" id="exitLines">
+            <button>I can build a tag by…</button>
+            <button>Falling intonation means…</button>
+            <button>One useful small-talk line is…</button>
+          </div>
+          <p class="response-line" id="exitOut">Choose one line and complete it with a real example.</p>
+        </div>
+        <div class="homework">
+          <p class="kicker">HOMEWORK · RECORD A 45-SECOND CHAT</p>
+          <ol>
+            <li>Choose one safe topic.</li>
+            <li>Write three statements with accurate tags.</li>
+            <li>Use one falling and one rising tag.</li>
+            <li>Add two follow-up questions.</li>
+            <li>Record both voices or perform with a partner.</li>
+          </ol>
+          <p class="next-track">NEXT: PRESENTATION SKILLS · SPEAK CONFIDENTLY</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="map" id="map" aria-label="Track list"></aside>
+  <aside class="note" id="note" aria-label="Teacher notes"></aside>
+  <nav class="nav" aria-label="Slide navigation">
+    <button id="prev" type="button" aria-label="Previous slide">←</button>
+    <span id="count">1 / 28</span>
+    <span class="progress"><i id="bar"></i></span>
+    <button id="next" type="button" aria-label="Next slide">→</button>
+  </nav>
+
+  <script src="experience-v6.js"></script>
+</body>
+</html>
