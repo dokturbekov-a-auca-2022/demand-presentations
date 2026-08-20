@@ -1,7 +1,10 @@
 # Artwork provenance
 
-Generated with the built-in image-generation workflow on 16 August 2026.
+Generated with the built-in image-generation workflow on 20 August 2026 for this lesson.
 
-- `assets/desk-flatlay.png` — “Wide landscape paper collage illustration for a teenage Business English lesson: overhead desk with notebook, coffee, calculator, sticky notes and a small fictional team planning, ink blue mint coral cream graphite, generous blank space on left, no readable text.”
-- `assets/team-meeting.png` — “Wide landscape paper collage illustration: friendly diverse teen team meeting around a table with blank presentation board, notebooks and empty speech bubbles, ink blue mint coral cream graphite, no readable text.”
-- `assets/email-workspace.png` — “Wide landscape paper collage illustration: close-up email and invoice workspace with envelope, folder, calendar and checklist icons, ink blue mint coral cream graphite, no readable text.”
+- `assets/studio-hero-v2.png` - seven high-school students developing reusable bottle prototypes in a risograph startup studio; wide composition with title space.
+- `assets/client-brief-v2.png` - teen client presenting a bottle brief to a student team; calm space for instructions.
+- `assets/communications-desk-v2.png` - overhead email, phone, calendar, attachment, budget, invoice, and product workspace.
+- `assets/final-pitch-v2.png` - seven students presenting a reusable bottle proposal to a client.
+
+Shared style: premium editorial risograph and cut-paper collage in deep navy, cream, tangerine, acid-lime, and turquoise. All images contain no readable text, logos, or watermarks.

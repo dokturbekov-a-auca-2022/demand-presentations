@@ -1,9 +1,11 @@
-# Lesson 21 — Office Outfitters
+# Lesson 21 - Pop-Up Studio
 
-Offline interactive Pre-Intermediate 2 vocabulary lesson: Business English Basics.
+Teacher-led Pre-Intermediate 2 vocabulary lesson for ages 13-17.
 
-Creative identity: an office-supply catalog. Students open drawers for roles, actions, messages, money, tone, agendas, email repairs, meeting decisions, and a one-page project brief. It intentionally avoids the visual language of the airport, time-capsule, and relative-route lessons.
+Topic: Business English Basics.
 
-Controls: arrows, Page Up/Down, Space, swipe, `M` desk map, `N` teacher notes.
+Language focus: business roles, project vocabulary, common collocations, polite requests, client updates, phone calls, and short meetings.
 
-27 scenes with teacher notes. Local artwork only; no external runtime dependencies.
+Creative identity: a student pop-up startup studio developing reusable bottles for a school event. The client brief develops through vocabulary, email, listening, meeting, problem-solving, and final proposal tasks.
+
+The deck has 27 slides, four original local illustrations, three local audio tracks, seven-student task banks, keyboard/swipe navigation, teacher notes, responsive internal scrolling, pinch-zoom support, and reduced-motion support.
