@@ -20,7 +20,7 @@
   const sync = () => {
     const index = activeIndex(); const clip = config.audio.find(x=>x.scene===index);
     if (!clip) { stop(); currentClip=null; rail.classList.remove('is-visible'); transcript.classList.remove('is-open'); }
-    else if (clip !== currentClip) { stop(); currentClip=clip; label.textContent=clip.label; transcript.textContent=clip.text; transcript.classList.remove('is-open'); rail.classList.add('is-visible'); }
+    else if (clip !== currentClip) { stop(); currentClip=clip; scenes[index-1].append(rail); label.textContent=clip.label; transcript.textContent=clip.text; transcript.classList.remove('is-open'); rail.classList.add('is-visible'); }
     trigger.classList.toggle('is-visible', index===config.labScene);
   };
   play.addEventListener('click', e => { e.stopPropagation(); if(!currentClip)return; if(!audio || !audio.src.endsWith(currentClip.file)){ if(audio)audio.pause(); audio=new Audio('assets/audio/'+currentClip.file); audio.addEventListener('timeupdate',()=>{progress.style.width=((audio.currentTime/audio.duration)||0)*100+'%'}); audio.addEventListener('ended',()=>{play.textContent='REPLAY'}); } if(audio.paused){audio.play();play.textContent='PAUSE'}else{audio.pause();play.textContent='PLAY'} });
@@ -29,7 +29,7 @@
   modal.querySelector('.v3-close').addEventListener('click',()=>modal.classList.remove('is-open'));
   modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('is-open')});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')modal.classList.remove('is-open'); if((e.key==='l'||e.key==='L')&&activeIndex()===config.labScene)modal.classList.add('is-open')});
-  config.taskScenes.forEach(i=>{const s=scenes[i-1];if(!s)return;const badge=document.createElement('span');badge.className='v3-task-beacon';badge.textContent='DO · SAY · SHOW';s.append(badge)});
+  config.taskScenes.forEach(i=>{const s=scenes[i-1];if(!s)return;const badge=document.createElement('span');badge.className='v3-task-beacon';badge.textContent='DO · SAY · SHOW';s.prepend(badge)});
   (config.art||[]).forEach(item=>{const s=scenes[item.scene-1];if(!s)return;const img=document.createElement('img');img.className='v3-scene-art';img.src='assets/'+item.file;img.alt=item.alt;s.classList.add('v3-has-art');s.append(img)});
   const observer = new MutationObserver(sync); scenes.forEach(s=>observer.observe(s,{attributes:true,attributeFilter:['class']})); sync();
   let browserGesture=false;
