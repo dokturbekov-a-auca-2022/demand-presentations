@@ -1,35 +1,425 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lesson 27 — Stagecraft Studio</title><style>
-:root{--violet:#30234d;--yellow:#f7d45d;--coral:#ef725d;--blue:#a9dce5;--cream:#fff6e4;--ink:#272131}*{box-sizing:border-box}body{margin:0;background:var(--violet);color:var(--ink);font-family:'Trebuchet MS',Arial,sans-serif;overflow:hidden}.scene{display:none;min-height:100vh;padding:5.5vh 8vw 10vh;background:var(--cream);position:relative;overflow:auto}.scene.active{display:block;animation:cue .35s both}.scene:before{content:'✦';position:absolute;right:4vw;bottom:7vh;font-size:8rem;color:var(--yellow);opacity:.14}.stage{position:relative;z-index:1;max-width:1150px}.hero{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.veil{position:absolute;inset:0;background:linear-gradient(90deg,#30234de9,#30234da8 48%,#30234d20)}.title{position:relative;z-index:2;color:#fff;max-width:52rem;padding:11vh 2rem 2rem;border-left:12px solid var(--yellow);background:#30234d9b}.title h1{font-size:clamp(4rem,8vw,9rem);line-height:.82;margin:.1em 0}.title p{font-size:clamp(1.1rem,2vw,1.7rem)}.eyebrow,h3{font-weight:900;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--coral)}h2{font-size:clamp(2rem,4vw,4.2rem);line-height:.95;color:var(--violet);margin:.2em 0 .55em}p{font-size:clamp(1rem,1.4vw,1.4rem);line-height:1.42}.cue{display:inline-block;background:var(--yellow);color:var(--violet);padding:.45rem .8rem;font-weight:900;margin:.2rem;transform:skew(-8deg)}.board{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.card{background:#fff;border:3px solid var(--violet);padding:1.1rem;min-height:8rem;box-shadow:7px 7px 0 #30234d22}.card:nth-child(2){background:var(--blue)}.card:nth-child(3){background:var(--yellow)}.choice{background:#fff;border:3px solid var(--violet);padding:.85rem 1rem;color:var(--violet);font-weight:900;cursor:pointer;text-align:left;box-shadow:4px 4px 0 #30234d22}.choice:hover,.choice.selected{background:var(--blue)}.speech{background:#fff;border-left:12px solid var(--coral);padding:1.2rem 1.5rem;font-size:clamp(1.3rem,2.2vw,2.2rem);box-shadow:8px 8px 0 #30234d22}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.figure{width:100%;max-height:43vh;object-fit:cover;border:8px solid #fff;box-shadow:12px 12px 0 var(--blue)}.feedback{font-weight:900;color:var(--coral);min-height:1.5em}.meter{height:20px;background:#d7c9ce;margin:1rem 0}.meter i{display:block;height:100%;width:35%;background:var(--coral);transition:.25s}.timer{font-size:clamp(4rem,8vw,7rem);font-weight:900;text-align:center;color:var(--violet)}.tools{position:fixed;z-index:20;right:1rem;top:1rem;display:flex;gap:.4rem}.tools button,.nav button{border:0;background:var(--coral);color:#fff;padding:.55rem .8rem;font-weight:900;cursor:pointer}.nav{position:fixed;z-index:20;left:50%;transform:translateX(-50%);bottom:1rem;background:#30234def;color:#fff;padding:.5rem .8rem;display:flex;gap:.6rem;align-items:center}.count{min-width:5rem;text-align:center}.progress{width:8rem;height:5px;background:#ffffff44}.progress i{display:block;height:100%;background:var(--yellow)}.note,.map{display:none;position:fixed;z-index:30;background:#30234df5;color:#fff;padding:1rem;top:4.4rem;right:1rem;max-width:30rem}.note.open,.map.open{display:block}.map{left:50%;right:auto;transform:translateX(-50%);width:min(800px,92vw)}.map button{margin:.2rem;padding:.4rem;border:0}.reveal{display:inline-block;background:var(--blue);padding:1rem;cursor:pointer;min-width:12rem;text-align:center}.reveal .back{display:none}.reveal.open .front{display:none}.reveal.open .back{display:block}@keyframes cue{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}@media(max-width:700px){.scene{padding:4.5rem 1rem 6.5rem}.board,.grid2{grid-template-columns:1fr}.figure{max-height:30vh}.title{padding-top:13vh}.tools{top:.5rem;right:.5rem}.nav{bottom:.5rem}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style></head><body><main id="deck"></main><div class="tools"><button id="mapBtn">STAGE MAP</button><button id="noteBtn">NOTE</button></div><aside id="note" class="note"></aside><aside id="map" class="map"></aside><nav class="nav"><button id="prev">←</button><span id="count"></span><span class="progress"><i id="bar"></i></span><button id="next">→</button></nav><script>
-const A='assets/';const S=(t,n,b)=>({t,n,b});const scenes=[
-S('Stagecraft Studio','2 min. Open with the speaker image. Ask what makes a presentation feel confident.',`<img class="hero" src="${A}stage-speaker.png" alt="Illustrated teenager presenting on a stage with microphone cue cards and audience"><div class="veil"></div><div class="title"><div class="eyebrow">Lesson 27 · presentation skills</div><h1>Stagecraft<br>Studio</h1><p>Build a clear talk, use your voice, and connect with an audience.</p><span class="cue">PLAN</span><span class="cue">REHEARSE</span><span class="cue">CONNECT</span></div>`),
-S('Check-in: your speaker strength','4 min. Students choose a real or imagined strength.',`<div class="stage"><h3>01 · check-in</h3><h2>What can you bring to a stage?</h2><div class="board" id="strength"><button class="card choice">a clear voice</button><button class="card choice">good ideas</button><button class="card choice">interesting stories</button><button class="card choice">calm breathing</button><button class="card choice">helpful visuals</button><button class="card choice">encouragement</button></div><p id="strengthOut" class="feedback">Choose one and explain how it helps.</p></div>`),
-S('Bridge from Lesson 26','3 min. Connect small talk to opening a presentation.',`<div class="stage"><h3>02 · bridge</h3><div class="speech">“You’re ready to begin, aren’t you?”<br><br>Today we turn that friendly connection into a confident opening.</div></div>`),
-S('Read the stage','5 min. Students predict useful presentation objects.',`<div class="stage"><h3>03 · visual lead-in</h3><h2>What helps a speaker feel prepared?</h2><img class="figure" src="${A}backstage-table.png" alt="Illustrated backstage rehearsal table with cue cards timer microphone and water"><p class="feedback">Name three objects and one reason for each.</p></div>`),
-S('The rehearsal route','1 min. Preview the presentation arc.',`<div class="stage"><h3>04 · route</h3><div class="board"><div class="card"><b>Open</b><p>hook the room</p></div><div class="card"><b>Build</b><p>three clear points</p></div><div class="card"><b>Land</b><p>finish strongly</p></div></div></div>`),
-S('The three-part talk','5 min. Students sort ideas into opening, body, closing.',`<div class="stage"><h3>05 · structure</h3><div class="board" id="parts"><button class="card choice">“Today I’ll show you …”</button><button class="card choice">“First … Next … Finally …”</button><button class="card choice">“So my main message is …”</button></div><p id="partsOut" class="feedback">Tap each line and name its job.</p></div>`),
-S('Hook cards','5 min. Students choose a hook for a fictional topic.',`<div class="stage"><h3>06 · openings</h3><div class="board" id="hooks"><button class="card choice">a surprising question</button><button class="card choice">a quick story</button><button class="card choice">a bold fact</button><button class="card choice">a prop or image</button><button class="card choice">a clear promise</button><button class="card choice">a short pause</button></div><p id="hookOut" class="feedback">Choose a hook and write its first sentence.</p></div>`),
-S('Signpost language','5 min. Students rehearse the language that guides listeners.',`<div class="stage"><h3>07 · signposts</h3><div class="speech">First, let’s look at …<br>Now, move to …<br>This matters because …<br>Finally, remember …</div></div>`),
-S('Visuals that help','4 min. Compare a useful slide with a crowded slide.',`<div class="stage"><h3>08 · visual design</h3><div class="grid2"><div class="card"><b>Useful</b><p>one image · three words · large type</p></div><div class="card"><b>Crowded</b><p>tiny text · five colors · every detail</p></div></div></div>`),
-S('Voice spotlight','5 min. Students practise volume, pace, and pause.',`<div class="stage"><h3>09 · voice</h3><div class="board"><div class="card"><b>Volume</b><p>reach the back wall</p></div><div class="card"><b>Pace</b><p>slow the key line</p></div><div class="card"><b>Pause</b><p>let the idea land</p></div></div></div>`),
-S('Body language dial','4 min. Choose the body-language choice that supports a message.',`<div class="stage"><h3>10 · presence</h3><div class="grid2" id="body"><button class="choice">look up, then scan the room</button><button class="choice">read every word from the screen</button><button class="choice">stand balanced and breathe</button><button class="choice">hide behind the desk</button></div><p id="bodyOut" class="feedback">Choose the actions that connect with listeners.</p></div>`),
-S('Rehearsal flip cards','5 min. Tap each card to reveal the rehearsal move.',`<div class="stage"><h3>11 · rehearsal</h3><div class="board"><button class="reveal"><span class="front">1 · practise</span><span class="back">out loud, not only in your head</span></button><button class="reveal"><span class="front">2 · time</span><span class="back">keep the opening short</span></button><button class="reveal"><span class="front">3 · mark</span><span class="back">circle the key words</span></button></div></div>`),
-S('Question handling','5 min. Practise a calm answer when you need time.',`<div class="stage"><h3>12 · audience questions</h3><div class="speech">“That’s an interesting question. Let me think.”<br>“I’m not sure yet, but I would check …”<br>“Could you repeat the question, please?”</div></div>`),
-S('Common presentation traps','4 min. Repair three habits that hide a good idea.',`<div class="stage"><h3>13 · repair</h3><div class="board"><div class="card"><b>Too much text</b><p>turn it into a keyword</p></div><div class="card"><b>No signposts</b><p>add first / next / finally</p></div><div class="card"><b>Rushed ending</b><p>write the last line</p></div></div></div>`),
-S('Read the rehearsal note','2 min. Predict which advice matters most.',`<div class="stage"><h3>14 · reading preview</h3><div class="speech">“Maya has strong ideas, but she speaks too quickly when she feels nervous.”</div><p>Which rehearsal move could help first?</p></div>`),
-S('Text: Maya’s two rehearsals','6 min. Partner-read and underline changes.',`<div class="stage"><h3>15 · close reading</h3><div class="speech"><p>In her first rehearsal, Maya put every idea on one slide and rushed through the opening. Her partner suggested three keywords, one picture, and a pause after the hook. In the second rehearsal, Maya looked up more often and finished with a clear message. The talk felt shorter, but the audience remembered more.</p></div><p>Circle the problem. Box the changes. Star the result.</p></div>`),
-S('Reading check','4 min. Click the detail that shows improvement.',`<div class="stage"><h3>16 · evidence</h3><div class="grid2" id="read"><button class="choice">three keywords</button><button class="choice">one picture</button><button class="choice">a pause after the hook</button><button class="choice">a clear final message</button></div><p id="readOut" class="feedback">Choose the details that changed the rehearsal.</p></div>`),
-S('Spotlight arcs','4 min. Use the image to practise where to look and pause.',`<div class="stage"><h3>17 · visual language</h3><img class="figure" src="${A}spotlight-arcs.png" alt="Illustrated stage floor with spotlight arcs and audience feedback symbols"><p class="feedback">Point to three audience zones: left, centre, right.</p></div>`),
-S('Information gap: talk cards','6 min. Partner A has a topic; Partner B has an audience. Adapt the opening.',`<div class="stage"><h3>18 · pair task</h3><div class="grid2"><div class="speech"><b>Topic</b><br>How to make a school day calmer</div><div class="speech"><b>Audience</b><br>new students · 30 seconds</div></div><p>Choose a hook and make a promise for this audience.</p></div>`),
-S('Feedback language','5 min. Practise feedback that is specific and kind.',`<div class="stage"><h3>19 · peer language</h3><div class="board"><div class="card"><b>I noticed …</b><p>name a clear strength</p></div><div class="card"><b>It would be stronger if …</b><p>offer one useful change</p></div><div class="card"><b>My question is …</b><p>invite reflection</p></div></div></div>`),
-S('Rehearsal carousel','6 min. Rotate through hook, body, and closing stations.',`<div class="stage"><h3>20 · speaking circuit</h3><div class="board"><div class="card"><b>Station 1</b><p>deliver the hook</p></div><div class="card"><b>Station 2</b><p>use a signpost</p></div><div class="card"><b>Station 3</b><p>land the ending</p></div></div></div>`),
-S('Build your mini-talk','7 min. Students prepare a one-minute presentation.',`<div class="stage"><h3>21 · production setup</h3><div class="board"><div class="card"><b>Topic</b><p>one clear idea</p></div><div class="card"><b>Visual</b><p>one image or object</p></div><div class="card"><b>Ending</b><p>one memorable line</p></div></div></div>`),
-S('Present with a spotlight','7 min. Students deliver, then answer one audience question.',`<div class="stage"><h3>22 · production</h3><div class="speech">Open with a hook. Guide us with signposts. Pause on the main message. Finish with confidence.</div><p>Listeners write one phrase they remember.</p></div>`),
-S('Peer director’s notes','5 min. Use three checks after each talk.',`<div class="stage"><h3>23 · feedback</h3><div class="board"><div class="card"><b>Clear</b><p>I knew the main message.</p></div><div class="card"><b>Connected</b><p>The speaker looked up.</p></div><div class="card"><b>Memorable</b><p>I remember one phrase.</p></div></div></div>`),
-S('Final stage quiz','5 min. Teams choose the strongest presentation move.',`<div class="stage"><h3>24 · review</h3><div class="grid2" id="quiz"><button class="choice">use three keywords on a slide</button><button class="choice">read every sentence from the screen</button><button class="choice">pause before the key message</button><button class="choice">finish without a conclusion</button></div><p id="quizOut" class="feedback">Choose the moves that help an audience follow.</p></div>`),
-S('One-minute spotlight','2 min. Students speak under a short timer.',`<div class="stage"><h3>25 · fluency</h3><div class="timer" id="timer">60</div><button class="choice" id="start">START SPOTLIGHT</button><p>Deliver a hook, two points, and a final message.</p></div>`),
-S('Homework: speaker’s cue sheet','2 min. Students prepare a short talk with a visual.',`<div class="stage"><h3>26 · homework</h3><div class="board"><div class="card"><b>Write</b><p>hook + three keywords</p></div><div class="card"><b>Mark</b><p>one pause + one gesture</p></div><div class="card"><b>Rehearse</b><p>time it twice</p></div></div></div>`),
-S('Exit ticket','2 min. Students finish one speaker line. Preview Linking Words.',`<div class="stage"><h3>27 · exit ticket</h3><h2>Take one cue off the stage.</h2><div class="board" id="exit"><button class="card choice">My strongest speaking move is …</button><button class="card choice">One thing I will rehearse is …</button><button class="card choice">One phrase I want listeners to remember is …</button></div><p id="exitOut" class="feedback">Choose one and complete it for a partner.</p><div class="eyebrow">Next: Linking Words · Giving Opinions</div></div>`)
-];
-const deck=document.querySelector('#deck');deck.innerHTML=scenes.map((s,i)=>`<section class="scene ${i?'':'active'}">${s.b}</section>`).join('');const note=document.querySelector('#note'),map=document.querySelector('#map');map.innerHTML='<h3 style="color:var(--yellow)">Stagecraft Studio map</h3>'+scenes.map((s,i)=>`<button data-jump="${i}">${i+1}. ${s.t}</button>`).join('');let cur=0;function show(i){cur=(i+scenes.length)%scenes.length;document.querySelectorAll('.scene').forEach((x,n)=>x.classList.toggle('active',n===cur));count.textContent=`${cur+1} / ${scenes.length}`;bar.style.width=`${(cur+1)/scenes.length*100}%`;note.classList.remove('open');map.classList.remove('open');window.scrollTo(0,0)}show(0);next.onclick=()=>show(cur+1);prev.onclick=()=>show(cur-1);mapBtn.onclick=()=>map.classList.toggle('open');noteBtn.onclick=()=>{note.innerHTML=`<b>Teacher note · ${cur+1}</b><br>${scenes[cur].n}`;note.classList.toggle('open')};map.onclick=e=>{if(e.target.dataset.jump!==undefined)show(+e.target.dataset.jump)};document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(cur+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(cur-1)}if(e.key.toLowerCase()==='m')map.classList.toggle('open');if(e.key.toLowerCase()==='n')noteBtn.click()});let sx=0;document.addEventListener('touchstart',e=>sx=e.changedTouches[0].screenX,{passive:true});document.addEventListener('touchend',e=>{let d=e.changedTouches[0].screenX-sx;if(Math.abs(d)>45)show(cur+(d<0?1:-1))},{passive:true});document.querySelectorAll('#strength .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');strengthOut.textContent='Now explain how that strength helps a speaker.'});document.querySelectorAll('#parts .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');partsOut.textContent='Name its job: opening, body, or closing.'});document.querySelectorAll('#hooks .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');hookOut.textContent='Write the first sentence for your hook.'});document.querySelectorAll('#body .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');bodyOut.textContent='Choose the actions that connect with listeners.'});document.querySelectorAll('.reveal').forEach(b=>b.onclick=()=>b.classList.toggle('open'));document.querySelectorAll('#read .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');readOut.textContent='Evidence selected — point to the reading.'});document.querySelectorAll('#quiz .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');quizOut.textContent='Keep the moves that help the audience follow.'});let seconds=60,run;start.onclick=()=>{clearInterval(run);seconds=60;timer.textContent=seconds;run=setInterval(()=>{seconds--;timer.textContent=seconds;if(seconds<=0)clearInterval(run)},1000)};document.querySelectorAll('#exit .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');exitOut.textContent='Complete the speaker line for a partner.'});
-</script><style>.title{z-index:10!important;color:#fff!important;text-shadow:0 3px 15px #1b102c}.title h1,.title p{color:#fff!important}.title .eyebrow{color:#ffe0a0!important}</style></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+  <meta name="theme-color" content="#100e10">
+  <title>Lesson 27 | Presence</title>
+  <link rel="stylesheet" href="experience-v7.css">
+</head>
+<body>
+  <div class="act-mark"><span id="actNumber">ACT I</span><b id="actName">SETTLE</b></div>
+  <div class="tools">
+    <button id="mapBtn" type="button">SCENES</button>
+    <button id="noteBtn" type="button">NOTES</button>
+  </div>
+
+  <main id="deck">
+    <section class="scene image-scene active transition-0" data-scene="1" data-act="ACT I|SETTLE" data-title="Presence" data-note="Open quietly. Ask students to study the speaker's body rather than the stage. Collect visible evidence of confidence before naming the lesson skills.">
+      <img class="fullbleed" src="assets/presence-hero-v2.jpg" alt="Teenage speaker standing calmly in a warm theatre spotlight">
+      <div class="cinema-shade left"></div>
+      <div class="hero-copy">
+        <p class="chapter">Lesson 27 · Presentation skills</p>
+        <h1>PRESENCE</h1>
+        <p class="subtitle">From backstage<br>to spotlight.</p>
+        <p class="lead">Confidence is not a personality. It is a sequence you can rehearse.</p>
+        <button class="primary" id="begin" type="button">ENTER REHEARSAL</button>
+      </div>
+      <div class="spotlight-ring" aria-hidden="true"></div>
+    </section>
+
+    <section class="scene sand transition-1" data-scene="2" data-act="ACT I|SETTLE" data-title="Your speaker strength" data-note="Assign one strength per student or let them choose. Each student gives one situation where that strength helps an audience.">
+      <p class="chapter">01 · CHECK-IN</p>
+      <h2>WHAT DO YOU<br>ALREADY BRING?</h2>
+      <div class="strength-lines" id="strengths">
+        <button data-strength="clear ideas">CLEAR IDEAS</button>
+        <button data-strength="curiosity">CURIOSITY</button>
+        <button data-strength="a calm voice">A CALM VOICE</button>
+        <button data-strength="good examples">GOOD EXAMPLES</button>
+        <button data-strength="humour">HUMOUR</button>
+        <button data-strength="careful listening">CAREFUL LISTENING</button>
+        <button data-strength="encouragement">ENCOURAGEMENT</button>
+      </div>
+      <p class="instruction"><span>i</span>Choose one real strength. Complete: “This helps an audience because…”</p>
+      <p class="feedback" id="strengthOut">Seven speakers can begin with seven different strengths.</p>
+    </section>
+
+    <section class="scene image-scene transition-2" data-scene="3" data-act="ACT I|SETTLE" data-title="What rehearsal changes" data-note="Students compare both halves. Click observations only after students point to visual evidence. Avoid describing the left side as a personality flaw.">
+      <img class="fullbleed" src="assets/rehearsal-before-after-v2.jpg" alt="Same teenage online speaker before and after a short rehearsal">
+      <div class="compare-label before"><b>BEFORE</b><span>attention stays on notes</span></div>
+      <div class="compare-label after"><b>AFTER</b><span>attention reaches the audience</span></div>
+      <div class="observation-ribbon" id="observations">
+        <button>eyes</button><button>shoulders</button><button>hands</button><button>breath</button><button>notes</button><button>camera</button><button>expression</button>
+      </div>
+      <p class="observation-out" id="observationOut">Choose one feature. Say exactly what changed.</p>
+    </section>
+
+    <section class="scene burgundy transition-3" data-scene="4" data-act="ACT I|SETTLE" data-title="Lesson outcomes" data-note="Preview the four acts. Students choose which outcome feels most difficult now and revisit it at the exit ticket.">
+      <p class="chapter">02 · FOUR ACTS</p>
+      <div class="act-list">
+        <div><b>I</b><strong>SETTLE</strong><span>posture · breath · first line</span></div>
+        <div><b>II</b><strong>DELIVER</strong><span>pace · pause · emphasis · eye line · gesture</span></div>
+        <div><b>III</b><strong>SHAPE</strong><span>opening · points · examples · close</span></div>
+        <div><b>IV</b><strong>CONNECT</strong><span>model · visuals · questions · rehearsal · audience</span></div>
+      </div>
+      <p class="promise">By the end, you will deliver a clear 60-second talk and explain which rehearsal choices improved it.</p>
+    </section>
+
+    <section class="scene charcoal transition-4" data-scene="5" data-act="ACT I|SETTLE" data-title="Confidence is a loop" data-note="Click the loop in order. Explain that confidence often comes after repetition, not before it.">
+      <p class="chapter">03 · THE CONFIDENCE LOOP</p>
+      <h2>DO NOT WAIT<br>TO FEEL READY.</h2>
+      <div class="confidence-loop" id="confidenceLoop">
+        <button data-step="1"><b>1</b><span>PREPARE</span></button>
+        <button data-step="2"><b>2</b><span>REHEARSE</span></button>
+        <button data-step="3"><b>3</b><span>SPEAK</span></button>
+        <button data-step="4"><b>4</b><span>REVIEW</span></button>
+        <button data-step="5"><b>5</b><span>REPEAT</span></button>
+      </div>
+      <p class="feedback" id="loopOut">Open the five actions in order.</p>
+      <p class="instruction"><span>i</span>Confidence grows when the next attempt has one specific improvement.</p>
+    </section>
+
+    <section class="scene image-scene posture-scene transition-0" data-scene="6" data-act="ACT I|SETTLE" data-title="Balanced posture" data-note="Students describe each pose, then select the balanced one. Everyone copies the final stance for ten seconds.">
+      <img class="fullbleed" src="assets/posture-triptych-v2.jpg" alt="Same teenage speaker demonstrating collapsed, stiff, and balanced posture">
+      <div class="pose-labels" id="poseChoice">
+        <button data-pose="collapsed">COLLAPSED<span>breath becomes smaller</span></button>
+        <button data-pose="stiff">STIFF<span>movement becomes difficult</span></button>
+        <button data-pose="balanced" data-correct="true">BALANCED<span>feet steady · shoulders free · hands visible</span></button>
+      </div>
+      <p class="pose-out" id="poseOut">Which posture supports a calm voice? Choose and explain.</p>
+    </section>
+
+    <section class="scene sand transition-1" data-scene="7" data-act="ACT I|SETTLE" data-title="The twenty-second reset" data-note="Students stand if possible. Start the timer and guide the four actions without rushing.">
+      <p class="chapter">05 · BEFORE YOU SPEAK</p>
+      <div class="reset-stage">
+        <div class="reset-time" id="resetTimer">20</div>
+        <div>
+          <h2>A SHORT RESET.</h2>
+          <ol>
+            <li>Place both feet.</li>
+            <li>Release your shoulders.</li>
+            <li>Breathe out slowly.</li>
+            <li>Look at the camera and say your first line.</li>
+          </ol>
+          <button class="primary dark" id="resetStart" type="button">START 20 SECONDS</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene pale transition-2" data-scene="8" data-act="ACT I|SETTLE" data-title="Breathe out before the first line" data-note="Model one tense start and one breath-led start. Students should not hold their breath; the goal is a comfortable exhale and unhurried first line.">
+      <p class="chapter">06 · BREATH + FIRST LINE</p>
+      <h2>THE EXHALE<br>CREATES SPACE.</h2>
+      <div class="breath-orbit" id="breathOrbit"><span>BREATHE IN</span><b>4</b><i></i></div>
+      <div class="first-line">
+        <p><del>Um… so… today I want to…</del></p>
+        <p><strong>Pause.</strong> “Think about your first day at a new school.”</p>
+      </div>
+      <button class="text-button" id="breathStart" type="button">RUN ONE BREATH CYCLE</button>
+      <p class="instruction"><span>i</span>Do one comfortable cycle: inhale 4 · pause 2 · exhale 6. Then say only the first sentence.</p>
+    </section>
+
+    <section class="scene charcoal transition-3" data-scene="9" data-act="ACT II|DELIVER" data-title="Pace and pause" data-note="Play both versions. Students tap once at each pause in the stronger version, then explain what became easier to understand.">
+      <p class="chapter">07 · PACE</p>
+      <h2>SLOW THE IDEA,<br>NOT EVERY WORD.</h2>
+      <div class="pace-script">
+        <p><span>RUSHED</span>Our club meets every Friday and students learn new skills make friends and plan events together.</p>
+        <p><span>SHAPED</span>Our club meets every Friday. <i>/</i> Students learn new skills, make friends, and plan events together. <i>/</i> The most important result is confidence.</p>
+      </div>
+      <div class="audio-line">
+        <audio preload="metadata" src="assets/audio/pace-and-pause.wav"></audio>
+        <button class="audio-play" type="button">PLAY BOTH VERSIONS</button>
+        <span>Listen for idea groups and silence.</span>
+      </div>
+    </section>
+
+    <section class="scene burgundy transition-4" data-scene="10" data-act="ACT II|DELIVER" data-title="Emphasis makes meaning visible" data-note="Assign one sentence to each student. They choose a key word, say the line, then explain how the meaning changes.">
+      <p class="chapter">08 · EMPHASIS</p>
+      <h2>ONE KEY WORD<br>CARRIES THE LINE.</h2>
+      <div class="emphasis-lines" id="emphasisLines">
+        <button data-word="clubs">School <b>CLUBS</b> help new students belong.</button>
+        <button data-word="new">School clubs help <b>NEW</b> students belong.</button>
+        <button data-word="belong">School clubs help new students <b>BELONG</b>.</button>
+      </div>
+      <div class="volume-scale"><span>too quiet</span><i></i><b>clear conversational volume</b><i></i><span>shouting</span></div>
+      <p class="feedback" id="emphasisOut">Choose the word that should carry your meaning.</p>
+      <p class="instruction"><span>i</span>Volume helps people hear. Emphasis helps people understand.</p>
+    </section>
+
+    <section class="scene image-scene transition-0" data-scene="11" data-act="ACT II|DELIVER" data-title="Look through the camera" data-note="Students identify the camera and eye line. Ask them to move their video call window close to the camera if possible.">
+      <img class="fullbleed" src="assets/camera-eye-line-v2.jpg" alt="Teenage online presenter looking toward a webcam positioned at eye level">
+      <div class="cinema-shade right"></div>
+      <div class="camera-copy">
+        <p class="chapter">09 · ONLINE EYE CONTACT</p>
+        <h2>LOOK THROUGH<br>THE CAMERA.</h2>
+        <p>Look at faces while listening. Look near the camera for key sentences.</p>
+        <div class="eye-sequence"><b>LISTEN</b><span>screen</span><i>→</i><b>KEY LINE</b><span>camera</span><i>→</i><b>CHECK</b><span>screen</span></div>
+        <p class="instruction"><span>i</span>Put one small removable dot beside the camera. Deliver your first and final lines to that point.</p>
+      </div>
+    </section>
+
+    <section class="scene image-scene gesture-scene transition-1" data-scene="12" data-act="ACT II|DELIVER" data-title="Gestures need a job" data-note="Students match each image moment to a purpose. Then they say one sentence with one planned gesture and return hands to neutral.">
+      <img class="fullbleed" src="assets/gesture-sequence-v2.jpg" alt="Same teenage speaker demonstrating neutral, explaining, and comparing gestures">
+      <div class="gesture-labels">
+        <p><b>REST</b><span>when the audience needs to listen</span></p>
+        <p><b>SHOW</b><span>one idea or direction</span></p>
+        <p><b>COMPARE</b><span>two choices or results</span></p>
+      </div>
+      <p class="gesture-rule">Gesture → finish the idea → return to neutral.</p>
+    </section>
+
+    <section class="scene sand transition-2" data-scene="13" data-act="ACT II|DELIVER" data-title="Replace fillers with a pause" data-note="One line per student. Students click the filler, read the cleaner version, then perform it with a silent pause.">
+      <p class="chapter">11 · PURPOSEFUL PAUSE</p>
+      <h2>SILENCE SOUNDS<br>MORE CONFIDENT.</h2>
+      <div class="filler-lines" id="fillerLines">
+        <button data-clean="Today, / I will explain one useful change."><b>1</b>Um, today I will explain one useful change.</button>
+        <button data-clean="The first reason / is time."><b>2</b>The first reason is, like, time.</button>
+        <button data-clean="For example, / our class tried it last week."><b>3</b>For example, you know, our class tried it last week.</button>
+        <button data-clean="My main point / is simple."><b>4</b>My main point is, er, simple.</button>
+        <button data-clean="Now / let's look at the result."><b>5</b>So yeah, now let's look at the result.</button>
+        <button data-clean="This matters / because everyone can participate."><b>6</b>This matters, basically, because everyone can participate.</button>
+        <button data-clean="Finally, / remember one thing."><b>7</b>And, um, finally, remember one thing.</button>
+      </div>
+      <p class="instruction"><span>i</span>Click your line. The slash marks a short silent pause, not a breathless stop.</p>
+    </section>
+
+    <section class="scene pale transition-3" data-scene="14" data-act="ACT III|SHAPE" data-title="A sixty-second structure" data-note="Explain the time proportions as a guide, not a strict law. Students retell the structure without reading.">
+      <p class="chapter">12 · MESSAGE SHAPE</p>
+      <h2>ONE MINUTE.<br>ONE MESSAGE.</h2>
+      <div class="time-arc">
+        <div style="--share:20"><b>10 sec</b><strong>OPEN</strong><span>hook + promise</span></div>
+        <div style="--share:60"><b>40 sec</b><strong>BUILD</strong><span>two points + one example</span></div>
+        <div style="--share:20"><b>10 sec</b><strong>LAND</strong><span>summary + final line</span></div>
+      </div>
+      <p class="structure-model">“Think about…” → “First… For example… Second…” → “My main message is…”</p>
+    </section>
+
+    <section class="scene charcoal transition-4" data-scene="15" data-act="ACT III|SHAPE" data-title="Compare two openings" data-note="Play the recording. Students identify which opening creates a picture, gives a clear topic, and makes a promise.">
+      <p class="chapter">13 · OPENINGS</p>
+      <h2>DO NOT BEGIN<br>WITH AN APOLOGY.</h2>
+      <div class="opening-contrast" id="openingVote">
+        <button data-quality="weak"><b>A</b><span>“Um. Hello. Today I will talk about school clubs. I have some information.”</span></button>
+        <button data-quality="strong"><b>B</b><span>“Think about the last time a new friend helped you feel welcome. Today, I will show how one school club can create that feeling.”</span></button>
+      </div>
+      <div class="audio-line">
+        <audio preload="metadata" src="assets/audio/opening-contrast.wav"></audio>
+        <button class="audio-play" type="button">PLAY OPENINGS</button>
+        <span>Which one gives the audience a reason to listen?</span>
+      </div>
+      <p class="feedback" id="openingOut">Choose A or B and give two reasons.</p>
+    </section>
+
+    <section class="scene burgundy transition-0" data-scene="16" data-act="ACT III|SHAPE" data-title="Seven useful hooks" data-note="Assign one hook to each student. Click to reveal a model, then students adapt it to a new topic.">
+      <p class="chapter">14 · HOOK REHEARSAL</p>
+      <h2>START WITH<br>A DOORWAY.</h2>
+      <div class="hook-lines" id="hookLines">
+        <button data-model="Question: What helps you feel welcome in a new place?"><b>1</b>QUESTION</button>
+        <button data-model="Picture: Imagine a school day with no clubs or teams."><b>2</b>MENTAL PICTURE</button>
+        <button data-model="Story: On my first day, I ate lunch alone. Then one student invited me to a club."><b>3</b>MINI-STORY</button>
+        <button data-model="Contrast: A club looks optional, but for a new student it can feel essential."><b>4</b>CONTRAST</button>
+        <button data-model="Object: Hold up a camera and ask what it can help people notice."><b>5</b>OBJECT</button>
+        <button data-model="Fact from experience: Our club planned three school events last term."><b>6</b>CONCRETE FACT</button>
+        <button data-model="Promise: In one minute, I will give you two ways to make clubs easier to join."><b>7</b>PROMISE</button>
+      </div>
+      <p class="hook-model" id="hookModel">Choose a doorway to reveal a complete example.</p>
+    </section>
+
+    <section class="scene sand transition-1" data-scene="17" data-act="ACT III|SHAPE" data-title="Signposts guide the audience" data-note="Students click each function to reveal a natural phrase. Then they use four phrases to outline a topic aloud.">
+      <p class="chapter">15 · SIGNPOSTS</p>
+      <h2>SHOW LISTENERS<br>WHERE THEY ARE.</h2>
+      <div class="signpost-path" id="signposts">
+        <button data-phrase="Today, I want to show you…">PURPOSE</button><i></i>
+        <button data-phrase="First, let's look at…">FIRST POINT</button><i></i>
+        <button data-phrase="For example,…">EXAMPLE</button><i></i>
+        <button data-phrase="This matters because…">MEANING</button><i></i>
+        <button data-phrase="Now, let's move to…">NEXT POINT</button><i></i>
+        <button data-phrase="To sum up,…">SUMMARY</button><i></i>
+        <button data-phrase="My final message is…">FINAL LINE</button>
+      </div>
+      <p class="feedback" id="signpostOut">Click a function to reveal the exact phrase.</p>
+    </section>
+
+    <section class="scene pale transition-2" data-scene="18" data-act="ACT III|SHAPE" data-title="Make a point useful" data-note="Click the three layers in order. Students then build a new point from a school topic.">
+      <p class="chapter">16 · SUPPORT</p>
+      <h2>A POINT NEEDS<br>AN EXAMPLE.</h2>
+      <div class="evidence-lens" id="evidenceLens">
+        <button data-order="1"><b>POINT</b><span>Clubs help students practise teamwork.</span></button>
+        <button data-order="2"><b>EXAMPLE</b><span>For example, students divide jobs when they plan an event.</span></button>
+        <button data-order="3"><b>MEANING</b><span>This matters because they learn to depend on each other.</span></button>
+      </div>
+      <p class="feedback" id="evidenceOut">Open the three layers in order: claim → concrete example → why it matters.</p>
+    </section>
+
+    <section class="scene burgundy transition-3" data-scene="19" data-act="ACT III|SHAPE" data-title="Land the ending" data-note="Students compare both endings. Emphasise that a conclusion should not introduce a new main point.">
+      <p class="chapter">17 · CLOSINGS</p>
+      <h2>STOP ADDING.<br>START LANDING.</h2>
+      <div class="closing-contrast" id="closingChoice">
+        <button data-quality="weak"><b>DRIFTS</b><span>“So… yes. That is all. I also wanted to say three more things…”</span></button>
+        <button data-quality="strong"><b>LANDS</b><span>“To sum up, clubs create skills and belonging. My final message is simple: make the first invitation easy.”</span></button>
+      </div>
+      <p class="feedback" id="closingOut">Choose the ending listeners can remember.</p>
+      <p class="closing-formula">SIGNAL → SUMMARY → FINAL MESSAGE</p>
+    </section>
+
+    <section class="scene image-scene transition-4" data-scene="20" data-act="ACT IV|CONNECT" data-title="One visual, one job" data-note="Students identify how the projected image supports the speaker. Explain that visuals should reduce explanation, not duplicate a script.">
+      <img class="fullbleed" src="assets/one-idea-slide-v2.jpg" alt="Teenage speaker presenting beside one large simple projected image">
+      <div class="cinema-shade bottom"></div>
+      <div class="visual-copy">
+        <p class="chapter">18 · VISUAL DESIGN</p>
+        <h2>ONE VISUAL.<br>ONE JOB.</h2>
+        <div class="visual-rules">
+          <span><b>SEE</b> one clear image</span>
+          <span><b>READ</b> only essential words</span>
+          <span><b>HEAR</b> the explanation from the speaker</span>
+        </div>
+        <p class="instruction"><span>i</span>Do not read the screen. Face the audience, explain the image, then move on.</p>
+      </div>
+    </section>
+
+    <section class="scene image-scene transition-0" data-scene="21" data-act="ACT IV|CONNECT" data-title="Prepare the online frame" data-note="Students inspect their own setup if cameras are available. Keep the advice achievable without special equipment.">
+      <img class="fullbleed" src="assets/online-setup-v2.jpg" alt="Teenage online presenter in a clear achievable home setup with water and simple notes">
+      <div class="cinema-shade bottom"></div>
+      <div class="setup-copy">
+        <p class="chapter">19 · ONLINE SETUP</p>
+        <h2>REMOVE SMALL<br>DISTRACTIONS.</h2>
+        <div class="setup-checks" id="setupChecks">
+          <button>camera at eye level</button><button>light in front</button><button>sound checked</button><button>simple background</button><button>three keywords nearby</button><button>notifications off</button>
+        </div>
+        <p class="feedback" id="setupOut">0 / 6 checks complete.</p>
+      </div>
+    </section>
+
+    <section class="scene sand transition-1" data-scene="22" data-act="ACT IV|CONNECT" data-title="Handle questions calmly" data-note="Assign one audience situation per student. Students choose or adapt a useful response; no one needs to invent information.">
+      <p class="chapter">20 · AUDIENCE QUESTIONS</p>
+      <h2>YOU MAY TAKE<br>TIME TO THINK.</h2>
+      <div class="question-lines" id="questionLines">
+        <button data-answer="Could you repeat the question, please?"><b>1</b>I did not hear it.</button>
+        <button data-answer="Do you mean the cost or the time?"><b>2</b>The question is unclear.</button>
+        <button data-answer="That's a useful question. Let me think for a moment."><b>3</b>I need five seconds.</button>
+        <button data-answer="I don't know yet, but I would check the school website."><b>4</b>I do not know.</button>
+        <button data-answer="My short answer is yes. The main reason is access."><b>5</b>I need a concise answer.</button>
+        <button data-answer="That connects to my second point about teamwork."><b>6</b>The answer is already in my talk.</button>
+        <button data-answer="Could we return to that after the final speaker?"><b>7</b>The question needs more time.</button>
+      </div>
+      <p class="instruction"><span>i</span>Click your situation. Read the response, then say it without sounding apologetic.</p>
+    </section>
+
+    <section class="scene charcoal transition-2" data-scene="23" data-act="ACT IV|CONNECT" data-title="Listen to a complete mini-talk" data-note="First listen for the main message. Second listen for the hook, two points, example, signposts, and closing.">
+      <p class="chapter">21 · MODEL TALK</p>
+      <h2>LISTEN FOR<br>THE SHAPE.</h2>
+      <div class="model-prompt">
+        <strong>TOPIC</strong><span>Why school clubs matter</span>
+        <strong>AUDIENCE</strong><span>new students</span>
+        <strong>LENGTH</strong><span>about 50 seconds</span>
+      </div>
+      <div class="audio-line large">
+        <audio preload="metadata" src="assets/audio/model-mini-talk.wav"></audio>
+        <button class="audio-play" type="button">PLAY MODEL TALK</button>
+        <span>First listen: write the main message in one sentence.</span>
+      </div>
+      <button class="text-button light" id="transcriptToggle" type="button">REVEAL TRANSCRIPT AFTER LISTENING</button>
+      <p class="model-transcript" id="modelTranscript">Think about your first week in a new school. Who helped you feel welcome? Today, I want to show why school clubs matter. First, clubs help students meet people with the same interests. For example, a new student can join the photography club and immediately have something to discuss. Second, clubs give us a safe place to practise real skills, such as planning, teamwork, and speaking. My main message is simple. A school club is not only an activity. It can be the first place where a student feels that they belong.</p>
+    </section>
+
+    <section class="scene pale transition-3" data-scene="24" data-act="ACT IV|CONNECT" data-title="Seven listening lenses" data-note="Assign one question to each student. Play the model again and require full-sentence answers before revealing.">
+      <p class="chapter">22 · LISTEN FOR EVIDENCE</p>
+      <h2>SEVEN LISTENERS.<br>SEVEN JOBS.</h2>
+      <div class="listening-lenses" id="listeningLenses">
+        <button data-answer="The hook asks listeners to remember their first week in a new school."><b>1 · HOOK</b><span>How does the speaker begin?</span></button>
+        <button data-answer="The promise is to show why school clubs matter."><b>2 · PURPOSE</b><span>What will the talk explain?</span></button>
+        <button data-answer="The first point is that clubs help students meet people with shared interests."><b>3 · POINT 1</b><span>What is the first reason?</span></button>
+        <button data-answer="The photography club is the concrete example."><b>4 · EXAMPLE</b><span>Which club appears in the example?</span></button>
+        <button data-answer="The second point is that clubs provide a safe place to practise skills."><b>5 · POINT 2</b><span>What is the second reason?</span></button>
+        <button data-answer="The signposts are First, For example, Second, and My main message is simple."><b>6 · SIGNPOSTS</b><span>Which guide phrases do you hear?</span></button>
+        <button data-answer="The final message is that a club can be where a student first feels they belong."><b>7 · CLOSE</b><span>What should listeners remember?</span></button>
+      </div>
+      <p class="instruction"><span>i</span>Answer your assigned question in a full sentence. Click only after everyone has spoken.</p>
+    </section>
+
+    <section class="scene burgundy transition-4" data-scene="25" data-act="ACT IV|CONNECT" data-title="Map the model talk" data-note="Click the lines in sequence. Then students retell the presentation plan with keywords only.">
+      <p class="chapter">23 · TRANSCRIPT MAP</p>
+      <h2>SEE THE<br>REHEARSAL MARKS.</h2>
+      <div class="script-map" id="scriptMap">
+        <button data-role="HOOK">Think about your first week in a new school.</button>
+        <button data-role="PROMISE">Today, I want to show why school clubs matter.</button>
+        <button data-role="POINT 1">First, clubs help students meet people with the same interests.</button>
+        <button data-role="EXAMPLE">For example, a new student can join the photography club.</button>
+        <button data-role="POINT 2">Second, clubs give us a safe place to practise real skills.</button>
+        <button data-role="SUMMARY">My main message is simple.</button>
+        <button data-role="FINAL LINE">A club can be the first place where a student feels that they belong.</button>
+      </div>
+      <p class="feedback" id="scriptOut">Click each line to reveal its job.</p>
+    </section>
+
+    <section class="scene image-scene rehearsal-scene transition-0" data-scene="26" data-act="ACT IV|CONNECT" data-title="Seven-person rehearsal" data-note="Assign exactly one role to each student. The speaker changes each round. The director collects feedback and allows only one improvement target.">
+      <img class="fullbleed" src="assets/seven-person-rehearsal-v2.jpg" alt="Exactly seven teenagers rehearsing one short presentation in a theatre circle">
+      <div class="cinema-shade bottom"></div>
+      <div class="rehearsal-copy">
+        <p class="chapter">24 · SEVEN-PERSON REHEARSAL</p>
+        <h2>ONE SPEAKER.<br>SIX USEFUL LENSES.</h2>
+        <div class="rehearsal-roles">
+          <span><b>1 SPEAKER</b> deliver the talk</span>
+          <span><b>2 STRUCTURE</b> hear opening, body, close</span>
+          <span><b>3 VOICE</b> notice pace, pause, emphasis</span>
+          <span><b>4 CAMERA</b> notice eye line</span>
+          <span><b>5 BODY</b> notice posture and gesture</span>
+          <span><b>6 MESSAGE</b> repeat the main idea</span>
+          <span><b>7 DIRECTOR</b> choose one next improvement</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene charcoal transition-1" data-scene="27" data-act="ACT IV|CONNECT" data-title="The sixty-second spotlight" data-note="Students choose one topic and speak. Start the timer. Listeners tap only observed strengths; after feedback, repeat with one improvement.">
+      <p class="chapter">25 · FINAL PRODUCTION</p>
+      <div class="performance-stage">
+        <div class="performance-time" id="performanceTimer">60</div>
+        <div>
+          <h2>TAKE THE<br>SPOTLIGHT.</h2>
+          <p>Choose: a useful app · a school improvement · a hobby everyone should try.</p>
+          <button class="primary" id="performanceStart" type="button">START 60 SECONDS</button>
+        </div>
+      </div>
+      <div class="peer-track" id="peerTrack">
+        <button>clear opening</button><button>two points</button><button>one example</button><button>useful pause</button><button>camera eye line</button><button>clear ending</button><button>memorable message</button>
+      </div>
+      <p class="feedback" id="peerOut">0 / 7 strengths observed. Choose one next improvement after the talk.</p>
+    </section>
+
+    <section class="scene sand transition-2" data-scene="28" data-act="CURTAIN|REFLECT" data-title="Reflection and homework" data-note="Students complete one exit line aloud. Explain the homework and preview linking words for opinions.">
+      <p class="chapter">26 · CURTAIN CALL</p>
+      <div class="final-grid">
+        <div>
+          <h2>WHAT CHANGED<br>YOUR PRESENCE?</h2>
+          <div class="exit-prompts" id="exitPrompts">
+            <button>My clearest improvement was…</button>
+            <button>One rehearsal choice I will repeat is…</button>
+            <button>My audience should remember…</button>
+          </div>
+          <p class="feedback" id="exitOut">Choose one line and add a concrete example.</p>
+        </div>
+        <div class="homework">
+          <p class="chapter">HOMEWORK · REHEARSE, RECORD, REVIEW</p>
+          <ol>
+            <li>Prepare a 60-second talk with three keywords.</li>
+            <li>Mark one pause and two emphasized words.</li>
+            <li>Record one take.</li>
+            <li>Watch without sound: check posture, eye line, and gesture.</li>
+            <li>Listen without video: check pace, pauses, and clarity.</li>
+            <li>Record a second take with one improvement.</li>
+          </ol>
+          <p class="next">NEXT · LINKING WORDS FOR GIVING OPINIONS</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="map" id="map" aria-label="Scene list"></aside>
+  <aside class="note" id="note" aria-label="Teacher notes"></aside>
+  <nav class="nav" aria-label="Slide navigation">
+    <button id="prev" type="button" aria-label="Previous scene">←</button>
+    <span id="count">1 / 28</span>
+    <span class="progress"><i id="bar"></i></span>
+    <button id="next" type="button" aria-label="Next scene">→</button>
+  </nav>
+  <script src="experience-v7.js"></script>
+</body>
+</html>
