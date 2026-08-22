@@ -1,36 +1,503 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lesson 30 — Constellation Review</title><style>
-:root{--n:#101d45;--c:#75dbe5;--r:#ef765d;--g:#f5d36b;--w:#fff7e6;--ink:#263047}*{box-sizing:border-box}body{margin:0;background:var(--n);color:var(--ink);font-family:'Trebuchet MS',Arial,sans-serif;overflow:hidden}.scene{display:none;min-height:100vh;padding:5vh 8vw 10vh;background:var(--w);position:relative;overflow:auto}.scene.active{display:block;animation:rise .35s both}.scene:before{content:'✦';position:absolute;right:4vw;bottom:6vh;color:var(--g);font-size:8rem;opacity:.15}.stage{position:relative;z-index:1;max-width:1150px}.hero{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.veil{position:absolute;inset:0;background:linear-gradient(90deg,#101d45ee,#101d45a8 52%,#101d4520)}.title{position:relative;z-index:2;color:white;max-width:55rem;padding:10vh 2rem 2rem;border-left:12px solid var(--g);background:#101d459e}.title h1{font-size:clamp(4rem,8vw,9rem);line-height:.82;margin:.1em 0}.title p{font-size:clamp(1.1rem,2vw,1.7rem)}.eyebrow,h3{font-weight:900;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--r)}h2{font-size:clamp(2rem,4vw,4.2rem);line-height:.95;color:var(--n);margin:.2em 0 .55em}p{font-size:clamp(1rem,1.4vw,1.4rem);line-height:1.42}.star{display:inline-block;background:var(--g);color:var(--n);padding:.45rem .8rem;border-radius:50%;font-weight:900;margin:.2rem}.orbit{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.node,.choice{background:white;border:3px solid var(--n);padding:1rem;min-height:7rem;box-shadow:7px 7px 0 #101d4522;cursor:pointer}.node:nth-child(2){background:var(--c)}.node:nth-child(3){background:var(--g)}.choice{text-align:left;font-weight:900;color:var(--n);min-height:auto}.choice:hover,.choice.selected{background:var(--c)}.prompt{background:white;border-left:12px solid var(--r);padding:1.2rem 1.5rem;font-size:clamp(1.3rem,2.2vw,2.2rem);box-shadow:8px 8px 0 #101d4522}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.figure{width:100%;max-height:43vh;object-fit:cover;border:8px solid white;box-shadow:12px 12px 0 var(--c)}.feedback{font-weight:900;color:var(--r);min-height:1.5em}.meter{height:20px;background:#d8cdbb;margin:1rem 0}.meter i{display:block;height:100%;width:35%;background:var(--r);transition:.25s}.timer{font-size:clamp(4rem,8vw,7rem);font-weight:900;text-align:center;color:var(--n)}.tools{position:fixed;z-index:20;right:1rem;top:1rem;display:flex;gap:.4rem}.tools button,.nav button{border:0;background:var(--r);color:white;padding:.55rem .8rem;font-weight:900;cursor:pointer}.nav{position:fixed;z-index:20;left:50%;transform:translateX(-50%);bottom:1rem;background:#101d45ef;color:white;padding:.5rem .8rem;display:flex;gap:.6rem;align-items:center}.count{min-width:5rem;text-align:center}.progress{width:8rem;height:5px;background:#ffffff44}.progress i{display:block;height:100%;background:var(--g)}.note,.map{display:none;position:fixed;z-index:30;background:#101d45f5;color:white;padding:1rem;top:4.4rem;right:1rem;max-width:30rem}.note.open,.map.open{display:block}.map{left:50%;right:auto;transform:translateX(-50%);width:min(800px,92vw)}.map button{margin:.2rem;padding:.4rem;border:0}.score{font-size:clamp(3rem,7vw,6rem);font-weight:900;color:var(--n);text-align:center}@keyframes rise{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}@media(max-width:700px){.scene{padding:4.5rem 1rem 6.5rem}.orbit,.grid2{grid-template-columns:1fr}.figure{max-height:30vh}.title{padding-top:13vh}.tools{top:.5rem;right:.5rem}.nav{bottom:.5rem}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style></head><body><main id="deck"></main><div class="tools"><button id="mapBtn">STAR MAP</button><button id="noteBtn">NOTE</button></div><aside id="note" class="note"></aside><aside id="map" class="map"></aside><nav class="nav"><button id="prev">←</button><span id="count"></span><span class="progress"><i id="bar"></i></span><button id="next">→</button></nav><script>
-const A='assets/';const topics=[
-['Check-in','Find your brightest language star.','Choose one skill you can use today.',['I can explain ideas','I can ask follow-ups','I can tell a story']],
-['Bridge from Lesson 29','Carry one forum move into the test.','Write a claim, reason, and example.',['claim','reason','example']],
-['Read the star map','A course map is easier to remember than a list.','Trace the route: notice → practise → transfer.',['notice','practise','transfer']],
-['Review route','Pick the orbit you need first.','Which route feels most useful?',['grammar','vocabulary','communication']],
-['Grammar orbit','Time signals guide your verb choice.','Match signal to tense.',['already → present perfect','yesterday → past simple','right now → present continuous']],
-['Grammar orbit II','Make meaning visible with form.','Repair: “She go yesterday.”',['She went yesterday.','She has gone yesterday.','She is go yesterday.']],
-['Conditions & possibility','If-clauses turn facts into choices.','Complete: If I had more time, I…',['would practise','will practised','am practise']],
-['Passive & focus','Change the spotlight without losing the event.','Rewrite: “People built the bridge.”',['The bridge was built.','The bridge built people.','People were build.']],
-['Reported speech','Move a message across time.','Report: “I am ready,” said Ana.',['Ana said she was ready.','Ana says I ready.','Ana said she is ready yesterday.']],
-['Question star','Good questions open longer answers.','Choose the best follow-up to “I disagree.”',['What makes you think that?','Do you disagree?','Why no?']],
-['Vocabulary galaxy','Group words by the job they do.','Which cluster is about evidence?',['data · source · pattern','mood · tone · vivid','route · ticket · platform']],
-['Collocations','Words travel in pairs.','Complete: make a…',['decision','homework','attention']],
-['Linking stars','Connect ideas so listeners can follow.','Choose a contrast connector.',['however','because','for example']],
-['Reading star','Read for gist, then proof.','Headline: “City roofs become gardens.” What is likely next?',['details about urban planting','a recipe for soup','a train timetable']],
-['Listening star','Listen for the turn.','When a speaker says “actually,” what may happen?',['a correction or new point','the end of the talk','a spelling lesson']],
-['Speaking star','A clear answer has shape.','Build: answer → reason → example.',['I think… because… for example…','Maybe. Next. Done.','Reason answer example?']],
-['Error constellation','Errors are coordinates, not failures.','Find the fix: “He suggested me to go.”',['He suggested that I go.','He suggested me go.','He suggest I went.']],
-['Test kit','Set your focus before the timer starts.','Pick a strategy for a hard item.',['underline signal words','guess every answer','skip all examples']],
-['Grammar test','Round 1 · orbit forms','Choose: “By Friday, we ___ the draft.”',['will have finished','finish yesterday','are finish']],
-['Vocabulary test','Round 2 · galaxy recall','Choose the precise verb: “The data ___ a trend.”',['reveals','does','puts']],
-['Reading test','Round 3 · evidence','A paragraph gives three examples after a claim. Their job is to…',['support the claim','change the topic','hide the conclusion']],
-['Listening test','Round 4 · main message','You hear a problem, two options, and a decision. Track…',['the decision and why','every filler word','only the first noun']],
-['Speaking test','Round 5 · one-minute answer','Prompt: Should school start later? Include…',['position + reason + example','three unrelated facts','only “yes”']],
-['Score constellation','Turn points into a pattern.','Record your round scores, then circle one bright area.',['grammar','meaning','fluency']],
-['Strength map','A level is a direction, not a label.','Which evidence supports your self-rating?',['a successful task','a specific correction','both together']],
-['Repair orbit','Plan one small, repeatable repair.','Choose a 7-day micro-practice.',['5-minute voice note','3 collocations a day','one paragraph + edit']],
-['Final exit ticket','Close with one constellation line.','Complete: “Next, I will…”',['read more','listen more','speak more']]
-];
-const scenes=[{t:'Constellation Review',n:'Open with the observatory image. Frame the final lesson as a map of what learners can now do.',b:`<img class="hero" src="${A}observatory.png" alt="Illustrated teens in an observatory looking at a constellation map of language stars"><div class="veil"></div><div class="title"><div class="eyebrow">Lesson 30 · final revision + level test</div><h1>Constellation<br>Review</h1><p>Connect the course, test your skills, and choose your next star.</p><span class="star">MAP</span><span class="star">TEST</span><span class="star">GROW</span></div>`}];
-topics.forEach((x,i)=>{let [t,lead,prompt,opts]=x;let img=i===2?`<img class="figure" src="${A}constellation.png" alt="Illustrated constellation of connected language stars">`:i===16?`<img class="figure" src="${A}test-kit.png" alt="Illustrated language test kit with timer and answer cards">`:'';let controls=opts.map(o=>`<button class="choice">${o}</button>`).join('');let extra=i===17?`<div class="timer" id="timer">60</div><button class="choice" id="start">START 60-SECOND ROUND</button>`:'';let meter=i===23?`<div class="meter"><i id="meter"></i></div><div class="orbit" id="levels"><button class="choice" data-level="30">read more</button><button class="choice" data-level="60">listen more</button><button class="choice" data-level="90">speak more</button></div>`:'';scenes.push({t,n:`${i+2} min. ${lead} Use the prompt, then ask one learner to justify a choice.`,b:`<div class="stage"><h3>${String(i+1).padStart(2,'0')} · ${t}</h3><div class="grid2"><div><h2>${lead}</h2><div class="prompt">${prompt}</div><div class="orbit">${controls}</div><p class="feedback"></p>${extra}${meter}</div>${img}</div></div>`})});
-const deck=document.querySelector('#deck');deck.innerHTML=scenes.map((s,i)=>`<section class="scene ${i?'':'active'}">${s.b}</section>`).join('');const note=document.querySelector('#note'),map=document.querySelector('#map'),count=document.querySelector('#count'),bar=document.querySelector('#bar');map.innerHTML='<h3 style="color:var(--g)">Constellation Review map</h3>'+scenes.map((s,i)=>`<button data-jump="${i}">${i+1}. ${s.t}</button>`).join('');let cur=0;function show(i){cur=(i+scenes.length)%scenes.length;document.querySelectorAll('.scene').forEach((x,n)=>x.classList.toggle('active',n===cur));count.textContent=`${cur+1} / ${scenes.length}`;bar.style.width=`${(cur+1)/scenes.length*100}%`;note.classList.remove('open');map.classList.remove('open');window.scrollTo(0,0)}show(0);next.onclick=()=>show(cur+1);prev.onclick=()=>show(cur-1);mapBtn.onclick=()=>map.classList.toggle('open');noteBtn.onclick=()=>{note.innerHTML=`<b>Teacher note · ${cur+1}</b><br>${scenes[cur].n}`;note.classList.toggle('open')};map.onclick=e=>{if(e.target.dataset.jump!==undefined)show(+e.target.dataset.jump)};document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(cur+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(cur-1)}if(e.key.toLowerCase()==='m')map.classList.toggle('open');if(e.key.toLowerCase()==='n')noteBtn.click()});let sx=0;document.addEventListener('touchstart',e=>sx=e.changedTouches[0].screenX,{passive:true});document.addEventListener('touchend',e=>{let d=e.changedTouches[0].screenX-sx;if(Math.abs(d)>45)show(cur+(d<0?1:-1))},{passive:true});document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');let f=b.parentElement.parentElement.querySelector('.feedback');if(f)f.textContent='Recorded — explain your reasoning to a partner.'});document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{document.querySelector('#meter').style.width=b.dataset.level+'%'});let seconds=60,run;const st=document.querySelector('#start');if(st)st.onclick=()=>{clearInterval(run);seconds=60;timer.textContent=seconds;run=setInterval(()=>{timer.textContent=--seconds;if(seconds<=0)clearInterval(run)},1000)};
-</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#081832">
+  <meta name="description" content="Lesson 30: an interactive final revision and English level-test mission for older teens.">
+  <title>Lesson 30 — Language Observatory</title>
+  <link rel="stylesheet" href="observatory.css">
+</head>
+<body>
+  <div class="sky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+  <header class="deck-tools" aria-label="Presentation controls">
+    <button class="tool-btn" id="mapBtn" type="button" aria-haspopup="dialog" aria-controls="starMap">Map</button>
+    <button class="tool-btn" id="focusBtn" type="button" aria-pressed="false">Focus</button>
+    <button class="tool-btn sound-btn" id="soundBtn" type="button" aria-pressed="true">Sound on</button>
+  </header>
+
+  <main id="deck" class="deck" aria-live="polite">
+    <section class="scene scene--hero active" data-title="Enter the observatory" data-zone="Launch" data-transition="aperture">
+      <img class="scene-photo hero-photo" src="assets/observatory.png" alt="Older teenage learners studying a glowing constellation map inside a paper-cut observatory" decoding="async" fetchpriority="high">
+      <div class="hero-scrim"></div>
+      <div class="hero-copy paper-panel paper-panel--dark">
+        <p class="kicker">Lesson 30 · final revision + level test</p>
+        <h1>Language<br><span>Observatory</span></h1>
+        <p class="hero-lead">Thirty lessons became one sky. Tonight, you prove what you can do—and choose where to travel next.</p>
+        <button class="launch-btn" type="button" data-go="1">Open the dome <span aria-hidden="true">↗</span></button>
+      </div>
+      <div class="orbit-stamp" aria-hidden="true"><span>30</span><small>FINAL<br>MISSION</small></div>
+    </section>
+
+    <section class="scene scene--paper" data-title="Mission brief" data-zone="Launch" data-transition="unfold">
+      <div class="scene-inner brief-layout">
+        <div>
+          <p class="kicker">Mission 01 · your destination</p>
+          <h2>This is not a memory test.<br><span class="ink-coral">It is a skill scan.</span></h2>
+          <p class="large-copy">You will notice patterns, make choices, explain your thinking, and leave with one realistic next step.</p>
+        </div>
+        <ol class="flight-path" aria-label="Lesson route">
+          <li><span>01</span><strong>Reconnect</strong><small>Recover the course map</small></li>
+          <li><span>02</span><strong>Recalibrate</strong><small>Repair language systems</small></li>
+          <li><span>03</span><strong>Transmit</strong><small>Read, listen and speak</small></li>
+          <li><span>04</span><strong>Navigate</strong><small>Test and plan forward</small></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="scene scene--navy" data-title="Confidence scan" data-zone="Launch" data-transition="meteor">
+      <div class="scene-inner scan-layout">
+        <div>
+          <p class="kicker kicker--gold">Mission 02 · confidence scan</p>
+          <h2 class="light-title">Choose your signal before the test.</h2>
+          <p class="light-copy">There is no “right” confidence level. Pick the statement that feels honest now.</p>
+        </div>
+        <div class="signal-dial" id="confidenceDial" role="group" aria-label="Confidence selection">
+          <button type="button" data-confidence="1"><b>Faint signal</b><span>I need clues before I answer.</span></button>
+          <button type="button" data-confidence="2"><b>Clear signal</b><span>I can usually explain my choice.</span></button>
+          <button type="button" data-confidence="3"><b>Bright signal</b><span>I can use English spontaneously.</span></button>
+        </div>
+        <p class="status-line" id="confidenceStatus" aria-live="polite">Your starting signal is waiting.</p>
+      </div>
+    </section>
+
+    <section class="scene scene--image-split" data-title="Course constellation" data-zone="Reconnect" data-transition="parallax">
+      <img class="scene-photo split-photo split-photo--right" src="assets/constellation.png" alt="Paper-cut constellation connecting symbols for communication, stories, travel and everyday life" loading="lazy" decoding="async">
+      <div class="image-scrim image-scrim--left"></div>
+      <div class="scene-inner image-copy image-copy--left">
+        <p class="kicker kicker--gold">Mission 03 · course constellation</p>
+        <h2 class="light-title">Thirty lessons.<br>Four galaxies.</h2>
+        <div class="galaxy-key">
+          <button type="button" data-reveal="galaxyGrammar"><i class="dot dot--cyan"></i>Systems</button>
+          <button type="button" data-reveal="galaxyWords"><i class="dot dot--coral"></i>Words</button>
+          <button type="button" data-reveal="galaxySkills"><i class="dot dot--gold"></i>Skills</button>
+          <button type="button" data-reveal="galaxyVoice"><i class="dot dot--violet"></i>Voice</button>
+        </div>
+        <div class="reveal-note" id="galaxyGrammar">Tenses, conditionals, passive voice, reported speech, relative clauses and question tags.</div>
+        <div class="reveal-note" id="galaxyWords">Personality, emotions, travel, careers, business, hobbies, media and phrasal verbs.</div>
+        <div class="reveal-note" id="galaxySkills">Reading for evidence, listening for meaning, pronunciation, fluency and problem-solving.</div>
+        <div class="reveal-note" id="galaxyVoice">Opinions, stories, reviews, debates, presentations and real-life conversations.</div>
+      </div>
+    </section>
+
+    <section class="scene scene--paper" data-title="Memory meteor shower" data-zone="Reconnect" data-transition="scatter">
+      <div class="scene-inner">
+        <p class="kicker">Mission 04 · memory meteor shower</p>
+        <div class="title-row"><h2>Catch a topic.<br>Say one thing you remember.</h2><button class="shuffle-btn" id="meteorShuffle" type="button">Shuffle meteors</button></div>
+        <div class="meteor-field" id="meteorField" aria-label="Course topic recall game">
+          <button type="button">Present perfect</button><button type="button">Funny stories</button><button type="button">Technology & AI</button><button type="button">Second conditional</button><button type="button">Passive voice</button><button type="button">Sound natural</button><button type="button">Reported speech</button><button type="button">Relative clauses</button><button type="button">Airport English</button><button type="button">Used to</button><button type="button">Business basics</button><button type="button">Phrasal verbs</button>
+        </div>
+        <p class="mission-tip"><b>Partner rule:</b> add an example or ask one follow-up question.</p>
+      </div>
+    </section>
+
+    <section class="scene scene--visual" data-title="Grammar orrery" data-zone="Recalibrate" data-transition="orbit">
+      <img class="scene-photo" src="assets/grammar-orrery.png" alt="Paper-cut brass orrery with symbolic worlds for past events, actions now, future plans and imagined possibilities" loading="lazy" decoding="async">
+      <div class="visual-caption paper-panel paper-panel--dark">
+        <p class="kicker kicker--gold">Mission 05 · grammar orrery</p>
+        <h2 class="light-title">Grammar is a map of meaning.</h2>
+        <p class="light-copy">Find the footprints, the action, the rocket and the forked path. What time or possibility does each world suggest?</p>
+      </div>
+    </section>
+
+    <section class="scene scene--cream" data-title="Present lens" data-zone="Recalibrate" data-transition="lens">
+      <div class="scene-inner lab-layout">
+        <div>
+          <p class="kicker">Mission 06 · present lens</p>
+          <h2>Habit, happening now,<br>or unfinished journey?</h2>
+          <div class="formula-strip"><span>usually</span><span>right now</span><span>since Monday</span></div>
+        </div>
+        <div class="question-lab" data-quiz="present-lens">
+          <p class="lab-sentence">Mira usually ___ by bus, but this week she ___ from home.</p>
+          <div class="choice-stack">
+            <button type="button" data-correct="true">travels · is working</button>
+            <button type="button">is travelling · works</button>
+            <button type="button">has travelled · worked</button>
+          </div>
+          <div class="answer-explain" aria-live="polite"><b>Signal:</b> “usually” = habit; “this week” = temporary situation.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene--coral" data-title="Past lens" data-zone="Recalibrate" data-transition="wipe">
+      <div class="scene-inner lab-layout lab-layout--reverse">
+        <div class="question-lab question-lab--dark" data-quiz="past-lens">
+          <p class="lab-sentence">When the lights went out, we ___ dinner. Earlier, Dad ___ the candles.</p>
+          <div class="choice-stack">
+            <button type="button">ate · bought</button>
+            <button type="button" data-correct="true">were eating · had bought</button>
+            <button type="button">had eaten · was buying</button>
+          </div>
+          <div class="answer-explain" aria-live="polite"><b>Picture it:</b> long action interrupted; earlier action completed first.</div>
+        </div>
+        <div>
+          <p class="kicker kicker--navy">Mission 07 · past lens</p>
+          <h2>Three past times.<br>One clear story.</h2>
+          <div class="timeline" aria-label="Past tense timeline"><i></i><span>had bought</span><span>were eating</span><span>lights went out</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene--navy" data-title="Future radar" data-zone="Recalibrate" data-transition="radar">
+      <div class="scene-inner">
+        <p class="kicker kicker--gold">Mission 08 · future radar</p>
+        <h2 class="light-title">The future changes shape<br>when the intention changes.</h2>
+        <div class="radar-grid" data-select-one>
+          <button type="button" data-message="A prediction or instant decision: I’ll call you."><span>will</span><small>prediction · instant choice</small></button>
+          <button type="button" data-message="A visible plan: I’m going to apply."><span>going to</span><small>plan · evidence</small></button>
+          <button type="button" data-message="An action in progress later: At 8, I’ll be studying."><span>will be + -ing</span><small>future in progress</small></button>
+        </div>
+        <p class="status-line" data-selection-status>Tap a radar ring to reveal its purpose.</p>
+      </div>
+    </section>
+
+    <section class="scene scene--paper" data-title="Perfect systems" data-zone="Recalibrate" data-transition="fold">
+      <div class="scene-inner perfect-layout">
+        <div>
+          <p class="kicker">Mission 09 · perfect systems</p>
+          <h2>Result or duration?</h2>
+          <p class="large-copy">Both connect the past to now. The speaker chooses what matters.</p>
+        </div>
+        <div class="balance-scale" data-balance>
+          <button type="button" data-side="result"><b>I have written three pages.</b><span>Focus: finished result</span></button>
+          <div class="scale-core"><i></i><span>NOW</span></div>
+          <button type="button" data-side="duration"><b>I have been writing for two hours.</b><span>Focus: activity + duration</span></button>
+        </div>
+        <p class="balance-feedback" aria-live="polite">Choose a sentence, then explain what the speaker wants us to notice.</p>
+      </div>
+    </section>
+
+    <section class="scene scene--cream" data-title="Conditional gate" data-zone="Recalibrate" data-transition="doors">
+      <div class="scene-inner gate-layout">
+        <div>
+          <p class="kicker">Mission 10 · conditional gate</p>
+          <h2>Real possibility<br>or imagined world?</h2>
+        </div>
+        <div class="gate" data-gate>
+          <button type="button" data-gate-answer="real"><span>IF + PRESENT</span><b>If we leave now, we’ll catch the bus.</b></button>
+          <button type="button" data-gate-answer="imagined"><span>IF + PAST</span><b>If I could fly, I’d visit every country.</b></button>
+        </div>
+        <div class="gate-prompt" id="gatePrompt">Create one true possibility and one imaginative answer.</div>
+      </div>
+    </section>
+
+    <section class="scene scene--navy" data-title="Spotlight controls" data-zone="Recalibrate" data-transition="spotlight">
+      <div class="scene-inner spotlight-layout">
+        <div>
+          <p class="kicker kicker--gold">Mission 11 · spotlight controls</p>
+          <h2 class="light-title">Move attention<br>without losing meaning.</h2>
+        </div>
+        <div class="spotlight-console">
+          <article><span>ACTIVE</span><p>Researchers designed the robot.</p></article>
+          <button type="button" id="spotlightSwitch" aria-label="Change from active to passive">Shift focus</button>
+          <article><span>PASSIVE</span><p id="passiveOutput">?</p></article>
+        </div>
+        <p class="light-copy">Use passive voice when the result or receiver matters more than the doer.</p>
+      </div>
+    </section>
+
+    <section class="scene scene--gold" data-title="Message relay" data-zone="Recalibrate" data-transition="relay">
+      <div class="scene-inner relay-layout">
+        <div>
+          <p class="kicker kicker--navy">Mission 12 · message relay</p>
+          <h2>Report the idea,<br>not the exact sound.</h2>
+        </div>
+        <div class="relay-track" data-relay>
+          <blockquote>“I am finishing the project now,” Lila said.</blockquote>
+          <div class="relay-arrow" aria-hidden="true">➜</div>
+          <div class="relay-choices">
+            <button type="button">Lila said she is finishing the project now.</button>
+            <button type="button" data-correct="true">Lila said she was finishing the project then.</button>
+            <button type="button">Lila told that I finished the project.</button>
+          </div>
+          <p class="answer-explain" aria-live="polite">Look for the pronoun, tense and time-word shift.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene--cream" data-title="Verb docking bay" data-zone="Recalibrate" data-transition="dock">
+      <div class="scene-inner docking-layout">
+        <div>
+          <p class="kicker">Mission 13 · verb docking bay</p>
+          <h2>Some verbs dock with <i>-ing</i>.<br>Others dock with <i>to</i>.</h2>
+          <p class="large-copy">Tap each capsule and send it to the correct station.</p>
+        </div>
+        <div class="dock-game" id="dockGame">
+          <div class="capsules"><button type="button" data-dock="ing">enjoy</button><button type="button" data-dock="to">decide</button><button type="button" data-dock="ing">avoid</button><button type="button" data-dock="to">hope</button><button type="button" data-dock="ing">suggest</button><button type="button" data-dock="to">plan</button></div>
+          <div class="docks"><div data-station="ing"><b>VERB + -ING</b><span></span></div><div data-station="to"><b>VERB + TO</b><span></span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene--error" data-title="Error scanner" data-zone="Recalibrate" data-transition="scan">
+      <div class="scene-inner scanner-layout">
+        <div>
+          <p class="kicker kicker--gold">Mission 14 · error scanner</p>
+          <h2 class="light-title">Find four glitches.<br>Repair the transmission.</h2>
+          <p class="light-copy">Tap the glowing fragments. Say the correction before the scanner reveals it.</p>
+        </div>
+        <div class="error-message" id="errorMessage">
+          <p>My friend <button type="button" data-fix="has lived">lives</button> here since 2022. Yesterday, she <button type="button" data-fix="told me">said me</button> that the new library <button type="button" data-fix="had been opened">had opened</button> by the mayor. If I had time, I <button type="button" data-fix="would visit">will visit</button> it today.</p>
+        </div>
+        <p class="scanner-count" id="scannerCount">0 / 4 glitches repaired</p>
+      </div>
+    </section>
+
+    <section class="scene scene--visual" data-title="Vocabulary nebula" data-zone="Words" data-transition="nebula">
+      <img class="scene-photo" src="assets/vocabulary-nebula.png" alt="Paper-cut vocabulary nebula with clustered objects for travel, technology, emotion, work, health, money, books, films and hobbies" loading="lazy" decoding="async">
+      <div class="visual-caption visual-caption--left paper-panel paper-panel--dark">
+        <p class="kicker kicker--gold">Mission 15 · vocabulary nebula</p>
+        <h2 class="light-title">Words are easier to find<br>when they live in families.</h2>
+        <p class="light-copy">Choose one cluster. Name five words, one collocation and one personal example.</p>
+      </div>
+    </section>
+
+    <section class="scene scene--paper" data-title="Cluster sorter" data-zone="Words" data-transition="shuffle">
+      <div class="scene-inner">
+        <p class="kicker">Mission 16 · cluster sorter</p>
+        <div class="title-row"><h2>Which galaxy owns the word?</h2><p class="score-chip">Score <b id="sortScore">0</b>/8</p></div>
+        <div class="sort-game" id="sortGame">
+          <div class="sort-word" id="sortWord">reliable</div>
+          <div class="sort-options">
+            <button type="button" data-category="personality">Personality</button>
+            <button type="button" data-category="travel">Travel</button>
+            <button type="button" data-category="business">Business</button>
+            <button type="button" data-category="emotion">Emotion</button>
+          </div>
+          <p id="sortFeedback" class="answer-explain" aria-live="polite">Choose a galaxy. A new word will appear automatically.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene--cyan" data-title="Collocation magnets" data-zone="Words" data-transition="magnet">
+      <div class="scene-inner magnet-layout">
+        <div>
+          <p class="kicker kicker--navy">Mission 17 · collocation magnets</p>
+          <h2>Strong words attract<br>the right partners.</h2>
+          <p class="large-copy">Choose a verb, then click the noun it naturally attracts.</p>
+        </div>
+        <div class="magnet-board" id="magnetBoard">
+          <div class="magnet-verbs"><button type="button" data-verb="make">make</button><button type="button" data-verb="take">take</button><button type="button" data-verb="do">do</button><button type="button" data-verb="pay">pay</button></div>
+          <div class="magnet-nouns"><button type="button" data-noun="decision">a decision</button><button type="button" data-noun="risk">a risk</button><button type="button" data-noun="research">research</button><button type="button" data-noun="attention">attention</button></div>
+          <p class="magnet-output" id="magnetOutput">Build four natural pairs.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene--navy" data-title="Phrasal verb airlock" data-zone="Words" data-transition="airlock">
+      <div class="scene-inner airlock-layout">
+        <div>
+          <p class="kicker kicker--gold">Mission 18 · phrasal verb airlock</p>
+          <h2 class="light-title">One small particle<br>changes the mission.</h2>
+        </div>
+        <div class="airlock" id="airlock">
+          <div class="airlock-verb">look</div>
+          <div class="particle-ring"><button type="button" data-definition="search for information">up</button><button type="button" data-definition="take care of">after</button><button type="button" data-definition="wait with excitement for">forward to</button><button type="button" data-definition="investigate">into</button></div>
+          <p id="airlockMeaning">Choose a particle to unlock the meaning.</p>
+        </div>
+        <div class="airlock-prompt">Create a true sentence with the unlocked phrasal verb.</div>
+      </div>
+    </section>
+
+    <section class="scene scene--visual" data-title="Reading archive" data-zone="Transmit" data-transition="page-turn">
+      <img class="scene-photo" src="assets/reading-archive.png" alt="Teenage learner opening an illuminated book whose clues connect a main city-garden idea to supporting scenes" loading="lazy" decoding="async">
+      <div class="visual-caption paper-panel paper-panel--dark">
+        <p class="kicker kicker--gold">Mission 19 · reading archive</p>
+        <h2 class="light-title">Read like an astronomer.</h2>
+        <div class="reading-steps"><span>1 · scan the sky</span><span>2 · locate evidence</span><span>3 · infer the pattern</span></div>
+      </div>
+    </section>
+
+    <section class="scene scene--paper" data-title="Reading case file" data-zone="Transmit" data-transition="unseal">
+      <div class="scene-inner case-layout">
+        <div class="case-file">
+          <p class="case-label">ARCHIVE 30-A</p>
+          <h2>Small roofs, big change</h2>
+          <p>Five years ago, the roofs of several apartment buildings in Aral City were empty and extremely hot in summer. Today, residents grow herbs and vegetables there. The gardens do more than provide food: they cool the buildings, create spaces where neighbours meet, and give insects a place to live. The project began with one science teacher and twelve students. After local businesses donated soil and tools, other buildings copied the idea. The gardens cannot solve every environmental problem, but they show how one practical experiment can influence a whole neighbourhood.</p>
+        </div>
+        <aside class="case-task">
+          <p class="kicker">30-second scan</p>
+          <h3>What is the writer’s main message?</h3>
+          <button type="button" data-case-answer="false">Roof gardens mainly help businesses sell tools.</button>
+          <button type="button" data-case-answer="true">A small local project can create several kinds of positive change.</button>
+          <button type="button" data-case-answer="false">Every city must grow all its food on roofs.</button>
+          <p id="caseFeedback" aria-live="polite">Choose the idea that covers the whole paragraph.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="scene scene--gold" data-title="Evidence lens" data-zone="Transmit" data-transition="magnify">
+      <div class="scene-inner evidence-layout">
+        <div>
+          <p class="kicker kicker--navy">Mission 21 · evidence lens</p>
+          <h2>A good answer points<br>back to the text.</h2>
+          <p class="large-copy">Choose a question, then reveal the strongest evidence.</p>
+        </div>
+        <div class="evidence-lens" id="evidenceLens">
+          <div class="evidence-tabs" role="tablist"><button type="button" data-evidence="cause">Why did the idea spread?</button><button type="button" data-evidence="benefit">Name two benefits.</button><button type="button" data-evidence="tone">Is the writer realistic?</button></div>
+          <blockquote id="evidenceQuote">Select a lens.</blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene--visual" data-title="Listening signal room" data-zone="Transmit" data-transition="wave">
+      <img class="scene-photo" src="assets/listening-signal.png" alt="Teenage listener using an observatory console as sound waves reveal an airport scene, a conversation and a turning-point comet" loading="lazy" decoding="async">
+      <div class="visual-caption visual-caption--left paper-panel paper-panel--dark">
+        <p class="kicker kicker--gold">Mission 22 · listening signal room</p>
+        <h2 class="light-title">Do not chase every word.</h2>
+        <p class="light-copy">Track three signals: the main message, supporting details, and the moment the speaker changes direction.</p>
+      </div>
+    </section>
+
+    <section class="scene scene--navy" data-title="Incoming transmission" data-zone="Transmit" data-transition="transmission">
+      <div class="scene-inner transmission-layout">
+        <div>
+          <p class="kicker kicker--gold">Mission 23 · incoming transmission</p>
+          <h2 class="light-title">Listen twice.<br>Build the message.</h2>
+          <div class="transmission-controls">
+            <button class="play-transmission" id="playTransmission" type="button"><span aria-hidden="true">▶</span> Play transmission</button>
+            <button class="transcript-toggle" id="transcriptToggle" type="button" aria-expanded="false">Show transcript</button>
+          </div>
+          <p class="speech-fallback" id="speechFallback">Uses your browser’s system voice. The transcript is always available.</p>
+        </div>
+        <div class="signal-card">
+          <div class="waveform" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <p class="transcript" id="transcript">Attention passengers travelling to Osh. Flight KG 214 will not leave from Gate 6 as planned. Because of a technical check, boarding will begin twenty minutes later at Gate 9. Passengers with small children may board first. We apologise for the change.</p>
+          <div class="transmission-questions" id="transmissionQuestions">
+            <button type="button" data-answer="gate">What changed?</button>
+            <button type="button" data-answer="reason">Why?</button>
+            <button type="button" data-answer="priority">Who boards first?</button>
+          </div>
+          <p id="transmissionAnswer">Choose a question after listening.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene--cream" data-title="Pronunciation wave" data-zone="Transmit" data-transition="pulse">
+      <div class="scene-inner pronunciation-layout">
+        <div>
+          <p class="kicker">Mission 24 · pronunciation wave</p>
+          <h2>Stress carries meaning.</h2>
+          <p class="large-copy">Tap a sentence to move the spotlight. Read it aloud with the highlighted word strongest.</p>
+        </div>
+        <div class="stress-stage" id="stressStage">
+          <p><button type="button" data-stress="I">I</button> <button type="button" data-stress="didn't">didn’t</button> <button type="button" data-stress="say">say</button> <button type="button" data-stress="she">she</button> <button type="button" data-stress="stole">stole</button> <button type="button" data-stress="the">the</button> <button type="button" data-stress="map">map</button>.</p>
+          <div id="stressMeaning">Choose the strongest word. What contrast does it create?</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene--visual" data-title="Speaking launch deck" data-zone="Transmit" data-transition="launch">
+      <img class="scene-photo" src="assets/speaking-launch.png" alt="Four older teenagers connecting position, reason, example and follow-up ideas into glowing constellations while speaking together" loading="lazy" decoding="async">
+      <div class="visual-caption paper-panel paper-panel--dark">
+        <p class="kicker kicker--gold">Mission 25 · speaking launch deck</p>
+        <h2 class="light-title">A strong answer creates<br>a path for the listener.</h2>
+        <div class="answer-path"><span>position</span><i></i><span>reason</span><i></i><span>example</span><i></i><span>follow-up</span></div>
+      </div>
+    </section>
+
+    <section class="scene scene--coral" data-title="One-minute orbit" data-zone="Transmit" data-transition="spin">
+      <div class="scene-inner speaking-lab">
+        <div>
+          <p class="kicker kicker--navy">Mission 26 · one-minute orbit</p>
+          <h2>Spin. Think. Speak.<br>Pass the question.</h2>
+          <button class="roulette-btn" id="rouletteBtn" type="button">Spin a speaking prompt</button>
+        </div>
+        <div class="prompt-orbit">
+          <p id="speakingPrompt">Your prompt will land here.</p>
+          <div class="builder-rail"><span>I think…</span><span>because…</span><span>for example…</span><span>What about you?</span></div>
+          <div class="timer-console"><button id="timerMinus" type="button" aria-label="Reduce timer">−</button><strong id="speakingTimer">60</strong><button id="timerPlus" type="button" aria-label="Increase timer">+</button><button id="timerStart" type="button">Start</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene--visual" data-title="Level-test kit" data-zone="Navigate" data-transition="deploy">
+      <img class="scene-photo" src="assets/test-kit.png" alt="Paper-cut final language test kit with compass, timer, answer sheets, pencils and star tokens" loading="lazy" decoding="async">
+      <div class="visual-caption visual-caption--left paper-panel paper-panel--dark">
+        <p class="kicker kicker--gold">Mission 27 · level-test kit</p>
+        <h2 class="light-title">Accuracy + meaning<br>+ strategy.</h2>
+        <p class="light-copy">Fifteen mixed questions. One answer each. You can change an answer before submitting.</p>
+      </div>
+    </section>
+
+    <section class="scene scene--test" data-title="Final level test" data-zone="Navigate" data-transition="countdown">
+      <div class="scene-inner test-layout">
+        <div class="test-heading">
+          <p class="kicker kicker--gold">Mission 28 · final level test</p>
+          <h2 class="light-title">Navigate all fifteen signals.</h2>
+          <div class="test-progress"><i id="testProgressBar"></i></div>
+        </div>
+        <div class="test-card" id="testCard">
+          <div class="test-meta"><span id="testNumber">Question 1 / 15</span><span id="testCategory">Grammar</span></div>
+          <p id="testQuestion">Loading test…</p>
+          <div id="testChoices" class="test-choices"></div>
+          <div class="test-actions"><button id="testPrev" type="button">Previous</button><button id="testNext" type="button">Next</button><button id="testSubmit" type="button">Submit constellation</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene--paper" data-title="Results constellation" data-zone="Navigate" data-transition="constellate">
+      <div class="scene-inner results-layout">
+        <div>
+          <p class="kicker">Mission 29 · results constellation</p>
+          <h2>Your score is evidence.<br><span class="ink-coral">It is not your identity.</span></h2>
+          <p class="large-copy">Combine your score with speaking, listening and real-life performance.</p>
+        </div>
+        <div class="result-orbit" id="resultOrbit">
+          <div class="result-score"><strong id="finalScore">—</strong><span>/ 15</span></div>
+          <h3 id="resultTitle">Complete the test to map your result.</h3>
+          <p id="resultMessage">Your constellation will appear here.</p>
+          <div class="band-scale"><span>A2 bridge</span><span>Strong A2</span><span>B1 orbit</span><i id="bandMarker"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene--navy" data-title="Next-orbit planner" data-zone="Navigate" data-transition="chart">
+      <div class="scene-inner planner-layout">
+        <div>
+          <p class="kicker kicker--gold">Mission 30 · next-orbit planner</p>
+          <h2 class="light-title">Make progress small enough<br>to repeat.</h2>
+          <p class="light-copy">Build one seven-day mission. Your plan is saved on this device.</p>
+        </div>
+        <form class="orbit-planner" id="orbitPlanner">
+          <fieldset><legend>Target</legend><label><input type="radio" name="target" value="grammar"> Grammar accuracy</label><label><input type="radio" name="target" value="vocabulary"> Vocabulary range</label><label><input type="radio" name="target" value="listening"> Listening confidence</label><label><input type="radio" name="target" value="speaking"> Speaking fluency</label></fieldset>
+          <fieldset><legend>Daily mission</legend><label><input type="radio" name="method" value="voice note"> 5-minute voice note</label><label><input type="radio" name="method" value="mini story"> One mini story</label><label><input type="radio" name="method" value="signal hunt"> Find five useful phrases</label><label><input type="radio" name="method" value="listen and shadow"> Listen and shadow</label></fieldset>
+          <button type="submit">Save my orbit</button>
+          <p id="planOutput" aria-live="polite">Choose one target and one repeatable mission.</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="scene scene--finale" data-title="Your next sky" data-zone="Finish" data-transition="sunrise">
+      <img class="scene-photo" src="assets/sunrise-finale.png" alt="Older teenage learners watching their language constellations become a bright path toward sunrise beyond the observatory" loading="lazy" decoding="async">
+      <div class="finale-scrim"></div>
+      <div class="finale-copy">
+        <p class="kicker kicker--gold">Final transmission</p>
+        <h2 class="light-title">You do not need<br>the whole sky.</h2>
+        <p>Choose one direction. Follow it often. Let small signals become a path.</p>
+        <div class="exit-builder" id="exitBuilder">
+          <span>Next, I will</span>
+          <button type="button">notice more</button><button type="button">speak sooner</button><button type="button">repair calmly</button><button type="button">practise daily</button>
+        </div>
+        <p class="final-line" id="finalLine">Your next constellation begins with one action.</p>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="star-map" id="starMap" aria-labelledby="mapTitle">
+    <div class="map-head"><div><p class="kicker kicker--gold">Navigation</p><h2 id="mapTitle">Observatory map</h2></div><button id="mapClose" type="button" aria-label="Close map">×</button></div>
+    <div class="map-zones" id="mapZones"></div>
+    <p class="map-help">Keyboard: ← → or Page Up / Page Down · M opens map · F toggles focus mode</p>
+  </dialog>
+
+  <nav class="deck-nav" aria-label="Slide navigation">
+    <button id="prevBtn" type="button" aria-label="Previous scene">←</button>
+    <div class="nav-center"><span id="sceneLabel">Launch</span><div class="nav-track"><i id="navProgress"></i></div><strong id="sceneCount">1 / 32</strong></div>
+    <button id="nextBtn" type="button" aria-label="Next scene">→</button>
+  </nav>
+
+  <div class="achievement" id="achievement" role="status" aria-live="polite"><span>✦</span><p></p></div>
+  <script src="observatory.js" defer></script>
+</body>
+</html>

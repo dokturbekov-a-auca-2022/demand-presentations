@@ -75,7 +75,7 @@ The exact image-generation prompts that produced these three existing files are 
 | 27 | `lesson-27-presentation-skills-speaking-confidently` | Stagecraft Studio | Complete; 28-scene presentation-skills lesson |
 | 28 | `lesson-28-linking-words-giving-opinions` | Opinion Loom | Complete; 28-scene linking-words lesson |
 | 29 | `lesson-29-final-speaking-project-presentation-debate` | Make Your Case | Rebuilt; 28-scene live-forum final speaking project with route choice, model pitch, project canvas, rehearsal director, performance timer and feedback mosaic |
-| 30 | `lesson-30-final-revision-level-test` | Constellation Review | Complete; 28-scene final revision + level test |
+| 30 | `lesson-30-final-revision-level-test` | Language Observatory | Rebuilt; 32-scene observatory mission with nine original illustrations, full-course review labs, offline listening transmission, speaking roulette, 15-question test, score constellation and saved next-orbit plan |
 
 Lesson 01 is now complete in `lesson-01-revision-getting-to-know-each-other`.
 
