@@ -1,6 +1,6 @@
 # Interactive English Presentations — Project Handoff
 
-Last updated: 15 August 2026
+Last updated: 23 August 2026
 
 This file is the durable context for continuing the presentation project in a new chat. Read it completely before editing or creating a lesson.
 
@@ -74,7 +74,7 @@ The exact image-generation prompts that produced these three existing files are 
 | 26 | `lesson-26-question-tags-small-talk` | Tag Café | Complete; 28-scene speaking lesson |
 | 27 | `lesson-27-presentation-skills-speaking-confidently` | Stagecraft Studio | Complete; 28-scene presentation-skills lesson |
 | 28 | `lesson-28-linking-words-giving-opinions` | Opinion Loom | Complete; 28-scene linking-words lesson |
-| 29 | `lesson-29-final-speaking-project-presentation-debate` | Forum Mosaic | Complete; 28-scene final speaking project |
+| 29 | `lesson-29-final-speaking-project-presentation-debate` | Make Your Case | Rebuilt; 28-scene live-forum final speaking project with route choice, model pitch, project canvas, rehearsal director, performance timer and feedback mosaic |
 | 30 | `lesson-30-final-revision-level-test` | Constellation Review | Complete; 28-scene final revision + level test |
 
 Lesson 01 is now complete in `lesson-01-revision-getting-to-know-each-other`.

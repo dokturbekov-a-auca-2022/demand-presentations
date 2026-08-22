@@ -1,35 +1,383 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lesson 29 — Forum Mosaic</title><style>
-:root{--blue:#234f78;--red:#c95c4c;--gold:#f0c75e;--mint:#acd8c4;--cream:#fff7e7;--ink:#27303b}*{box-sizing:border-box}body{margin:0;background:var(--blue);color:var(--ink);font-family:'Trebuchet MS',Arial,sans-serif;overflow:hidden}.scene{display:none;min-height:100vh;padding:5.5vh 8vw 10vh;background:var(--cream);position:relative;overflow:auto}.scene.active{display:block;animation:tile .35s both}.scene:before{content:'▦';position:absolute;right:4vw;bottom:7vh;color:var(--red);font-size:8rem;opacity:.13}.stage{position:relative;z-index:1;max-width:1150px}.hero{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.veil{position:absolute;inset:0;background:linear-gradient(90deg,#234f78eb,#234f78a7 48%,#234f7820)}.title{position:relative;z-index:2;color:#fff;max-width:52rem;padding:11vh 2rem 2rem;border-left:12px solid var(--gold);background:#234f789b}.title h1{font-size:clamp(4rem,8vw,9rem);line-height:.82;margin:.1em 0}.title p{font-size:clamp(1.1rem,2vw,1.7rem)}.eyebrow,h3{font-weight:900;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}h2{font-size:clamp(2rem,4vw,4.2rem);line-height:.95;color:var(--blue);margin:.2em 0 .55em}p{font-size:clamp(1rem,1.4vw,1.4rem);line-height:1.42}.tile{background:#fff;border:3px solid var(--blue);padding:1.1rem;min-height:8rem;box-shadow:7px 7px 0 #234f7822;cursor:pointer}.tile:nth-child(2){background:var(--mint)}.tile:nth-child(3){background:var(--gold)}.tile.selected{outline:5px solid var(--red)}.mosaic{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.statement{background:#fff;border-left:12px solid var(--red);padding:1.2rem 1.5rem;font-size:clamp(1.3rem,2.2vw,2.2rem);box-shadow:8px 8px 0 #234f7822}.choice{background:#fff;border:3px solid var(--blue);padding:.85rem 1rem;color:var(--blue);font-weight:900;cursor:pointer;text-align:left;box-shadow:4px 4px 0 #234f7822}.choice:hover,.choice.selected{background:var(--mint)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.figure{width:100%;max-height:43vh;object-fit:cover;border:8px solid #fff;box-shadow:12px 12px 0 var(--gold)}.feedback{font-weight:900;color:var(--red);min-height:1.5em}.token{display:inline-block;background:var(--blue);color:#fff;padding:.7rem 1rem;margin:.25rem;cursor:pointer;font-weight:900}.token.on{background:var(--red)}.meter{height:20px;background:#d5cdb6;margin:1rem 0}.meter i{display:block;height:100%;width:35%;background:var(--red);transition:.25s}.tools{position:fixed;z-index:20;right:1rem;top:1rem;display:flex;gap:.4rem}.tools button,.nav button{border:0;background:var(--red);color:#fff;padding:.55rem .8rem;font-weight:900;cursor:pointer}.nav{position:fixed;z-index:20;left:50%;transform:translateX(-50%);bottom:1rem;background:#234f78ef;color:#fff;padding:.5rem .8rem;display:flex;gap:.6rem;align-items:center}.count{min-width:5rem;text-align:center}.progress{width:8rem;height:5px;background:#ffffff44}.progress i{display:block;height:100%;background:var(--gold)}.note,.map{display:none;position:fixed;z-index:30;background:#234f78f5;color:#fff;padding:1rem;top:4.4rem;right:1rem;max-width:30rem}.note.open,.map.open{display:block}.map{left:50%;right:auto;transform:translateX(-50%);width:min(800px,92vw)}.map button{margin:.2rem;padding:.4rem;border:0}.timer{font-size:clamp(4rem,8vw,7rem);font-weight:900;text-align:center;color:var(--blue)}@keyframes tile{from{opacity:0;transform:scale(.98) translateY(10px)}to{opacity:1;transform:none}}@media(max-width:700px){.scene{padding:4.5rem 1rem 6.5rem}.mosaic,.grid2{grid-template-columns:1fr}.figure{max-height:30vh}.title{padding-top:13vh}.tools{top:.5rem;right:.5rem}.nav{bottom:.5rem}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style></head><body><main id="deck"></main><div class="tools"><button id="mapBtn">FORUM MAP</button><button id="noteBtn">NOTE</button></div><aside id="note" class="note"></aside><aside id="map" class="map"></aside><nav class="nav"><button id="prev">←</button><span id="count"></span><span class="progress"><i id="bar"></i></span><button id="next">→</button></nav><script>
-const A='assets/';const S=(t,n,b)=>({t,n,b});const scenes=[
-S('Forum Mosaic','2 min. Open with the forum image. Explain that today’s goal is a clear, respectful final project.',`<img class="hero" src="${A}forum-circle.png" alt="Illustrated community forum with teens in a semicircle and a blank mosaic wall"><div class="veil"></div><div class="title"><div class="eyebrow">Lesson 29 · final speaking project</div><h1>Forum<br>Mosaic</h1><p>Build a presentation or debate that gives every idea a place.</p><span class="token">CLAIM</span><span class="token">EVIDENCE</span><span class="token">VOICE</span></div>`),
-S('Check-in: choose your route','4 min. Students choose presentation or debate.',`<div class="stage"><h3>01 · check-in</h3><h2>Which final route fits you?</h2><div class="mosaic" id="route"><button class="tile choice">a solo presentation</button><button class="tile choice">a team presentation</button><button class="tile choice">a friendly debate</button><button class="tile choice">a creative showcase</button></div><p id="routeOut" class="feedback">Choose one and explain why.</p></div>`),
-S('Bridge from Lesson 28','3 min. Connect linking words to the final project.',`<div class="stage"><h3>02 · bridge</h3><div class="statement">A strong project has a claim, evidence, and links that show how the ideas fit.</div></div>`),
-S('Read the forum wall','5 min. Students predict what makes a project convincing.',`<div class="stage"><h3>03 · visual lead-in</h3><h2>What belongs on the wall?</h2><img class="figure" src="${A}argument-table.png" alt="Illustrated table with argument tiles evidence cards timer microphone and voting tokens"><p class="feedback">Name one thing a speaker needs and one thing a listener needs.</p></div>`),
-S('Project map','1 min. Preview the final-project cycle.',`<div class="stage"><h3>04 · route</h3><div class="mosaic"><div class="tile"><b>Choose</b><p>topic + audience</p></div><div class="tile"><b>Build</b><p>claim + evidence</p></div><div class="tile"><b>Share</b><p>voice + response</p></div></div></div>`),
-S('Topic tiles','5 min. Students choose a safe, interesting topic.',`<div class="stage"><h3>05 · topics</h3><div class="mosaic" id="topics"><button class="tile choice">school life</button><button class="tile choice">technology</button><button class="tile choice">money</button><button class="tile choice">health</button><button class="tile choice">free time</button><button class="tile choice">a topic I invent</button></div><p id="topicOut" class="feedback">Pick a topic and make it narrower.</p></div>`),
-S('Audience tiles','4 min. Students adapt the same idea to different listeners.',`<div class="stage"><h3>06 · audience</h3><div class="mosaic"><div class="tile"><b>Classmates</b><p>use a story or question</p></div><div class="tile"><b>School leaders</b><p>use evidence + solution</p></div><div class="tile"><b>Parents</b><p>use clear context</p></div></div></div>`),
-S('Claim or topic?','5 min. Students turn a broad topic into a clear position.',`<div class="stage"><h3>07 · claim</h3><div class="grid2"><div class="statement">Topic: school uniforms</div><div class="statement">Claim: Schools should offer a choice of uniform styles.</div></div><p>A claim is something your project can support or challenge.</p></div>`),
-S('Evidence tiles','5 min. Sort examples into strong, weak, or missing.',`<div class="stage"><h3>08 · evidence</h3><div class="mosaic" id="evidence"><button class="tile choice">a survey of 40 students</button><button class="tile choice">“everyone knows”</button><button class="tile choice">one personal example</button><button class="tile choice">a clear comparison</button><button class="tile choice">no example</button><button class="tile choice">a number with no source</button></div><p id="evidOut" class="feedback">Choose one and explain how useful it is.</p></div>`),
-S('Presentation blueprint','5 min. Students plan opening, body, and close.',`<div class="stage"><h3>09 · presentation route</h3><div class="mosaic"><div class="tile"><b>Opening</b><p>hook + claim</p></div><div class="tile"><b>Middle</b><p>two points + evidence</p></div><div class="tile"><b>Close</b><p>message + action</p></div></div></div>`),
-S('Debate blueprint','5 min. Students plan a claim, response, and conclusion.',`<div class="stage"><h3>10 · debate route</h3><div class="mosaic"><div class="tile"><b>Position</b><p>We believe …</p></div><div class="tile"><b>Reply</b><p>We understand, however …</p></div><div class="tile"><b>Close</b><p>Therefore …</p></div></div></div>`),
-S('Speaking tokens','4 min. Students rehearse useful project language.',`<div class="stage"><h3>11 · language</h3><div class="statement">Our main point is …<br>For example …<br>However …<br>We recommend …<br>What do you think?</div></div>`),
-S('Visual mosaic design','4 min. Compare a readable project visual with a crowded one.',`<div class="stage"><h3>12 · visual design</h3><div class="grid2"><div class="tile"><b>Readable</b><p>one image · three keywords · clear contrast</p></div><div class="tile"><b>Crowded</b><p>tiny paragraphs · many colors · no focus</p></div></div></div>`),
-S('Counterpoint practice','5 min. Students respond without attacking the person.',`<div class="stage"><h3>13 · counterpoint</h3><div class="statement">“I see your point, but our evidence suggests …”<br>“That is one possibility. Another is …”</div></div>`),
-S('Read the sample pitch','2 min. Predict the claim and evidence.',`<div class="stage"><h3>14 · model preview</h3><div class="statement">“Schools should create a quiet study corner because many students need a calm place to focus.”</div></div>`),
-S('Text: The Study Corner pitch','6 min. Analyze the sample project.',`<div class="stage"><h3>15 · model analysis</h3><div class="statement"><p>Our school should create a quiet study corner. First, students who need to focus would have a calm place to work. A short class survey showed that 18 of 25 students sometimes struggle to concentrate. However, the space would need clear rules, so it should be available only during breaks.</p></div><p>Underline the claim, circle the evidence, and box the solution.</p></div>`),
-S('Model check','4 min. Click the tile that identifies each part.',`<div class="stage"><h3>16 · evidence check</h3><div class="grid2" id="model"><button class="choice">claim: create a quiet study corner</button><button class="choice">evidence: 18 of 25 students</button><button class="choice">counterpoint: clear rules</button><button class="choice">solution: use it during breaks</button></div><p id="modelOut" class="feedback">Choose a tile and name its job.</p></div>`),
-S('Finished mosaic','4 min. Use the image to describe how separate viewpoints connect.',`<div class="stage"><h3>17 · visual synthesis</h3><img class="figure" src="${A}mosaic-wall.png" alt="Finished mosaic wall made from connected viewpoint tiles with teens presenting"><p class="feedback">Use: “This idea connects to … because …”</p></div>`),
-S('Information gap: evidence swap','6 min. Partners trade evidence cards and improve a claim.',`<div class="stage"><h3>18 · pair task</h3><div class="grid2"><div class="statement"><b>Claim A:</b> Students need more outdoor time.</div><div class="statement"><b>Evidence cards:</b> survey · example · comparison</div></div><p>Choose the strongest card and explain your choice.</p></div>`),
-S('Rehearsal checkpoint','5 min. Students practise opening and receive one focused note.',`<div class="stage"><h3>19 · rehearsal</h3><div class="mosaic"><div class="tile"><b>Hook</b><p>Does it make us listen?</p></div><div class="tile"><b>Claim</b><p>Can we repeat it?</p></div><div class="tile"><b>Evidence</b><p>Can we trust it?</p></div></div></div>`),
-S('Final forum teams','6 min. Set roles for presentation or debate teams.',`<div class="stage"><h3>20 · team setup</h3><div class="mosaic"><div class="tile"><b>Speaker</b><p>delivers the message</p></div><div class="tile"><b>Evidence keeper</b><p>points to support</p></div><div class="tile"><b>Question host</b><p>responds respectfully</p></div></div></div>`),
-S('Build the final project','7 min. Teams assemble their claim, evidence, and close.',`<div class="stage"><h3>21 · production setup</h3><div class="mosaic"><div class="tile"><b>1</b><p>write the claim</p></div><div class="tile"><b>2</b><p>choose two supports</p></div><div class="tile"><b>3</b><p>plan the final line</p></div></div></div>`),
-S('Forum presentations','7 min. Presentations or debates run in timed rounds.',`<div class="stage"><h3>22 · final project</h3><div class="statement">Audience job: listen for the claim, write one evidence detail, and prepare one respectful question.</div><p>Teams may choose presentation or debate format.</p></div>`),
-S('Peer mosaic notes','5 min. Audience members add one tile of feedback.',`<div class="stage"><h3>23 · feedback</h3><div class="mosaic"><div class="tile"><b>Clear</b><p>I understood the message.</p></div><div class="tile"><b>Supported</b><p>I heard evidence.</p></div><div class="tile"><b>Connected</b><p>The ideas linked.</p></div></div></div>`),
-S('Final project quiz','5 min. Teams choose the strongest project habits.',`<div class="stage"><h3>24 · review</h3><div class="grid2" id="quiz"><button class="choice">make one clear claim</button><button class="choice">read every word from a slide</button><button class="choice">use specific evidence</button><button class="choice">ignore another viewpoint</button></div><p id="quizOut" class="feedback">Choose the habits that help an audience trust the project.</p></div>`),
-S('One-minute forum round','2 min. Students give a compressed final pitch.',`<div class="stage"><h3>25 · fluency</h3><div class="timer" id="timer">60</div><button class="choice" id="start">START FORUM ROUND</button><p>Claim → evidence → response → final message.</p></div>`),
-S('Self-check mosaic','3 min. Students choose the area they strengthened.',`<div class="stage"><h3>26 · reflection</h3><div class="meter"><i id="meter"></i></div><div class="tokens" id="levels"><button class="token" data-level="30">I found a claim</button><button class="token" data-level="60">I used evidence</button><button class="token" data-level="90">I responded confidently</button></div><p id="levelOut" class="feedback">Choose honestly and name one next step.</p></div>`),
-S('Exit ticket','2 min. Students close the project with one reflection.',`<div class="stage"><h3>27 · exit ticket</h3><h2>Add your final tile.</h2><div class="mosaic" id="exit"><button class="tile choice">One idea I can explain is …</button><button class="tile choice">One speaking skill I used is …</button><button class="tile choice">One question I can explore next is …</button></div><p id="exitOut" class="feedback">Choose one and complete it for a partner.</p><div class="eyebrow">Next: Final Revision & Level Test</div></div>`)
-];
-const deck=document.querySelector('#deck');deck.innerHTML=scenes.map((s,i)=>`<section class="scene ${i?'':'active'}">${s.b}</section>`).join('');const note=document.querySelector('#note'),map=document.querySelector('#map');map.innerHTML='<h3 style="color:var(--gold)">Forum Mosaic map</h3>'+scenes.map((s,i)=>`<button data-jump="${i}">${i+1}. ${s.t}</button>`).join('');let cur=0;function show(i){cur=(i+scenes.length)%scenes.length;document.querySelectorAll('.scene').forEach((x,n)=>x.classList.toggle('active',n===cur));count.textContent=`${cur+1} / ${scenes.length}`;bar.style.width=`${(cur+1)/scenes.length*100}%`;note.classList.remove('open');map.classList.remove('open');window.scrollTo(0,0)}show(0);next.onclick=()=>show(cur+1);prev.onclick=()=>show(cur-1);mapBtn.onclick=()=>map.classList.toggle('open');noteBtn.onclick=()=>{note.innerHTML=`<b>Teacher note · ${cur+1}</b><br>${scenes[cur].n}`;note.classList.toggle('open')};map.onclick=e=>{if(e.target.dataset.jump!==undefined)show(+e.target.dataset.jump)};document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(cur+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(cur-1)}if(e.key.toLowerCase()==='m')map.classList.toggle('open');if(e.key.toLowerCase()==='n')noteBtn.click()});let sx=0;document.addEventListener('touchstart',e=>sx=e.changedTouches[0].screenX,{passive:true});document.addEventListener('touchend',e=>{let d=e.changedTouches[0].screenX-sx;if(Math.abs(d)>45)show(cur+(d<0?1:-1))},{passive:true});document.querySelectorAll('#route .choice,#topics .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');routeOut&&(routeOut.textContent='Route selected — explain your choice.');topicOut&&(topicOut.textContent='Narrow the topic into a clear claim.')});document.querySelectorAll('#evidence .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');evidOut.textContent='Explain why this support is strong or weak.'});document.querySelectorAll('#model .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');modelOut.textContent='Name the project part this tile represents.'});document.querySelectorAll('#quiz .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');quizOut.textContent='Keep the habits that help an audience trust the project.'});let seconds=60,run;start.onclick=()=>{clearInterval(run);seconds=60;timer.textContent=seconds;run=setInterval(()=>{seconds--;timer.textContent=seconds;if(seconds<=0)clearInterval(run)},1000)};document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{meter.style.width=b.dataset.level+'%';levelOut.textContent='Name one next step for your speaking.'});document.querySelectorAll('#exit .choice').forEach(b=>b.onclick=()=>{b.classList.add('selected');exitOut.textContent='Complete the reflection for a partner.'});
-</script><style>.title{z-index:10!important;color:#fff!important;text-shadow:0 3px 15px #07172a}.title h1,.title p{color:#fff!important}.title .eyebrow{color:#ffe0a0!important}</style></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+  <meta name="theme-color" content="#071c2c">
+  <title>Lesson 29 | Make Your Case</title>
+  <link rel="stylesheet" href="experience-v2.css">
+</head>
+<body>
+  <header class="broadcast-mark" aria-label="Current chapter">
+    <span id="chapterNumber">OPENING</span>
+    <b id="chapterName">THE FORUM</b>
+  </header>
+
+  <div class="tools" aria-label="Presentation tools">
+    <button id="mapBtn" type="button" aria-expanded="false">PROJECT MAP</button>
+    <button id="noteBtn" type="button" aria-expanded="false">TEACHER NOTE</button>
+  </div>
+
+  <main id="deck">
+    <section class="scene image-scene active transition-spotlight" data-scene="1" data-chapter="OPENING|THE FORUM" data-title="Make Your Case" data-note="Open with the image and let students predict the final challenge. Ask: What makes people listen to an idea? Keep answers visible for the final reflection.">
+      <img class="fullbleed" src="assets/forum-circle.png" alt="Teenagers in a circular community forum with a bright unfinished mosaic behind them">
+      <div class="hero-scrim"></div>
+      <div class="hero-copy">
+        <p class="kicker light">Lesson 29 · Final speaking project</p>
+        <h1>MAKE<br>YOUR CASE</h1>
+        <p class="hero-sub">Build an idea. Support it. Make the room care.</p>
+        <button class="primary-action" id="begin" type="button">ENTER THE FORUM <span>→</span></button>
+      </div>
+      <div class="orbit-words" aria-hidden="true"><span>CLAIM</span><span>PROOF</span><span>VOICE</span></div>
+    </section>
+
+    <section class="scene electric transition-split" data-scene="2" data-chapter="CHAPTER 1|ARRIVE" data-title="How ready is your voice?" data-note="Students choose the feeling closest to theirs. Normalize every choice. Invite confident students to name one strength and nervous students to name one support they need.">
+      <p class="kicker">01 / Check-in pulse</p>
+      <h2>How ready is<br>your voice?</h2>
+      <div class="pulse-line" id="confidencePulse">
+        <button data-level="25"><b>1</b><span>quiet but curious</span></button>
+        <button data-level="50"><b>2</b><span>a little nervous</span></button>
+        <button data-level="75"><b>3</b><span>ready to try</span></button>
+        <button data-level="100"><b>4</b><span>give me the mic</span></button>
+      </div>
+      <div class="pulse-meter"><i id="pulseFill"></i></div>
+      <p class="feedback" id="pulseOut">Choose honestly. Today, preparation matters more than confidence.</p>
+    </section>
+
+    <section class="scene paper transition-wipe" data-scene="3" data-chapter="CHAPTER 1|CONNECT" data-title="Linking words are your invisible map" data-note="Bridge from Lesson 28. Students complete the mini pitch orally with three connectors before revealing the model. Accept alternative logical links.">
+      <p class="kicker">02 / Lesson 28 remix</p>
+      <h2>A listener needs<br>an invisible map.</h2>
+      <div class="connector-ribbon">
+        <span>OUR VIEW</span><b>BECAUSE</b><span>OUR REASON</span><b>FOR EXAMPLE</b><span>OUR PROOF</span><b>THEREFORE</b><span>OUR ASK</span>
+      </div>
+      <button class="reveal-line" id="bridgeReveal" type="button">REVEAL A MODEL</button>
+      <p class="model-line" id="bridgeModel">Schools should create a quiet corner <mark>because</mark> students need a calm place. <mark>For example</mark>, 18 of 25 students in our class sometimes struggle to focus. <mark>Therefore</mark>, we propose a two-week trial.</p>
+      <p class="instruction"><b>Try it</b> Replace the topic, but keep the listener’s map clear.</p>
+    </section>
+
+    <section class="scene midnight transition-rise" data-scene="4" data-chapter="CHAPTER 1|MISSION" data-title="Your mission has four visible results" data-note="Preview the learning outcomes as actions, not definitions. Students point to the result that will be hardest for them.">
+      <p class="kicker light">03 / Mission</p>
+      <h2>By the end, your idea<br>will stand on its own.</h2>
+      <div class="mission-steps">
+        <div><b>01</b><span>Choose a focused claim</span></div>
+        <div><b>02</b><span>Support it with useful evidence</span></div>
+        <div><b>03</b><span>Present or debate with clear structure</span></div>
+        <div><b>04</b><span>Answer questions respectfully</span></div>
+      </div>
+      <p class="instruction inverse"><b>Pick one</b> Which result would make the biggest difference to your speaking?</p>
+    </section>
+
+    <section class="scene route-scene transition-shutter" data-scene="5" data-chapter="CHAPTER 2|CHOOSE" data-title="Two routes, one standard" data-note="Let students choose presentation or debate. If someone does not want to speak alone, offer the team or evidence-lead alternative shown at the bottom.">
+      <p class="kicker">04 / Choose your format</p>
+      <h2>Two routes.<br>One strong idea.</h2>
+      <div class="route-gates" id="routeGates">
+        <button data-route="presentation" type="button">
+          <span class="route-code">A</span><strong>PRESENTATION</strong>
+          <em>Explain a problem, support your view, recommend action.</em>
+          <small>Best for: one clear message</small>
+        </button>
+        <button data-route="debate" type="button">
+          <span class="route-code">B</span><strong>DEBATE</strong>
+          <em>Defend a position, respond to another view, close strongly.</em>
+          <small>Best for: two reasonable sides</small>
+        </button>
+      </div>
+      <p class="feedback" id="routeOut">Choose a route to see your first instruction.</p>
+      <p class="quiet-alternative">Prefer less pressure? Join a team as evidence lead, visual lead, timekeeper or question host.</p>
+    </section>
+
+    <section class="scene acid transition-orbit" data-scene="6" data-chapter="CHAPTER 2|SPARK" data-title="Spin for a topic worth discussing" data-note="Run the topic reel. Students may accept, reject, or remix the prompt. Sensitive personal disclosure is never required; fictional school or community settings are welcome.">
+      <p class="kicker">05 / Topic spotlight</p>
+      <h2>Find a topic with<br>a real decision inside.</h2>
+      <div class="topic-machine">
+        <div class="topic-window" id="topicWindow">Should schools create one phone-free break?</div>
+        <button class="machine-button" id="topicSpin" type="button">SPIN TOPIC</button>
+      </div>
+      <div class="topic-tests">
+        <span>Can reasonable people disagree?</span><span>Can we find examples?</span><span>Can we suggest action?</span>
+      </div>
+      <p class="instruction"><b>Alternative</b> Keep the category but invent your own question.</p>
+    </section>
+
+    <section class="scene paper transition-tilt" data-scene="7" data-chapter="CHAPTER 2|FOCUS" data-title="A topic is a room; a claim is a door" data-note="Students click the statement that can be supported or challenged. Then they improve one broad topic from the reel. Stress that a claim is a complete sentence, not a label.">
+      <p class="kicker">06 / Focus lab</p>
+      <h2>Turn a broad topic<br>into a clear claim.</h2>
+      <div class="focus-scale" id="focusScale">
+        <button data-quality="weak"><span>TOO BROAD</span><b>Social media</b></button>
+        <button data-quality="almost"><span>QUESTION</span><b>Is social media useful?</b></button>
+        <button data-quality="strong"><span>FOCUSED CLAIM</span><b>Schools should teach one lesson on healthy social-media habits.</b></button>
+      </div>
+      <p class="feedback" id="focusOut">Which one tells the audience exactly what you believe?</p>
+      <div class="formula-strip"><b>WHO</b><i>+</i><b>SHOULD / SHOULD NOT</b><i>+</i><b>DO WHAT</b><i>+</i><b>WHERE OR WHEN</b></div>
+    </section>
+
+    <section class="scene image-scene transition-lens" data-scene="8" data-chapter="CHAPTER 2|NOTICE" data-title="Evidence is already on the table" data-note="Use the image as a visual scavenger hunt. Students find a survey, a comparison, an example and a visual. Ask which item would be strongest for a school decision and why.">
+      <img class="fullbleed" src="assets/argument-table.png" alt="Editorial illustration of a speaking table with microphone, timer, survey cards, charts, audience cards and voting tokens">
+      <div class="evidence-lens">
+        <p class="kicker light">07 / Picture hunt</p>
+        <h2>What proof<br>can you find?</h2>
+        <div class="hunt-list"><span>survey</span><span>example</span><span>comparison</span><span>visual</span></div>
+        <p>Point to one item. Explain what claim it could support.</p>
+      </div>
+    </section>
+
+    <section class="scene cobalt transition-stamp" data-scene="9" data-chapter="CHAPTER 2|JUDGE" data-title="Not every detail deserves the microphone" data-note="Students judge each evidence card. Each click reveals feedback. Emphasize that personal examples can be useful, but they do not prove what happens to everyone.">
+      <p class="kicker light">08 / Evidence court</p>
+      <h2>Would you trust<br>this support?</h2>
+      <div class="evidence-court" id="evidenceCourt">
+        <article data-answer="strong"><p>“24 of 30 students chose a later library closing time.”</p><div><button data-judge="strong">STRONG</button><button data-judge="careful">USE CAREFULLY</button><button data-judge="weak">WEAK</button></div></article>
+        <article data-answer="careful"><p>“My cousin studies better with music.”</p><div><button data-judge="strong">STRONG</button><button data-judge="careful">USE CAREFULLY</button><button data-judge="weak">WEAK</button></div></article>
+        <article data-answer="weak"><p>“Everyone knows group work is always better.”</p><div><button data-judge="strong">STRONG</button><button data-judge="careful">USE CAREFULLY</button><button data-judge="weak">WEAK</button></div></article>
+      </div>
+      <p class="feedback inverse" id="evidenceOut">Score: 0 / 3 · Judge the detail, then explain your reason.</p>
+    </section>
+
+    <section class="scene orange transition-type" data-scene="10" data-chapter="CHAPTER 2|BUILD" data-title="Build a claim your audience can repeat" data-note="Invite students to enter a topic and action. The sentence is built live. If devices are shared, complete it orally and use the preset example.">
+      <p class="kicker">09 / Claim builder</p>
+      <h2>Make your claim<br>repeatable.</h2>
+      <div class="claim-builder">
+        <label>WHO?<input id="claimWho" value="Our school" aria-label="Who should act"></label>
+        <label>ACTION?<input id="claimAction" value="should create" aria-label="Action"></label>
+        <label>WHAT?<input id="claimWhat" value="a weekly no-homework evening" aria-label="What should happen"></label>
+      </div>
+      <blockquote id="claimOutput">Our school should create a weekly no-homework evening.</blockquote>
+      <p class="instruction"><b>Repeat test</b> A partner listens once, looks away and repeats the claim.</p>
+    </section>
+
+    <section class="scene paper transition-slide" data-scene="11" data-chapter="CHAPTER 2|ADAPT" data-title="The same idea changes for a different audience" data-note="Students select an audience and read how the opening changes. Ask them to keep the claim but change the reason, example or tone.">
+      <p class="kicker">10 / Audience lens</p>
+      <h2>Who needs to<br>care about this?</h2>
+      <div class="audience-lens" id="audienceLens">
+        <button data-audience="classmates">CLASSMATES<small>start with a relatable moment</small></button>
+        <button data-audience="teachers">TEACHERS<small>show a learning benefit</small></button>
+        <button data-audience="school leaders">SCHOOL LEADERS<small>offer evidence and a practical trial</small></button>
+        <button data-audience="parents">PARENTS<small>give context and address concerns</small></button>
+      </div>
+      <p class="audience-model" id="audienceModel">Choose an audience. Your message will change its entrance.</p>
+    </section>
+
+    <section class="scene midnight transition-wave" data-scene="12" data-chapter="CHAPTER 3|LISTEN" data-title="Hear a complete 45-second case" data-note="Play the locally generated system-voice model or read it aloud yourself. First listen for the claim. Second listen for the evidence, counterpoint and final ask. The transcript is always available.">
+      <p class="kicker light">11 / Model pitch</p>
+      <h2>Listen for the<br>four-part shape.</h2>
+      <div class="voice-player" id="voicePlayer">
+        <button id="playModel" type="button">▶ PLAY MODEL</button>
+        <div class="waveform" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <span>Claim · evidence · response · ask</span>
+      </div>
+      <blockquote class="transcript" id="modelTranscript">Our school should test one phone-free break each day. First, a short break from notifications could help students talk face to face. In our class poll, 19 of 27 students said phones sometimes stop real conversations. Some students may need a phone for family messages; however, urgent messages can still go through the office. Therefore, I recommend a two-week trial followed by another student poll.</blockquote>
+      <p class="instruction inverse"><b>Alternative</b> Read in pairs: Speaker A reads the claim and evidence; Speaker B reads the counterpoint and ask.</p>
+    </section>
+
+    <section class="scene cream transition-cut" data-scene="13" data-chapter="CHAPTER 3|ANALYSE" data-title="Every sentence has a job" data-note="Students predict each job, then tap the sentence strip. After all four are open, ask which sentence could be improved and accept reasonable alternatives.">
+      <p class="kicker">12 / Pitch X-ray</p>
+      <h2>Tap the line.<br>Name its job.</h2>
+      <div class="pitch-xray" id="pitchXray">
+        <button data-job="CLAIM"><b>Our school should test one phone-free break each day.</b><span>?</span></button>
+        <button data-job="EVIDENCE"><b>19 of 27 students said phones sometimes stop real conversations.</b><span>?</span></button>
+        <button data-job="COUNTERPOINT"><b>Some students may need a phone for family messages.</b><span>?</span></button>
+        <button data-job="ACTION"><b>I recommend a two-week trial followed by another poll.</b><span>?</span></button>
+      </div>
+      <p class="feedback" id="xrayOut">0 / 4 jobs revealed.</p>
+    </section>
+
+    <section class="scene cyan transition-steps" data-scene="14" data-chapter="CHAPTER 3|PRESENT" data-title="A presentation moves the room toward one message" data-note="Model the route with a familiar topic. Students give a ten-second example for each step. The close should not introduce a completely new idea.">
+      <p class="kicker">13 / Presentation route</p>
+      <h2>Open the door.<br>Guide the room.</h2>
+      <ol class="route-rail presentation-rail">
+        <li><b>HOOK</b><span>“When was the last time…?”</span></li>
+        <li><b>CLAIM</b><span>Say your position in one sentence.</span></li>
+        <li><b>2 POINTS</b><span>Reason → example → meaning.</span></li>
+        <li><b>RESPONSE</b><span>Recognize one concern.</span></li>
+        <li><b>CLOSE</b><span>Repeat the message + ask for action.</span></li>
+      </ol>
+      <p class="route-time">TARGET: 2–3 MINUTES · SOLO OR TEAM</p>
+    </section>
+
+    <section class="scene coral transition-steps" data-scene="15" data-chapter="CHAPTER 3|DEBATE" data-title="A debate answers the other side, not only the topic" data-note="Assign speakers to each stage. Contrast a rebuttal with simply repeating the claim. For a small class, run one three-versus-three debate with one moderator.">
+      <p class="kicker">14 / Debate route</p>
+      <h2>Build your side.<br>Meet the other side.</h2>
+      <ol class="route-rail debate-rail">
+        <li><b>POSITION</b><span>“We believe…” + one reason.</span></li>
+        <li><b>PROOF</b><span>Use an example, comparison or small survey.</span></li>
+        <li><b>LISTEN</b><span>Write the other side’s strongest point.</span></li>
+        <li><b>REBUT</b><span>Recognize → contrast → support.</span></li>
+        <li><b>WEIGH</b><span>Explain why your benefit matters more.</span></li>
+      </ol>
+      <p class="route-time">TARGET: 90-SECOND OPENING + 45-SECOND REBUTTAL</p>
+    </section>
+
+    <section class="scene blackboard transition-wardrobe" data-scene="16" data-chapter="CHAPTER 3|LINK" data-title="Choose language for the job" data-note="Students select a language job and perform the changing model. Ask them to substitute their own content without copying every word.">
+      <p class="kicker light">15 / Language wardrobe</p>
+      <h2>Dress the idea<br>for its job.</h2>
+      <div class="phrase-wardrobe" id="phraseWardrobe">
+        <button data-line="Have you ever tried to study while five notifications arrived?">HOOK</button>
+        <button data-line="Our main point is that one phone-free break would improve real conversation.">CLAIM</button>
+        <button data-line="For example, 19 of 27 students in our poll noticed this problem.">EXAMPLE</button>
+        <button data-line="I understand that phones are useful; however, one short break is realistic.">COUNTERPOINT</button>
+        <button data-line="Therefore, we ask the school to test the idea for two weeks.">CLOSE</button>
+      </div>
+      <blockquote id="wardrobeLine">Choose a job to reveal a useful sentence frame.</blockquote>
+      <p class="instruction inverse"><b>Make it yours</b> Keep the structure. Change the topic, evidence and action.</p>
+    </section>
+
+    <section class="scene paper transition-ladder" data-scene="17" data-chapter="CHAPTER 3|RESPOND" data-title="A respectful rebuttal climbs three steps" data-note="Choral-drill the three-part response, then give pairs a harmless topic. Students must acknowledge the idea before they disagree.">
+      <p class="kicker">16 / Rebuttal ladder</p>
+      <h2>Disagree without<br>closing the conversation.</h2>
+      <div class="rebuttal-ladder" id="rebuttalLadder">
+        <button data-step="1"><b>1</b><span>I see why that matters.</span><em>RECOGNIZE</em></button>
+        <button data-step="2"><b>2</b><span>However, that may not work for everyone.</span><em>CONTRAST</em></button>
+        <button data-step="3"><b>3</b><span>Our survey suggests a shorter trial would be fairer.</span><em>SUPPORT</em></button>
+      </div>
+      <p class="feedback" id="ladderOut">Climb in order: recognize → contrast → support.</p>
+      <p class="quiet-alternative">Other natural openings: “That is one possibility. Another is…” · “I partly agree, but…”</p>
+    </section>
+
+    <section class="scene ultraviolet transition-duel" data-scene="18" data-chapter="CHAPTER 3|DUEL" data-title="Choose the reply that moves the debate forward" data-note="Run as a three-round team duel. Students explain why an answer is respectful and supported before clicking. A useful reply should address the idea, not the person.">
+      <p class="kicker light">17 / Response duel</p>
+      <h2>Which reply<br>earns the mic?</h2>
+      <div class="duel-card">
+        <p>Other side: “A phone-free break is unfair because some students need to contact family.”</p>
+        <div id="responseDuel">
+          <button data-correct="false">That is wrong. Phones are obviously bad.</button>
+          <button data-correct="true">I understand that concern. However, urgent messages could still go through the office.</button>
+          <button data-correct="false">We already explained our idea, so there is nothing to add.</button>
+        </div>
+      </div>
+      <p class="feedback inverse" id="duelOut">Choose the reply that recognizes the concern and answers it.</p>
+    </section>
+
+    <section class="scene sand transition-repair" data-scene="19" data-chapter="CHAPTER 3|REPAIR" data-title="Repair four argument traps" data-note="Assign one trap to each pair. They repair it orally before tapping. Explain that stronger language is often more precise, not more dramatic.">
+      <p class="kicker">18 / Argument repair shop</p>
+      <h2>Strong does not<br>mean dramatic.</h2>
+      <div class="trap-lines" id="trapLines">
+        <button data-fixed="Some students prefer it, and our class poll can show how many."><b>EVERYONE AGREES.</b><span>too absolute</span></button>
+        <button data-fixed="One possible benefit is that students may talk more face to face."><b>IT WILL FIX EVERYTHING.</b><span>impossible promise</span></button>
+        <button data-fixed="I disagree with that point because the example is not typical."><b>YOUR IDEA IS SILLY.</b><span>attacks the person</span></button>
+        <button data-fixed="Our class poll included 27 students; 19 supported a trial."><b>THE NUMBERS PROVE IT.</b><span>missing context</span></button>
+      </div>
+      <p class="feedback" id="trapOut">Tap only after you can suggest a more accurate sentence.</p>
+    </section>
+
+    <section class="scene white transition-frame" data-scene="20" data-chapter="CHAPTER 4|DESIGN" data-title="Your visual should finish the sentence" data-note="Show the two design options. Students vote and explain. Stress that visuals support the speaker; they do not replace the speaker with paragraphs.">
+      <p class="kicker">19 / Visual direction</p>
+      <h2>Make the visual<br>do one clear job.</h2>
+      <div class="visual-test" id="visualTest">
+        <button data-correct="true" class="good-poster"><strong>19 / 27</strong><span>students support a two-week trial</span><i>ONE NUMBER · ONE MESSAGE</i></button>
+        <button data-correct="false" class="busy-poster"><span>BACKGROUND</span><span>INTRODUCTION</span><span>DETAILED EXPLANATION</span><span>MORE TEXT</span><span>CONCLUSION</span><span>THANK YOU</span></button>
+      </div>
+      <p class="feedback" id="visualOut">Choose the visual an audience can understand in three seconds.</p>
+      <p class="three-rule"><b>1</b> message <b>1</b> strong image or number <b>3</b> keywords maximum</p>
+    </section>
+
+    <section class="scene image-scene transition-gallery" data-scene="21" data-chapter="CHAPTER 4|CONNECT" data-title="Separate pieces become one public message" data-note="Use the picture to rehearse signposting. Students connect two visual sections using because, however, for example or therefore. Then they identify the audience’s role.">
+      <img class="fullbleed" src="assets/mosaic-wall.png" alt="Teen speakers presenting a large editorial mosaic wall that connects people, places, nature and data">
+      <div class="gallery-caption">
+        <p class="kicker light">20 / Visual synthesis</p>
+        <h2>Connect the<br>pieces aloud.</h2>
+        <p>“This evidence connects to our claim <b>because…</b>”</p>
+        <p>“The other side may focus on…, <b>however…</b>”</p>
+        <p>“Our final action is…, <b>therefore…</b>”</p>
+      </div>
+    </section>
+
+    <section class="scene aqua transition-flip" data-scene="22" data-chapter="CHAPTER 4|QUESTIONS" data-title="You do not need a perfect answer" data-note="Students choose a rescue card, flip it, and adapt the phrase to a question. Emphasize that asking for clarification or admitting uncertainty is a communication skill.">
+      <p class="kicker">21 / Q&A rescue deck</p>
+      <h2>Stay calm when<br>the question is difficult.</h2>
+      <div class="rescue-deck" id="rescueDeck">
+        <button data-back="Do you mean…? Could you give an example?"><b>CLARIFY</b><span>when the question is unclear</span></button>
+        <button data-back="That is a useful question. I need a moment to think."><b>BUY TIME</b><span>when you need five seconds</span></button>
+        <button data-back="I do not have that information yet, but I would check…"><b>BE HONEST</b><span>when you do not know</span></button>
+        <button data-back="Our main evidence was…, so our answer is…"><b>RETURN TO PROOF</b><span>when the discussion moves away</span></button>
+      </div>
+      <p class="feedback" id="rescueOut">Choose a situation to reveal a natural response.</p>
+    </section>
+
+    <section class="scene ink transition-switch" data-scene="23" data-chapter="CHAPTER 4|TEAM" data-title="Every team member owns a speaking job" data-note="Use the switchboard to assign roles. With seven students, use one moderator and two teams of three. For presentations, combine roles or let one student be question host across teams.">
+      <p class="kicker light">22 / Role switchboard</p>
+      <h2>Build a team where<br>everyone matters.</h2>
+      <div class="role-switchboard">
+        <button id="assignRoles" type="button">SHUFFLE ROLES</button>
+        <div class="role-display" id="roleDisplay">
+          <span>Speaker 1 · hook + claim</span><span>Speaker 2 · evidence</span><span>Speaker 3 · response + close</span><span>Moderator · time + questions</span>
+        </div>
+      </div>
+      <div class="role-alternatives"><b>QUIETER ROLE</b> evidence navigator or visual operator <b>CHALLENGE ROLE</b> rebuttal speaker or question host</div>
+    </section>
+
+    <section class="scene parchment transition-build" data-scene="24" data-chapter="CHAPTER 4|CREATE" data-title="Build your project canvas" data-note="Teams complete the canvas. Entries save locally in this browser. On one shared screen, teams can write on paper and use the screen as a checklist.">
+      <p class="kicker">23 / Project canvas</p>
+      <h2>Turn planning into<br>a speaking route.</h2>
+      <div class="project-canvas" id="projectCanvas">
+        <label><span>1 · CLAIM</span><textarea data-save="claim" placeholder="We believe…"></textarea></label>
+        <label><span>2 · BEST EVIDENCE</span><textarea data-save="evidence" placeholder="A survey, example or comparison…"></textarea></label>
+        <label><span>3 · OTHER VIEW</span><textarea data-save="other" placeholder="Some people may say…"></textarea></label>
+        <label><span>4 · RESPONSE</span><textarea data-save="response" placeholder="I understand…, however…"></textarea></label>
+        <label><span>5 · FINAL ASK</span><textarea data-save="ask" placeholder="Therefore, we recommend…"></textarea></label>
+      </div>
+      <div class="canvas-status"><span id="canvasStatus">Your canvas saves on this device.</span><button id="clearCanvas" type="button">CLEAR</button></div>
+    </section>
+
+    <section class="scene hotpink transition-director" data-scene="25" data-chapter="CHAPTER 5|REHEARSE" data-title="Rehearse one skill at a time" data-note="Run three short rehearsals instead of one long repeated performance. Select a mode, give 45 seconds, and let partners give only the requested feedback.">
+      <p class="kicker">24 / Rehearsal director</p>
+      <h2>Do not practise<br>everything at once.</h2>
+      <div class="director-console" id="directorConsole">
+        <button data-mode="structure" data-task="Partner listens only for: hook → claim → evidence → close."><b>TAKE 1</b><span>STRUCTURE</span></button>
+        <button data-mode="voice" data-task="Partner listens only for: pauses, stress and clear final sounds."><b>TAKE 2</b><span>VOICE</span></button>
+        <button data-mode="response" data-task="Partner asks one difficult question. Speaker uses a rescue phrase."><b>TAKE 3</b><span>RESPONSE</span></button>
+      </div>
+      <blockquote id="directorTask">Choose a rehearsal take. Your partner gets one listening job.</blockquote>
+      <p class="quiet-alternative">Camera-shy? Rehearse audio-only first, then stand for the final take.</p>
+    </section>
+
+    <section class="scene stage-live transition-stage" data-scene="26" data-chapter="CHAPTER 5|PERFORM" data-title="The forum is live" data-note="Choose a time and an audience mission. Start the timer when the speaker begins. The audience must prepare one evidence detail and one respectful question, not simply wait for their turn.">
+      <div class="stage-beams" aria-hidden="true"><i></i><i></i><i></i></div>
+      <p class="kicker light">25 / Final performance</p>
+      <h2>THE FORUM<br>IS LIVE.</h2>
+      <div class="live-console">
+        <div class="time-picks" id="timePicks"><button data-seconds="60">1:00</button><button class="selected" data-seconds="90">1:30</button><button data-seconds="120">2:00</button></div>
+        <div class="timer" id="timer" aria-live="polite">01:30</div>
+        <div class="timer-controls"><button id="timerStart" type="button">START</button><button id="timerPause" type="button">PAUSE</button><button id="timerReset" type="button">RESET</button></div>
+      </div>
+      <div class="audience-mission"><b>AUDIENCE MISSION</b><span id="audienceMission">Write the claim in eight words or fewer.</span><button id="missionSpin" type="button">NEW MISSION</button></div>
+    </section>
+
+    <section class="scene paper transition-mosaic" data-scene="27" data-chapter="CHAPTER 5|REFLECT" data-title="Build feedback the speaker can use" data-note="Audience members add only feedback they can support with a specific moment. After three strengths, add one next step. The goal is usable feedback, not a popularity vote.">
+      <p class="kicker">26 / Feedback mosaic</p>
+      <h2>Add one tile<br>that helps.</h2>
+      <div class="feedback-mosaic" id="feedbackMosaic">
+        <button data-kind="strength"><b>CLEAR CLAIM</b><span>I could repeat the main idea.</span></button>
+        <button data-kind="strength"><b>USEFUL PROOF</b><span>A detail made the idea believable.</span></button>
+        <button data-kind="strength"><b>STRONG VOICE</b><span>A pause or stressed word helped me listen.</span></button>
+        <button data-kind="strength"><b>GOOD RESPONSE</b><span>The speaker answered the idea respectfully.</span></button>
+        <button data-kind="next"><b>NEXT: FOCUS</b><span>Make the claim narrower.</span></button>
+        <button data-kind="next"><b>NEXT: CONNECT</b><span>Explain how the evidence supports the claim.</span></button>
+      </div>
+      <p class="feedback" id="feedbackOut">0 tiles added · Choose a tile, then name the exact moment you noticed.</p>
+    </section>
+
+    <section class="scene finale transition-finale" data-scene="28" data-chapter="CLOSING|YOUR TILE" data-title="Leave with one next move" data-note="Students choose one exit prompt and complete it aloud or in chat. Celebrate evidence of progress. Preview Lesson 30 as a constellation review, not simply a test.">
+      <p class="kicker light">27 / Exit ticket</p>
+      <h2>Your voice leaves<br>a piece behind.</h2>
+      <div class="exit-prompts" id="exitPrompts">
+        <button data-prompt="The strongest part of my project was…">MY STRONGEST PIECE</button>
+        <button data-prompt="Next time, I will make my speaking clearer by…">MY NEXT MOVE</button>
+        <button data-prompt="One idea from another speaker that changed my thinking was…">AN IDEA I WILL KEEP</button>
+      </div>
+      <blockquote id="exitLine">Choose one final tile and complete the sentence.</blockquote>
+      <div class="next-preview"><span>NEXT LESSON</span><b>30 · CONSTELLATION REVIEW</b><em>Grammar · vocabulary · reading · listening · speaking</em></div>
+    </section>
+  </main>
+
+  <aside id="map" class="panel map-panel" aria-label="Project map"></aside>
+  <aside id="note" class="panel note-panel" aria-label="Teacher note"></aside>
+
+  <nav class="nav" aria-label="Presentation navigation">
+    <button id="prev" type="button" aria-label="Previous scene">←</button>
+    <span class="counter" id="count">1 / 28</span>
+    <span class="progress" aria-hidden="true"><i id="bar"></i></span>
+    <button id="next" type="button" aria-label="Next scene">→</button>
+  </nav>
+
+  <script src="experience-v2.js"></script>
+</body>
+</html>

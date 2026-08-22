@@ -1,1 +1,9 @@
-import fs from 'node:fs';import vm from 'node:vm';const p=fs.readFileSync('index.html','utf8');const scripts=[...p.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);for(const s of scripts)new vm.Script(s);console.log(`PASS — JavaScript syntax (${scripts.length} scripts)`);
+import fs from 'node:fs';
+import vm from 'node:vm';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = path.dirname(fileURLToPath(import.meta.url));
+const source = fs.readFileSync(path.join(root, 'experience-v2.js'), 'utf8');
+new vm.Script(source, { filename: 'experience-v2.js' });
+console.log('PASS — JavaScript syntax (experience-v2.js)');
